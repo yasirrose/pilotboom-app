@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  loginObj: object = {
+    email:'',
+    pass: ''
+  };
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  logForm(){
+    console.log(this.loginObj);
   }
 
 }
