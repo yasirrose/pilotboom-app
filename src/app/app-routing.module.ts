@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
@@ -33,6 +34,14 @@ const routes: Routes = [
   {
     path: 'schedules',
     loadChildren: () => import('./schedules/schedules.module').then( m => m.SchedulesPageModule)
+  },
+  {
+    path: 'addcontact',
+    loadChildren: () => import('./add-contact/add-contact.module').then( m => m.AddContactPageModule)
+  },
+  {
+    path: 'addcompany',
+    loadChildren: () => import('./add-company/add-company.module').then( m => m.AddCompanyPageModule)
   },
 
 
