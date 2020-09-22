@@ -1,4 +1,6 @@
 $height100: 100%;
+$textColor: #1c0d2e;
+$colorgray: #e2e2e2;
 ion-grid {
     width: 100%;
     height: $height100;
@@ -14,30 +16,29 @@ ion-button {
 
 ion-content {
     // --background: #45aaf2;
-    --background: radial-gradient( circle 465px at -15.1% -25%, rgba(17, 130, 193, 1) 0%, rgba(67, 166, 238, 1) 49%, rgba(126, 203, 244, 1) 90.2%);
-    h1 {
-        color: var(--ion-color-light);
-    }
+    --background: url('/assets/img/app-bg.jpg') top left / 100% auto no-repeat;
     ion-item {
-        margin-bottom: 24px;
-        --background: transparent;
-        border: 1px solid var(--ion-color-light);
-        color: var(--ion-color-light);
+        margin-bottom: 20px;
+        // --background: transparent;
+        border: 1px solid $colorgray;
+        color: $textColor;
+        border-radius: 50px;
         ion-input {
-            --placeholder-opacity: 1;
+            --placeholder-opacity: 0.4;
         }
     }
     ion-button {
         --box-shadow: none;
-        --border-radius: 0;
+        --border-radius: 50px;
         height: 48px;
     }
     .app-wrap {
         .app-logo {
-            margin-bottom: 26px;
-            img {
-                max-width: 200px;
-            }
+            max-width: 40vw;
+            margin: 18vh auto 30px auto;
         }
+    }
+    .bottom-col {
+        margin-top: auto;
     }
 }
