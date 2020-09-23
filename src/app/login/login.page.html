@@ -1,24 +1,24 @@
 <ion-content class="ion-padding">
-    <form action="" (ngSubmit)="logForm()"></form>
-    <ion-grid class="ion-no-padding">
-        <ion-row class="ion-no-padding ion-justify-content-center">
-            <ion-col size-md="6" size-lg="5" size-xs="12" class="ion-align-self-center">
-                <div class="app-wrap">
-                    <div class="ion-text-center app-logo">
-                        <img src="/assets/img/Pilot-Boom.png" alt="">
+    <form [formGroup]="userForm" (ngSubmit)="login()">
+        <ion-grid class="ion-no-padding">
+            <ion-row class="ion-no-padding ion-justify-content-center">
+                <ion-col size-md="6" size-lg="5" size-xs="12" class="ion-align-self-center">
+                    <div class="app-wrap">
+                        <div class="ion-text-center app-logo">
+                            <img src="/assets/img/Pilot-Boom.png" alt="">
+                        </div>
+                        <div class="ion-no-padding app-form">
+                            <ion-item lines="none">
+                                <ion-input type="email" placeholder="Username/Email" formControlName="email" name="email"></ion-input>
+                            </ion-item>
+                            <ion-item lines="none">
+                                <ion-input type="password" placeholder="Password" formControlName="password" name="password"></ion-input>
+                            </ion-item>
+                            <ion-button type="submit" size="large" shape="round" expand="block" color="danger">Login</ion-button>
+                        </div>
                     </div>
-                    <div class="ion-no-padding app-form">
-                        <ion-item lines="none">
-                            <ion-input type="email" placeholder="Username/Email" [(ngModel)]="loginObj.email" name="email"></ion-input>
-                        </ion-item>
-                        <ion-item lines="none">
-                            <ion-input type="password" placeholder="Password" [(ngModel)]="loginObj.pass" name="pass"></ion-input>
-                        </ion-item>
-                        <ion-button type="submit" size="large" shape="round" expand="block" color="danger">Login</ion-button>
-                    </div>
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</form>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
 </ion-content>

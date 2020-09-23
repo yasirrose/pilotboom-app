@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  environmentName: 'Development Environment',
+  ionicEnvName: 'dev',
+  apiUrl: 'http://master.pilotboom.com/wp-json',
+  key: ",GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W'"
 };
 
 /*
