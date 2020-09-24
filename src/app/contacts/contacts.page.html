@@ -1,9 +1,467 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Contacts</ion-title>
-  </ion-toolbar>
+    <ion-toolbar mode="ios">
+        <ion-buttons slot="start">
+            <ion-back-button color="light" text="" mode="md"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Contacts</ion-title>
+        <ion-buttons slot="end">
+            <ion-menu-button color="light" text="">
+                <img src="./../../assets/icon/menu-icon.png" alt="">
+            </ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-segment scrollable="true" mode="md" [(ngModel)]="categories">
+        <ion-segment-button value="All">
+            <ion-label>All(4)</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Customer">
+            <ion-label>Customer(2)</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Lead">
+            <ion-label>Lead(1)</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Opportunity">
+            <ion-label>Opportunity(0)</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Subscriber">
+            <ion-label>Subscriber(1)</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Trash">
+            <ion-label>Trash(0)</ion-label>
+        </ion-segment-button>
+    </ion-segment>
 </ion-header>
+<ion-content class="ion-padding">
+    <div class="ion-flex inline-filters">
+        <ion-button fill="solid" shape="round" color="danger" routerLink="/addcontact">
+            <ion-icon name="add-outline"></ion-icon> Add New Contact</ion-button>
+        <ion-button color="light" fill="solid" shape="round">
+            <ion-icon name="search"></ion-icon>
+        </ion-button>
+    </div>
+    <div [ngSwitch]="categories">
+        <div *ngSwitchCase="'All'">
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
 
-<ion-content>
+                </ion-card-content>
+            </ion-card>
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <div *ngSwitchCase="'Customer'">
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <div *ngSwitchCase="'Lead'">
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <div *ngSwitchCase="'Opportunity'">
+            <ion-card mode="md">
+                <ion-card-content>
+                    <h2>No result found</h2>
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <div *ngSwitchCase="'Subscriber'">
+            <ion-card mode="md">
+                <ion-card-content>
+                    <div class="detail-wrap">
+                        <div class="top-right-btn">
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="pencil-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="eye-sharp"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="solid" shape="round" color="danger">
+                                <ion-icon name="trash-sharp"></ion-icon>
+                            </ion-button>
+                        </div>
+                        <div class="left-detail">
+                            <ul>
+                                <li>
+                                    <ion-icon name="person-circle-sharp"></ion-icon>
+                                    <span>Jhon Smith</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="mail"></ion-icon>
+                                    <span>tests@gmail.com</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="call-sharp"></ion-icon>
+                                    <span>+92300123456</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="person"></ion-icon>
+                                    <span>Lead</span>
+                                </li>
+                                <li>
+                                    <ion-icon name="business-sharp"></ion-icon>
+                                    <span>Adams</span>
+                                </li>
+                            </ul>
+                            <div class="action-group">
+                                <ion-select placeholder="Select">
+                                    <ion-select-option value="New">New Campaign</ion-select-option>
+                                    <ion-select-option value="Test">Test Campaign</ion-select-option>
+                                    <ion-select-option value="Old">Old Campaign</ion-select-option>
+                                </ion-select>
+                                <ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <div *ngSwitchCase="'Trash'">
+            <ion-card mode="md">
+                <ion-card-content>
+                    <h2>No result found</h2>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
 
 </ion-content>

@@ -36,8 +36,43 @@
         font-weight: 500;
     }
     ion-button,
+    ion-select,
     ion-input {
         font-size: 16px;
         text-transform: inherit;
+    }
+}
+
+ion-header {
+    ion-toolbar {
+        --background: #2e7cde url('/assets/img/title-bg.jpg');
+        --min-height: 60px;
+        ion-title {
+            color: var(--ion-color-light);
+        }
+        ion-menu-button {
+            img {
+                max-width: 28px;
+            }
+        }
+        ion-button {
+            font-size: 20px !important;
+            ion-icon {
+                &[name="exit-outline"] {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        ion-title {
+            text-transform: inherit;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+    }
+    ion-segment {
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        ion-segment-button {
+            text-transform: inherit;
+        }
     }
 }

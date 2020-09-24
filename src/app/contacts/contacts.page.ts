@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contacts.page.scss'],
 })
 export class ContactsPage implements OnInit {
-
+  categories= 'All';
   constructor() { }
 
   ngOnInit() {
