@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'schedules',
     loadChildren: () => import('./schedules/schedules.module').then( m => m.SchedulesPageModule)
   },
+  {
+    path: 'posts',
+    loadChildren: () => import('./posts/posts.module').then( m => m.PostsPageModule)
+  },
 
 
 ];

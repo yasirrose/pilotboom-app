@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   environmentName: 'Development Environment',
   ionicEnvName: 'dev',
-  apiUrl: 'http://master.pilotboom.com/wp-json',
+  baseUrl: 'http://localhost/pilotboom',
+  apiUrl: 'http://localhost/pilotboom/wp-json',
   key: ",GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W'"
 };
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -43,14 +43,14 @@ export class RestService {
 	}
 
 	getPrivatePosts() {
-		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/posts?_embed&status=private`).pipe(
+		// let headers = new HttpHeaders();
+		// headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		const headers = {
+			'Content-Type': 'application/json',
+			'Authorization': JWT_KEY
+		  }
+		return this.http.get(`${environment.apiUrl}/wp/v2/posts`,{headers: headers}).pipe(
 			map(data => {
-				for (let post of data) {
-					if (post['_embedded']['wp:featuredmedia']) {
-						post.media_url =
-							post['_embedded']['wp:featuredmedia'][0]['media_details'].sizes['medium'].source_url;
-					}
-				}
 				return data;
 			})
 		);
