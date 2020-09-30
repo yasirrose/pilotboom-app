@@ -43,6 +43,10 @@ const routes: Routes = [
     path: 'addcompany',
     loadChildren: () => import('./add-company/add-company.module').then( m => m.AddCompanyPageModule)
   },
+  {
+    path: 'viewcontacts',
+    loadChildren: () => import('./viewcontacts/viewcontacts.module').then( m => m.ViewcontactsPageModule)
+  },
 
 
 ];
