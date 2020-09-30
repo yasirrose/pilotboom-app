@@ -1,0 +1,147 @@
+ion-content {
+    --background: #eff6fe;
+    .inline-filters {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+        ion-button {
+            --border-radius: 50px;
+            box-shadow: none;
+            height: 44px;
+            --box-shadow: none;
+            --ion-color-primary: #1c0d2e;
+            font-weight: 300;
+            font-size: 14px;
+            &:first-child {
+                flex: auto;
+            }
+            &:last-child {
+                width: 44px;
+                height: 44px;
+                --padding-top: 0;
+                --padding-bottom: 0;
+                --padding-start: 0;
+                --padding-end: 0;
+                margin-left: 12px;
+                --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                --ion-color-light-contrast: var(--ion-color-danger);
+            }
+        }
+    }
+    ion-card {
+        border-radius: 0 6px 6px 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-left: 3px solid #aacaf3;
+        margin-bottom: 24px;
+        margin-left: 0;
+        margin-right: 0;
+        ion-card-content {
+            .profile-info{
+                display: flex;
+                @media(max-width: 374px){
+                    justify-content: space-between;
+                }
+                .image-hol{
+                    width: 30%;
+                    @media(max-width: 374px){
+                        width: 20%;
+                    }
+                }
+                .detail-hol{
+                    h2{
+                        color: #000;
+                        font-weight: 600;
+                        font-size: 20px;
+                        margin-bottom: 12px;
+                        @media(max-width: 374px){
+                            font-size: 17px;
+                            margin-bottom: 3px;
+                        }
+                    }
+                    span{
+                        display: flex;
+                        align-items: center;
+                        ion-icon{
+                            color: #000;
+                            font-size: 16px;
+                            margin-right: 6px;
+                        }
+                        a{
+                            word-break: break-all;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+            .basic-info{
+                .info{
+                    display: flex;
+                    padding-bottom: 8px;
+                    position: relative;
+                    @media(max-width: 374px){
+                        font-size: 13px;
+                    }
+                    label{
+                        width: 40%;
+                        display: flex;
+                        align-items: center;
+                        @media(max-width: 399px){
+                            width: 50%;
+                        }
+                        ion-icon{
+                            color: #2471d3;
+                            font-size: 16px;
+                            margin-right: 7px;
+                            flex: 0 0 20px;
+                        }
+                    }
+                }
+                .owner-info{
+                    display: flex;
+                    padding: 20px 0 0;
+                    position: relative;
+                    @media(max-width: 374px){
+                        font-size: 13px;
+                    }
+                    label{
+                        width: 40%;
+                        display: flex;
+                        align-items: center;
+                        @media(max-width: 399px){
+                            width: 50%;
+                        }
+                        ion-icon{
+                            color: #2471d3;
+                            font-size: 16px;
+                            margin-right: 7px;
+                            flex: 0 0 20px;
+                        }
+                    }
+                }
+                .profile-info{
+                    padding-top: 25px;
+                    @media(max-width: 374px){
+                        justify-content: flex-start;
+                    }
+                    .image-hol{
+                        width: 18%;
+                        img{
+                            max-width: 40px;
+                        }
+                    }
+                    .detail-hol{
+                        p{
+                            color: #2471d3;
+                        }
+                        a{
+                            color: #000;
+                            font-style: italic;
+                            text-decoration: none;
+                            white-space: wrap;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
