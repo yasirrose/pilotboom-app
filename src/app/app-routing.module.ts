@@ -70,18 +70,19 @@ const routes: Routes = [
 	{
 		path: 'contact-group-subs',
 		loadChildren: () => import('./contact-group-subs/contact-group-subs.module').then(m => m.ContactGroupSubsPageModule)
-	},  {
-    path: 'add-contact-group',
-    loadChildren: () => import('./add-contact-group/add-contact-group.module').then( m => m.AddContactGroupPageModule)
-  },
-  {
-    path: 'edit-contact-group',
-    loadChildren: () => import('./edit-contact-group/edit-contact-group.module').then( m => m.EditContactGroupPageModule)
-  },
-  {
-    path: 'subscribe',
-    loadChildren: () => import('./modal/subscribe/subscribe.module').then( m => m.SubscribePageModule)
-  },
+	},
+	{
+		path: 'add-contact-group',
+		loadChildren: () => import('./add-contact-group/add-contact-group.module').then(m => m.AddContactGroupPageModule)
+	},
+	{
+		path: 'edit-contact-group',
+		loadChildren: () => import('./edit-contact-group/edit-contact-group.module').then(m => m.EditContactGroupPageModule)
+	},
+	{
+		path: 'subscribe',
+		loadChildren: () => import('./modal/subscribe/subscribe.module').then(m => m.SubscribePageModule)
+	},
 
 ];
 

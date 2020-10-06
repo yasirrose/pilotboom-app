@@ -1,22 +1,80 @@
 <ion-header>
-	<ion-toolbar>
-		<ion-title>Activities</ion-title>
-	</ion-toolbar>
+    <ion-toolbar mode="ios">
+        <ion-buttons slot="start">
+            <ion-back-button color="light" text="" mode="md"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Activities</ion-title>
+        <ion-buttons slot="end">
+            <ion-menu-button color="light" text="">
+                <img src="./../../assets/icon/menu-icon.png" alt="">
+            </ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
-
-<ion-content>
-	<div class="container">
-		<div *ngFor="let activity of activities; index as i">
-			Activity # {{i+1}}
-			<div class="connect-box">
-				<div class="connect-img-box hoverClass">
-					<p class="white-bkg">Date: {{activity.date_time}}</p>
-					<p class="white-bkg">Content: {{activity.content}}</p>
-					<p class="white-bkg">Created By: {{activity.created_by.display_name}}</p>
-					<p class="white-bkg">Type: {{activity.type}}</p>
-				</div>
-			</div>
-			<br /><br />
-		</div>
-	</div>
+<ion-content class="ion-padding">
+    <div class="activities-sec">
+        <div class="activity-col">
+            <div class="activity-date">
+                <p>September, 2020</p>
+            </div>
+            <div class="activity-dis">
+                <div class="icon">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                </div>
+                <div class="discription">
+                    <div class="heading">
+                        <h3>You logged a call on August, 31 at 11:45 pm for
+                            test test</h3>
+                    </div>
+                    <div class="dis">
+                        <p>Excepteur sint occaecat cupidatat non proident,
+                            sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="activity-col">
+            <div class="activity-date">
+                <p>September, 2020</p>
+            </div>
+            <div class="activity-dis">
+                <div class="icon">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                </div>
+                <div class="discription">
+                    <div class="heading">
+                        <h3>You logged a call on August, 31 at 11:45 pm for
+                            test test</h3>
+                    </div>
+                    <div class="dis">
+                        <p>Excepteur sint occaecat cupidatat non proident,
+                            sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="activity-col">
+            <div class="activity-date">
+                <p>September, 2020</p>
+            </div>
+            <div class="activity-dis">
+                <div class="icon">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                </div>
+                <div class="discription">
+                    <div class="heading">
+                        <h3>You logged a call on August, 31 at 11:45 pm for
+                            test test</h3>
+                    </div>
+                    <div class="dis">
+                        <p>Excepteur sint occaecat cupidatat non proident,
+                            sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </ion-content>
