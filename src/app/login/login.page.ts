@@ -3,6 +3,7 @@ import { RestService } from '../services/rest.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { GlobalService } from '../services/global.service';
 
 @Component({
 	selector: 'app-login',
@@ -25,12 +26,13 @@ export class LoginPage implements OnInit {
 		private fb: FormBuilder,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
-		private router: Router
+		private router: Router,
+		private global: GlobalService
 	) {
 		this.user.subscribe(user => {
 			if (user) {
 				// this.loadPrivatePosts();
-				this.router.navigate(["/posts"]);
+				this.router.navigate(["/dashboard"]);
 			} else {
 				this.posts = [];
 			}
@@ -46,14 +48,14 @@ export class LoginPage implements OnInit {
 	}
 
 	login() {
-
-		console.log(this.userForm.value);
+		this.global.showLoading("bubbles", "Logging in...");
 		this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
 			res => {
-				console.log(res);
-			 },
+				this.global.closeLoading();
+			},
 			err => {
 				this.showError(err);
+				this.global.closeLoading();
 			}
 		);
 	}

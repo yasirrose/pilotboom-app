@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 })
 export class PostsPage implements OnInit {
 
-	// constructor() { }
 	user = this.api.getCurrentUser();
 	posts = [];
 
@@ -19,10 +18,10 @@ export class PostsPage implements OnInit {
 	) {
 		this.user.subscribe(user => {
 			if (user) {
-				this.loadPrivatePosts();
+				this.loadPosts();
 			} else {
+				this.posts = [];
 				this.router.navigate(["/login"]);
-				// this.posts = [];
 			}
 		});
 	}
@@ -30,14 +29,13 @@ export class PostsPage implements OnInit {
 	ngOnInit() {
 	}
 
-	loadPrivatePosts() {
-		this.api.getPrivatePosts().subscribe(res => {
+	loadPosts() {
+		this.api.getPosts().subscribe(res => {
 			this.posts = res;
-			console.log(this.posts);
 		});
 	}
 
-	userLogout(){
+	userLogout() {
 		this.api.logout();
 	}
 

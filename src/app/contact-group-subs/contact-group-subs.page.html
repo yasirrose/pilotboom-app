@@ -1,0 +1,65 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Subscribed Contacts</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+	<div class="ion-flex inline-filters">
+		<ion-button fill="solid" shape="round" color="danger" (click)="presentModal()">
+			<ion-icon name="add-outline"></ion-icon> Assign a Contact
+		</ion-button>
+	</div>
+	<div *ngIf="subsContactData.length > 0; else no_result">
+		<ion-card mode="md" *ngFor="let contact of subsContactData; index as i">
+			<ion-card-content>
+				<div class="detail-wrap">
+					<div class="top-right-btn">
+						<ion-button fill="solid" shape="round" color="danger"
+							(click)="unsubscribe($event, contact.user_id)">
+							<ion-icon name="trash-sharp"></ion-icon>
+						</ion-button>
+					</div>
+					<div class="left-detail">
+						<ul>
+							<li>
+								<ion-icon name="person-circle-sharp"></ion-icon>
+								<span>Name: {{contact.user_data.first_name}} {{contact.user_data.last_name}}</span>
+							</li>
+							<li>
+								<ion-icon name="person"></ion-icon>
+								<span>Email: {{contact.user_data.email}}</span>
+							</li>
+							<li>
+								<ion-icon name="person"></ion-icon>
+								<span>Contact Type: {{contact.user_data.types[0] | titlecase}}</span>
+							</li>
+							<li>
+								<ion-icon name="person"></ion-icon>
+								<span>Group: {{contact.data[0].name}}</span>
+							</li>
+							<li>
+								<ion-icon name="person"></ion-icon>
+								<span>Status: {{contact.data[0].status=='subscribe'?'Subscribed':'Unsubscribed'}}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</ion-card-content>
+		</ion-card>
+	</div>
+	<ng-template #no_result>
+		<ion-card mode="md">
+			<ion-card-content>
+				<h2>No result found</h2>
+			</ion-card-content>
+		</ion-card>
+	</ng-template>
+</ion-content>

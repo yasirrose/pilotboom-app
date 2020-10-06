@@ -1,0 +1,28 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-title>Assign Contacts</ion-title>
+		<ion-buttons slot="end" (click)="closeModal()">
+			Close
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<form [formGroup]="subscribeForm" (ngSubmit)="subscribeContact()">
+		<div class="upload-image">
+			<div class="uploaded-img">
+				<img src="./../../assets/img/upload-img.png" alt="" />
+			</div>
+		</div>
+		<div class="ion-no-padding app-form">
+			<ion-item lines="none">
+				<ion-select placeholder="Select Contacts*" formControlName="contact_ids" name="contact_ids[]" multiple="true">
+					<ion-select-option *ngFor="let user of allContacts; index as i" value="{{user.id}}">
+						{{user.first_name}} {{user.last_name}}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update</ion-button>
+		</div>
+	</form>
+</ion-content>

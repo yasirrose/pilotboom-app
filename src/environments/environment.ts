@@ -6,11 +6,13 @@ export const environment = {
   production: false,
   environmentName: 'Development Environment',
   ionicEnvName: 'dev',
-  baseUrl: 'http://localhost/pilotboom',
+  baseUrl: 'https://demo.pilotboom.com',
   apiUrl: 'http://localhost/pilotboom/wp-json',
-  key: ",GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W'"
+  key: ",GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W'",
+  showloader: false
 };
-
+// baseUrl: 'http://localhost/pilotboom',
+// baseUrl: 'https://demo.pilotboom.com',
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

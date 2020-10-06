@@ -19,7 +19,7 @@ ion-content {
     --background: url('/assets/img/app-bg.jpg') top left / 100% auto no-repeat;
     ion-item {
         margin-bottom: 20px;
-        // --background: transparent;
+        --background: #fff;
         border: 1px solid $colorgray;
         color: $textColor;
         border-radius: 50px;

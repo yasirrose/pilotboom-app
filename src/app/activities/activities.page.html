@@ -1,9 +1,22 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>activities</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Activities</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+	<div class="container">
+		<div *ngFor="let activity of activities; index as i">
+			Activity # {{i+1}}
+			<div class="connect-box">
+				<div class="connect-img-box hoverClass">
+					<p class="white-bkg">Date: {{activity.date_time}}</p>
+					<p class="white-bkg">Content: {{activity.content}}</p>
+					<p class="white-bkg">Created By: {{activity.created_by.display_name}}</p>
+					<p class="white-bkg">Type: {{activity.type}}</p>
+				</div>
+			</div>
+			<br /><br />
+		</div>
+	</div>
 </ion-content>

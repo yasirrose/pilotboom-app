@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar mode="ios">
         <ion-buttons slot="start">
-            <ion-button color="light" routerLink="/login">
+            <ion-button color="light" (click)="userLogout()">
                 <ion-icon name="exit-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -19,7 +19,7 @@
             <ion-row class="ion-align-items-center">
                 <ion-col size="4" class="ion-text-center">
                     <div class="card-status">
-                        <ion-card-title>4</ion-card-title>
+                        <ion-card-title>{{contact}}</ion-card-title>
                         <p>Contacts</p>
                     </div>
                 </ion-col>
@@ -27,19 +27,19 @@
                     <ul>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/contacts">
-                                <ion-icon name="people"></ion-icon> 2 Customers</ion-button>
+                                <ion-icon name="people"></ion-icon> {{contact_customer}} Customers</ion-button>
                         </li>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/contacts">
-                                <ion-icon name="person"></ion-icon> 1 Lead</ion-button>
+                                <ion-icon name="person"></ion-icon> {{contact_lead}} Lead</ion-button>
                         </li>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/contacts">
-                                <ion-icon name="bulb"></ion-icon> 0 Opportunities</ion-button>
+                                <ion-icon name="bulb"></ion-icon> {{contact_opportunity}} Opportunities</ion-button>
                         </li>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/contacts">
-                                <ion-icon name="bookmarks"></ion-icon> 1 Subscriber</ion-button>
+                                <ion-icon name="bookmarks"></ion-icon> {{contact_subscriber}} Subscriber</ion-button>
                         </li>
                     </ul>
                 </ion-col>
@@ -54,36 +54,35 @@
             <ion-row class="ion-align-items-center">
                 <ion-col size="4" class="ion-text-center">
                     <div class="card-status">
-                        <ion-card-title>4</ion-card-title>
-                        <p>Contacts</p>
+                        <ion-card-title>{{company}}</ion-card-title>
+                        <p>Company</p>
                     </div>
                 </ion-col>
                 <ion-col size="8" class="ion-padding-start">
                     <ul>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/companies">
-                                <ion-icon name="people"></ion-icon> 2 Customers</ion-button>
+                                <ion-icon name="people"></ion-icon> {{company_customer}} Customers</ion-button>
                         </li>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/companies">
-                                <ion-icon name="person"></ion-icon> 1 Lead</ion-button>
+                                <ion-icon name="person"></ion-icon> {{company_lead}} Lead</ion-button>
                         </li>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/companies">
-                                <ion-icon name="bulb"></ion-icon> 0 Opportunities</ion-button>
+                                <ion-icon name="bulb"></ion-icon> {{company_opportunity}} Opportunities</ion-button>
                         </li>
                         <li>
                             <ion-button color="primary" fill="clear" routerLink="/companies">
-                                <ion-icon name="bookmarks"></ion-icon> 1 Subscriber</ion-button>
+                                <ion-icon name="bookmarks"></ion-icon> {{company_subscriber}} Subscriber</ion-button>
                         </li>
                     </ul>
                 </ion-col>
                 <ion-col size="12">
+                    <!-- <ion-button color="light" fill="solid" shape="round" expand="full" color="danger" class="ion-no-margin" routerLink="/companies">View All Companies</ion-button> -->
                     <ion-button color="light" fill="solid" shape="round" expand="full" color="danger" class="ion-no-margin" routerLink="/companies">View All Companies</ion-button>
                 </ion-col>
             </ion-row>
         </ion-card-content>
     </ion-card>
-
-
 </ion-content>

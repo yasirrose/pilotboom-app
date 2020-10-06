@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar mode="ios">
+    <ion-buttons slot="start">
+      <ion-back-button color="light" text="" mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Contact Group</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button color="light" text="">
+        <img src="./../../assets/icon/menu-icon.png" alt="" />
+      </ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="editContactGrpForm" (ngSubmit)="updateContactGrp()">
+    <div class="upload-image">
+      <div class="uploaded-img">
+        <img src="./../../assets/img/upload-img.png" alt="" />
+      </div>
+      <ion-button shape="round" color="danger">
+        <ion-icon name="cloud-upload-sharp"></ion-icon>
+      </ion-button>
+    </div>
+    <div class="ion-no-padding app-form">
+      <ion-item lines="none">
+        <ion-input
+          type="text"
+          placeholder="Name *"
+          formControlName="name"
+          name="name"
+        ></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-textarea
+          placeholder="Description"
+          formControlName="description"
+          name="description"
+        ></ion-textarea>
+	  </ion-item>
+
+	  <!-- <ion-list radio-group >
+		<ion-item>
+		  <ion-label>Yes</ion-label>
+		  <ion-radio formControlName="group_private" name="group_private"></ion-radio>
+		</ion-item>
+		<ion-item>
+		  <ion-label>No</ion-label>
+		  <ion-radio formControlName="group_private" name="group_private"></ion-radio>
+		</ion-item>
+	  </ion-list> -->
+	  
+      <ion-button
+        type="submit"
+        size="large"
+        shape="round"
+        expand="block"
+        color="danger"
+        >Update</ion-button
+      >
+    </div>
+  </form>
+</ion-content>

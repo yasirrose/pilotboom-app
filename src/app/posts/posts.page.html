@@ -1,26 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title style="float: left;">Posts</ion-title>
-    <ion-button (click)="userLogout()">
-      <ion-label>Logout</ion-label>
-    </ion-button>
+    <ion-title style="float: left">Posts</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <div class="container">
     <div *ngFor="let post of posts; index as i">
       Post # {{i+1}}
-        <div class="connect-box">
-          <div class="connect-img-box hoverClass">
+      <div class="connect-box">
+        <div class="connect-img-box hoverClass">
           <p class="white-bkg">{{post.title.rendered}}</p>
-          <div class="white-bkg"[innerHTML]="post.content.rendered"></div>
+          <div class="white-bkg" [innerHTML]="post.content.rendered"></div>
           <p class="white-bkg">{{post.date}}</p>
-          </div>
         </div>
-        <br><br>
+      </div>
+      <br /><br />
     </div>
   </div>
-
 </ion-content>

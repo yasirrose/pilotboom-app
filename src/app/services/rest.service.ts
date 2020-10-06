@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
 
-const JWT_KEY = ',GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W';
+const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
 
 @Injectable({
 	providedIn: 'root'
@@ -42,14 +42,20 @@ export class RestService {
 		return this.http.post(`${environment.apiUrl}/wp/v2/users/lostpassword`, { user_login: usernameOrEmail });
 	}
 
-	getPrivatePosts() {
-		// let headers = new HttpHeaders();
-		// headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		const headers = {
-			'Content-Type': 'application/json',
-			'Authorization': JWT_KEY
-		  }
-		return this.http.get(`${environment.apiUrl}/wp/v2/posts`,{headers: headers}).pipe(
+	getPosts() {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/posts`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	getUsers() {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/users`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -62,6 +68,177 @@ export class RestService {
 
 	getUserValue() {
 		return this.user.getValue();
+	}
+
+	getCrmContacts(type = 'contact', status = 'all', per_page = 20, page = 1, search = '') {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	getContactDetail(id) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/${id}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	addNewContact(contactData) {
+		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts`, contactData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	updateContact(contactData, id) {
+		return this.http.put(`${environment.apiUrl}/erp/v1/crm/contacts/${id}`, contactData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	deleteContact(id, hard = 0) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/${id}`).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	addNewCompany(companyData) {
+		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/company`, companyData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	updateCompany(companyData, id) {
+		return this.http.put(`${environment.apiUrl}/erp/v1/crm/contacts/company/${id}`, companyData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	deleteCompany(id, hard = 0) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/company/${id}`).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	//Contact Groups
+
+	getCrmContactGroups(type = 'contact', status = 'all', per_page = 20, page = 1, search = '') {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	getContactGroupDetail(contactGrpId) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${contactGrpId}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	addNewContactGroup(contactData) {
+		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/groups`, contactData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	updateContactGroup(contactData, id) {
+		return this.http.put(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${id}`, contactData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	deleteContactGroup(id, hard = 0) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${id}`).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	getContactGrpSubs(contactGrpId) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${contactGrpId}/subscribes`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	subscribeContact(group_id, contact_ids) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${group_id}/subscribes`, {contact_ids: contact_ids}).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	unsubContact(group_id, contact_id) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${group_id}/subscribes/${contact_id}`).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	//Activities
+	getActivities(type = 'contact', status = 'all', per_page = 20, page = 1, search = '') {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	myFunc() {
+		let headers = new HttpHeaders();
+		// headers = headers.set('');
+		return this.http.get<any[]>(`http://localhost/pilotboom/wp-json/wp/v2/posts`).pipe(
+			map(data => {
+				return data;
+			})
+		);
 	}
 
 	logout() {
