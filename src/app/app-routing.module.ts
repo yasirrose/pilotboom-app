@@ -83,6 +83,18 @@ const routes: Routes = [
 		path: 'subscribe',
 		loadChildren: () => import('./modal/subscribe/subscribe.module').then(m => m.SubscribePageModule)
 	},
+	{
+		path: 'contact-activities',
+		loadChildren: () => import('./contact-activities/contact-activities.module').then(m => m.ContactActivitiesPageModule)
+	},
+	{
+		path: 'add-activity',
+		loadChildren: () => import('./add-activity/add-activity.module').then(m => m.AddActivityPageModule)
+	},
+	{
+		path: 'edit-activity',
+		loadChildren: () => import('./edit-activity/edit-activity.module').then(m => m.EditActivityPageModule)
+	},
 
 ];
 

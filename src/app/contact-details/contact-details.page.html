@@ -123,11 +123,6 @@
 					<span>: &nbsp;&nbsp; {{contactData.life_stage}}</span>
 				</div>
 			</div>
-		</ion-card-content>
-	</ion-card>
-
-	<ion-card mode="md">
-		<ion-card-content>
 			<div class="basic-info">
 				<div class="owner-info">
 					<label for="#">
@@ -148,25 +143,8 @@
 		</ion-card-content>
 	</ion-card>
 
-	<ion-item lines="none" class="cus-checkbox">
-		<ion-checkbox></ion-checkbox>
-		<ion-label>Show Activity</ion-label>
-	</ion-item>
-	<div class="other-info" [ngClass]="{'expanded' : toggleAdvance === true }">
-		<h4>Others Info</h4>
-		<ion-item lines="none" class="time-input">
-			<ion-label>Date of Birth</ion-label>
-			<ion-input type="date" placeholder="Date of Birth" name="date"></ion-input>
-		</ion-item>
-		<ion-item lines="none">
-			<ion-input type="number" placeholder="Age (years)" name="number"></ion-input>
-		</ion-item>
-		<ion-item lines="none">
-			<ion-input type="tel" placeholder="Mobile" name="tel"></ion-input>
-		</ion-item>
-		<ion-item lines="none">
-			<ion-input type="text" placeholder="Website" name="Website"></ion-input>
-		</ion-item>
+	<div class="ion-flex inline-filters">
+		<ion-button fill="solid" shape="round" color="danger" (click)="showActivity()">Show Activity</ion-button>
 	</div>
 
 </ion-content>

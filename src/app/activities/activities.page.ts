@@ -112,5 +112,4 @@ export class ActivitiesPage implements OnInit {
 		});
 		await alert.present();
 	}
-
 }

@@ -1,9 +1,21 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>schedules</ion-title>
+        <ion-title style="float: left">Schedules</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <div class="container">
+        <div *ngFor="let schedule of schedules; index as i">
+            Schedule # {{i+1}}
+            <div class="connect-box">
+                <div class="connect-img-box hoverClass">
+                    <p class="white-bkg">Type: {{schedule.type}}</p>
+                    <div class="white-bkg" [innerHTML]="'Content: '+ schedule.content"></div>
+                    <p class="white-bkg">Date: {{schedule.date_time}}</p>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+    </div>
 </ion-content>

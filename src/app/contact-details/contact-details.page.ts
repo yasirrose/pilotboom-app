@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { GlobalService } from 'src/app/services/global.service';
 
@@ -13,6 +13,9 @@ import { GlobalService } from 'src/app/services/global.service';
 export class ContactDetailsPage implements OnInit {
 	user = this.api.getCurrentUser();
 	contactData = [];
+	contact_id: any;
+	openActSection = false;
+	activities: any
 	constructor(
 		private api: RestService,
 		private global: GlobalService,
@@ -26,7 +29,8 @@ export class ContactDetailsPage implements OnInit {
 				this.route.queryParams.subscribe(params => {
 					this.global.showLoading("bubbles", "Please wait...");
 					if (params && params.contactId) {
-						this.getContact(params.contactId);
+						this.contact_id = params.contactId;
+						this.getContact();
 					}
 				})
 			} else {
@@ -39,10 +43,17 @@ export class ContactDetailsPage implements OnInit {
 	ngOnInit() {
 	}
 
-	getContact(id) {
-		this.api.getContactDetail(id).subscribe(res => {
+	getContact() {
+		this.api.getContactDetail(this.contact_id).subscribe(res => {
 			this.contactData = res;
 			this.global.closeLoading();
 		});
+	}
+
+	showActivity() {
+		let navigationExtras: NavigationExtras = {
+			queryParams: this.contactData
+		}
+		this.router.navigate(["/contact-activities"], navigationExtras);
 	}
 }

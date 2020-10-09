@@ -16,7 +16,8 @@
 		</div>
 		<div class="ion-no-padding app-form">
 			<ion-item lines="none">
-				<ion-select placeholder="Select Contacts*" formControlName="contact_ids" name="contact_ids[]" multiple="true">
+				<ion-select placeholder="Select Contacts*" formControlName="contact_ids" name="contact_ids[]"
+					multiple="true">
 					<ion-select-option *ngFor="let user of allContacts; index as i" value="{{user.id}}">
 						{{user.first_name}} {{user.last_name}}
 					</ion-select-option>

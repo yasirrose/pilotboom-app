@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+// import { FormatActivitiesPipe } from './pipes/format-activities.pipe';
 
 @NgModule({
   declarations: [AppComponent],

@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ContactDetailsPageRoutingModule } from './contact-details-routing.module';
+import { ContactActivitiesPageRoutingModule } from './contact-activities-routing.module';
 
-import { ContactDetailsPage } from './contact-details.page';
+import { ContactActivitiesPage } from './contact-activities.page';
 import { FormatActivitiesPipe } from '../pipes/format-activities.pipe';
 
 @NgModule({
@@ -14,8 +14,8 @@ import { FormatActivitiesPipe } from '../pipes/format-activities.pipe';
     CommonModule,
     FormsModule,
     IonicModule,
-    ContactDetailsPageRoutingModule
+    ContactActivitiesPageRoutingModule
   ],
-  declarations: [ContactDetailsPage, FormatActivitiesPipe]
+  declarations: [ContactActivitiesPage, FormatActivitiesPipe]
 })
-export class ContactDetailsPageModule { }
+export class ContactActivitiesPageModule {}

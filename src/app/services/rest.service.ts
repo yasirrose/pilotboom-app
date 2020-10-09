@@ -203,7 +203,7 @@ export class RestService {
 	subscribeContact(group_id, contact_ids) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${group_id}/subscribes`, {contact_ids: contact_ids}).pipe(
+		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${group_id}/subscribes`, { contact_ids: contact_ids }).pipe(
 			map(data => {
 				return data;
 			})
@@ -221,10 +221,58 @@ export class RestService {
 	}
 
 	//Activities
-	getActivities(type = 'contact', status = 'all', per_page = 20, page = 1, search = '') {
+	getActivities(customer_id = '', type = 'log%7Cnote%7Cemail%7Cschedule%7Ctask', per_page = 40, page = 1) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities?type=${type}&per_page=${per_page}&page=${page}&customer_id=${customer_id}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	addActivity(activityData) {
+		return this.http.post(`${environment.apiUrl}/erp/v1/crm/activities`, activityData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	getActivityDetail(id) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities/${id}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	updateActivity(id, formData) {
+		return this.http.put(`${environment.apiUrl}/erp/v1/crm/activities/${id}`, formData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	deleteActivity(id) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/activities/${id}`).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	//Schedules
+
+	getSchedules(per_page = 40, page = 1) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/schedules?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
