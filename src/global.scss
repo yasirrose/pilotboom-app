@@ -76,16 +76,17 @@ ion-header {
         }
     }
 }
+
 .calendar-page{
     padding-top: 10px;
     .calendar-sec {
         padding: 0 10px;
         table{
             tr{
-                th, td{
-                    font-size: 14px;
-                    padding: 4px 3px !important;
-                }
+                // th, td{
+                //     font-size: 14px;
+                //     padding: 4px 3px !important;
+                // }
                 td.monthview-selected.monthview-current {
                     background: #386dcf;
                 }

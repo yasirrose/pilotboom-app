@@ -2,6 +2,8 @@ import { AlertController } from '@ionic/angular';
 import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { CalendarComponent } from 'ionic2-calendar';
+import { RestService } from '../services/rest.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-schedules',
@@ -29,7 +31,24 @@ export class SchedulesPage implements OnInit {
 
 	@ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-	constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) { }
+	user = this.api.getCurrentUser();
+	schedules = [];
+
+	constructor(
+		private alertCtrl: AlertController, @Inject(LOCALE_ID)
+		private locale: string,
+		private api: RestService,
+		private router: Router
+	) {
+		this.user.subscribe(user => {
+			if (user) {
+				this.getSchedules();
+			} else {
+				this.schedules = [];
+				this.router.navigate(["/login"]);
+			}
+		});
+	}
 
 	ngOnInit() {
 		this.resetEvent();
@@ -113,6 +132,12 @@ export class SchedulesPage implements OnInit {
 		this.event.startTime = selected.toISOString();
 		selected.setHours(selected.getHours() + 1);
 		this.event.endTime = (selected.toISOString());
+	}
+
+	getSchedules() {
+		this.api.getSchedules().subscribe(res => {
+			this.schedules = res;
+		});
 	}
 }
 
