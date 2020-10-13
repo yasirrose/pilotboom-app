@@ -34,6 +34,12 @@ export class RestService {
 		);
 	}
 
+	logout() {
+		this.storage.remove(JWT_KEY).then(() => {
+			this.user.next(null);
+		});
+	}
+
 	signUp(username, email, password) {
 		return this.http.post(`${environment.apiUrl}/wp/v2/users/register`, { username, email, password });
 	}
@@ -269,29 +275,13 @@ export class RestService {
 
 	//Schedules
 
-	getSchedules(per_page = 40, page = 1) {
+	getSchedules(tab = 'own', per_page = 40, page = 1) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/schedules?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/schedules?tab=${tab}&per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
 		);
-	}
-
-	myFunc() {
-		let headers = new HttpHeaders();
-		// headers = headers.set('');
-		return this.http.get<any[]>(`http://localhost/pilotboom/wp-json/wp/v2/posts`).pipe(
-			map(data => {
-				return data;
-			})
-		);
-	}
-
-	logout() {
-		this.storage.remove(JWT_KEY).then(() => {
-			this.user.next(null);
-		});
 	}
 }

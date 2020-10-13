@@ -76,32 +76,3 @@ ion-header {
         }
     }
 }
-
-.calendar-page{
-    padding-top: 10px;
-    .calendar-sec {
-        padding: 0 10px;
-        table{
-            tr{
-                // th, td{
-                //     font-size: 14px;
-                //     padding: 4px 3px !important;
-                // }
-                td.monthview-selected.monthview-current {
-                    background: #386dcf;
-                }
-                td.monthview-selected {
-                    background: #386dcf !important;
-                }
-                td.monthview-primary-with-event {
-                    background: #62c2fe !important;
-                    color: #000 !important;
-                }
-            }
-        }
-    }
-}
-
-.calendar-page ion-item.item.md.ion-focusable.hydrated.item-interactive.item-input.item-has-placeholder.ion-pristine.ion-valid.ion-touched.item-has-focus {
-    --highlight-background:  #376cce !important;
-}

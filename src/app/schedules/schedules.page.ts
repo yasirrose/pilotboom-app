@@ -1,9 +1,10 @@
-import { AlertController } from '@ionic/angular';
-import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
-import { formatDate } from '@angular/common';
 import { CalendarComponent } from 'ionic2-calendar';
+import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+import { formatDate } from '@angular/common';
 import { RestService } from '../services/rest.service';
 import { Router } from '@angular/router';
+import { GlobalService } from '../services/global.service';
 
 @Component({
 	selector: 'app-schedules',
@@ -33,15 +34,18 @@ export class SchedulesPage implements OnInit {
 
 	user = this.api.getCurrentUser();
 	schedules = [];
+	tab = 'own';
 
 	constructor(
 		private alertCtrl: AlertController, @Inject(LOCALE_ID)
 		private locale: string,
 		private api: RestService,
-		private router: Router
+		private router: Router,
+		private global: GlobalService
 	) {
 		this.user.subscribe(user => {
 			if (user) {
+				this.global.showLoading("bubbles", "Loading...");
 				this.getSchedules();
 			} else {
 				this.schedules = [];
@@ -134,26 +138,31 @@ export class SchedulesPage implements OnInit {
 		this.event.endTime = (selected.toISOString());
 	}
 
+	changeTab() {
+		this.global.showLoading("bubbles", "Loading...");
+		this.getSchedules();
+	}
+
 	getSchedules() {
-		this.api.getSchedules().subscribe(res => {
+		this.api.getSchedules(this.tab).subscribe(res => {
 			this.schedules = res;
+			this.global.closeLoading();
 			this.populateEvents();
 		});
 	}
 
 	populateEvents() {
-		let i = 0;
+		this.eventSource = [];
 		for (const schedule of this.schedules) {
 			this.eventSource.push({
 				title: schedule.title,
 				startTime: new Date(schedule.schedule.start_date),
 				endTime: new Date(schedule.schedule.end_date),
-				allDay: false
+				allDay: false,
+				desc: ''
 			});
 		}
-		console.log(this.eventSource);
 		this.myCal.loadEvents();
 		// this.resetEvent();
-		// console.log(i);
 	}
 }
