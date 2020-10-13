@@ -137,8 +137,23 @@ export class SchedulesPage implements OnInit {
 	getSchedules() {
 		this.api.getSchedules().subscribe(res => {
 			this.schedules = res;
+			this.populateEvents();
 		});
 	}
+
+	populateEvents() {
+		let i = 0;
+		for (const schedule of this.schedules) {
+			this.eventSource.push({
+				title: schedule.title,
+				startTime: new Date(schedule.schedule.start_date),
+				endTime: new Date(schedule.schedule.end_date),
+				allDay: false
+			});
+		}
+		console.log(this.eventSource);
+		this.myCal.loadEvents();
+		// this.resetEvent();
+		// console.log(i);
+	}
 }
-
-

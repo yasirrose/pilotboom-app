@@ -6,10 +6,18 @@
 		<ion-title>Schedules</ion-title>
 		<ion-buttons slot="end">
 			<ion-menu-button color="light" text="">
-				<img src="./../../assets/icon/menu-icon.png" alt="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
 			</ion-menu-button>
 		</ion-buttons>
 	</ion-toolbar>
+	<!-- <ion-segment scrollable="false" mode="md" [(ngModel)]="tab">
+		<ion-segment-button value="own">
+			<ion-label>My Schedules</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="all">
+			<ion-label>All Schedules</ion-label>
+		</ion-segment-button>
+	</ion-segment> -->
 </ion-header>
 <ion-content>
 	<div class="calendar-page">
@@ -58,16 +66,19 @@
 				<ion-button expand="block" [color]="calendar.mode == 'day' ? 'primary' : 'secondary'"
 					(click)="changeMode('day')">Day</ion-button>
 			</ion-col>
-
+		</ion-row>
+		<ion-row class="second-row">
 			<!-- Move back one screen of the slides -->
-			<ion-col size="6" text-left>
+			<ion-col size="4" text-left>
 				<ion-button fill="clear" (click)="back()">
 					<ion-icon name="arrow-back" slot="icon-only"></ion-icon>
 				</ion-button>
 			</ion-col>
 
+			<ion-col size="6" text-left> {{viewTitle}} </ion-col>
+
 			<!-- Move forward one screen of the slides -->
-			<ion-col size="6" text-right class="right-arrow">
+			<ion-col size="2" text-right class="right-arrow">
 				<ion-button fill="clear" (click)="next()">
 					<ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
 				</ion-button>
@@ -76,7 +87,7 @@
 		<div class="calendar-sec">
 			<calendar [eventSource]="eventSource" [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate"
 				(onEventSelected)="onEventSelected($event)" (onTitleChanged)="onViewTitleChanged($event)"
-				(onTimeSelected)="onTimeSelected($event)" startHour="6" endHour="20" step="30" startingDayWeek="1">
+				(onTimeSelected)="onTimeSelected($event)" startHour="1" endHour="23" step="30" startingDayWeek="1">
 			</calendar>
 		</div>
 	</div>

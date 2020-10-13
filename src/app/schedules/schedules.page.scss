@@ -1,3 +1,10 @@
 ion-col.right-arrow {
-    text-align: right;
+  text-align: right;
+}
+
+ion-row.second-row {
+  margin-top: 15px;
+  ion-col:nth-child(2) {
+    margin-top: 9px;
+  }
 }
