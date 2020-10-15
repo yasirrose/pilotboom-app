@@ -16,6 +16,7 @@ export class EditContactGroupPage implements OnInit {
 	user = this.api.getCurrentUser();
 	toggleAdvance = false;
 	id: any;
+	validation_messages = this.global.getValidationMessages();
 
 	constructor(
 		private api: RestService,
@@ -54,7 +55,7 @@ export class EditContactGroupPage implements OnInit {
 
 	getContactGrpDetail() {
 		this.api.getContactGroupDetail(this.id).subscribe(res => {
-			this.editContactGrpForm = this.fb.group(res);
+			this.editContactGrpForm.patchValue(res);
 			this.global.closeLoading();
 		});
 	}

@@ -3,7 +3,7 @@
 		<ion-buttons slot="start">
 			<ion-back-button color="light" text="" mode="md"></ion-back-button>
 		</ion-buttons>
-		<ion-title>Edit Contact</ion-title>
+		<ion-title>Edit Company</ion-title>
 		<ion-buttons slot="end">
 			<ion-menu-button color="light" text="">
 				<img src="./../../assets/icon/menu-icon.png" alt="" />
@@ -18,35 +18,83 @@
 			<div class="uploaded-img">
 				<img src="./../../assets/img/upload-img.png" alt="" />
 			</div>
-			<ion-button shape="round" color="danger">
+			<!-- <ion-button shape="round" color="danger">
 				<ion-icon name="cloud-upload-sharp"></ion-icon>
-			</ion-button>
+			</ion-button> -->
 		</div>
 		<div class="ion-no-padding app-form">
-			<ion-item lines="none">
-				<ion-input type="text" placeholder="Company Name" formControlName="company" name="company"></ion-input>
-			</ion-item>
-			<ion-item lines="none">
-				<ion-input type="email" placeholder="Email" formControlName="email" name="email"></ion-input>
-			</ion-item>
-			<ion-item lines="none">
-				<ion-input type="tel" placeholder="Phone Number" formControlName="phone" name="phone"></ion-input>
-			</ion-item>
-			<ion-item lines="none">
-				<ion-select placeholder="Life Stage *" formControlName="life_stage" name="life_stage">
-					<ion-select-option value="customer">Customer</ion-select-option>
-					<ion-select-option value="lead">Lead</ion-select-option>
-					<ion-select-option value="opportunity">Opportunity</ion-select-option>
-					<ion-select-option value="subscriber">Subscriber</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-item lines="none">
-				<ion-select placeholder="Contact Owner *" formControlName="user_id" name="user_id">
-					<ion-select-option *ngFor="let user of allUsers; index as i" value="{{user.id}}">{{user.name}}
-					</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update</ion-button>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Company Name *" formControlName="company" name="company">
+					</ion-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.company">
+						<div class="error-message"
+							*ngIf="editCompanyForm.get('company').hasError(validation.type) && (editCompanyForm.get('company').dirty || editCompanyForm.get('company').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="email" placeholder="Email *" formControlName="email" name="email"></ion-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.email">
+						<div class="error-message"
+							*ngIf="editCompanyForm.get('email').hasError(validation.type) && (editCompanyForm.get('email').dirty || editCompanyForm.get('email').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="tel" placeholder="Phone Number" formControlName="phone" name="phone"></ion-input>
+				</ion-item>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="Life Stage *" formControlName="life_stage" name="life_stage">
+						<ion-select-option value="customer">Customer</ion-select-option>
+						<ion-select-option value="lead">Lead</ion-select-option>
+						<ion-select-option value="opportunity">Opportunity</ion-select-option>
+						<ion-select-option value="subscriber">Subscriber</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.life_stage">
+						<div class="error-message"
+							*ngIf="editCompanyForm.get('life_stage').hasError(validation.type) && (editCompanyForm.get('life_stage').dirty || editCompanyForm.get('life_stage').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="Contact Owner *" formControlName="owner" name="owner">
+						<ion-select-option *ngFor="let user of allUsers; index as i" value="{{user.id}}">{{user.name}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.owner">
+						<div class="error-message"
+							*ngIf="editCompanyForm.get('owner').hasError(validation.type) && (editCompanyForm.get('owner').dirty || editCompanyForm.get('owner').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+				[disabled]="!editCompanyForm.valid">Update</ion-button>
 		</div>
 	</form>
 </ion-content>

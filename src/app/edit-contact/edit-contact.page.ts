@@ -17,6 +17,8 @@ export class EditContactPage implements OnInit {
 	id: any;
 	allUsers = [];
 	toggleAdvance = false;
+	validation_messages = this.global.getValidationMessages();
+
 	constructor(
 		private api: RestService,
 		private global: GlobalService,
@@ -47,9 +49,15 @@ export class EditContactPage implements OnInit {
 		this.editContactForm = this.fb.group({
 			type: "contact",
 			first_name: ['', Validators.required],
-			last_name: ['', Validators.required],
-			email: '',
-			phone: ['', Validators.required],
+			last_name: '',
+			email: [
+				'',
+				Validators.compose([
+					Validators.required,
+					Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+				])
+			],
+			phone: '',
 			life_stage: ['', Validators.required],
 			owner: ['', Validators.required],
 			company: '',
@@ -70,8 +78,10 @@ export class EditContactPage implements OnInit {
 	}
 
 	getContactDetail() {
-		this.api.getContactDetail(this.id).subscribe(res => {
-			this.editContactForm = this.fb.group(res);
+		this.api.getContactDetail(this.id).subscribe(response => {
+			let res: any = response;
+			res.owner = res.owner['ID'].toString();
+			this.editContactForm.patchValue(res);
 		});
 	}
 

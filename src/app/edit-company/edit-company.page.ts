@@ -16,7 +16,8 @@ export class EditCompanyPage implements OnInit {
 	user = this.api.getCurrentUser();
 	id: any;
 	allUsers = [];
-	toggleAdvance = false;
+	validation_messages = this.global.getValidationMessages();
+
 	constructor(
 		private api: RestService,
 		private global: GlobalService,
@@ -47,8 +48,14 @@ export class EditCompanyPage implements OnInit {
 		this.editCompanyForm = this.fb.group({
 			type: "company",
 			company: ['', Validators.required],
-			email: '',
-			phone: ['', Validators.required],
+			email: [
+				'',
+				Validators.compose([
+					Validators.required,
+					Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+				])
+			],
+			phone: '',
 			life_stage: ['', Validators.required],
 			owner: ['', Validators.required],
 			mobile: '',
@@ -68,8 +75,10 @@ export class EditCompanyPage implements OnInit {
 	}
 
 	getContactDetail() {
-		this.api.getContactDetail(this.id).subscribe(res => {
-			this.editCompanyForm = this.fb.group(res);
+		this.api.getContactDetail(this.id).subscribe(response => {
+			let res: any = response;
+			res.owner = res.owner['ID'].toString();
+			this.editCompanyForm.patchValue(res);
 		});
 	}
 

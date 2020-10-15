@@ -37,7 +37,8 @@
 						<ion-textarea placeholder="Type your note..." formControlName="content" name="content">
 						</ion-textarea>
 					</ion-item>
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Save
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!addNoteForm.valid">Save
 					</ion-button>
 				</div>
 			</form>
@@ -56,7 +57,8 @@
 						</ion-textarea>
 					</ion-item>
 
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Save
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!addEmailForm.valid">Save
 					</ion-button>
 				</div>
 			</form>
@@ -83,7 +85,8 @@
 						<ion-textarea placeholder="Type your description..." formControlName="content" name="content">
 						</ion-textarea>
 					</ion-item>
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Save
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!addLogForm.valid">Save
 					</ion-button>
 				</div>
 			</form>
@@ -137,7 +140,7 @@
 					<ion-item lines="none" class="cus-checkbox">
 						<ion-checkbox formControlName="allow_notification" name="allow_notification"
 							(ngModelChange)="scheduleAllowNotification($event)"></ion-checkbox>
-						<ion-label>Show Advanced Fields</ion-label>
+						<ion-label>Allow Notification</ion-label>
 					</ion-item>
 					<div class="other-info" *ngIf="scheduleExpandNotify">
 
@@ -162,7 +165,8 @@
 							</ion-select>
 						</ion-item>
 					</div>
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Create Schedule
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!addScheduleForm.valid">Create Schedule
 					</ion-button>
 				</div>
 			</form>
@@ -196,7 +200,8 @@
 						</ion-textarea>
 					</ion-item>
 
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Create Task
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!addTaskForm.valid">Create Task
 					</ion-button>
 				</div>
 			</form>

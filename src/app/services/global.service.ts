@@ -20,7 +20,7 @@ export class GlobalService {
 	}
 
 	async showLoading(spinner, message) {
-		if(!environment.showloader){
+		if (!environment.showloader) {
 			return false;
 		}
 		this.loading = await this.loadingCtrl.create({
@@ -67,4 +67,58 @@ export class GlobalService {
 	// 	this.browser.close();
 	// }
 
+	getValidationMessages() {
+		return {
+			'username': [
+				{ type: 'required', message: 'Username/Email is required.' },
+				{ type: 'minlength', message: 'Username must be at least 5 characters long.' },
+				{ type: 'maxlength', message: 'Username cannot be more than 25 characters long.' },
+				{ type: 'pattern', message: 'Your username must contain only numbers and letters.' },
+				{ type: 'validUsername', message: 'Your username has already been taken.' }
+			],
+			'name': [
+				{ type: 'required', message: 'Name is required.' }
+			], 
+			'first_name': [
+				{ type: 'required', message: 'First name is required.' }
+			],
+			'last_name': [
+				{ type: 'required', message: 'Last name is required.' }
+			],
+			'email': [
+				{ type: 'required', message: 'Email is required.' },
+				{ type: 'pattern', message: 'Please enter a valid email.' }
+			],
+			'phone': [
+				{ type: 'required', message: 'Phone is required.' },
+				{ type: 'validCountryPhone', message: 'The phone is incorrect for the selected country.' }
+			],
+			'password': [
+				{ type: 'required', message: 'Password is required.' },
+				{ type: 'minlength', message: 'Password must be at least 5 characters long.' },
+				{ type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number.' }
+			],
+			'confirm_password': [
+				{ type: 'required', message: 'Confirm password is required.' }
+			],
+			'matching_passwords': [
+				{ type: 'areEqual', message: 'Password mismatch.' }
+			],
+			'terms': [
+				{ type: 'pattern', message: 'You must accept terms and conditions.' }
+			],
+			'owner': [
+				{ type: 'required', message: 'Contact owner is required.' }
+			],
+			'life_stage': [
+				{ type: 'required', message: 'Life Stage is required.' }
+			],
+			'company': [
+				{ type: 'required', message: 'Company Name is required.' }
+			],
+			'contact_ids': [
+				{ type: 'required', message: 'At Least one Contact is required.' }
+			],
+		};
+	}
 }

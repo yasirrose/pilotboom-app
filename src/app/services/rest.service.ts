@@ -76,20 +76,20 @@ export class RestService {
 		return this.user.getValue();
 	}
 
-	getCrmContacts(type = 'contact', status = 'all', per_page = 20, page = 1, search = '') {
+	getCrmContacts(type = 'contact', status = 'all', per_page = 20, page = 1, search = '' , include_owner = true) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}${include_owner ? '&include=owner' : ''}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
 		);
 	}
 
-	getContactDetail(id) {
+	getContactDetail(id, include_owner = true) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/${id}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/${id}${include_owner ? '?include=owner' : ''}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})

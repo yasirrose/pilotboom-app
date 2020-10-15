@@ -18,6 +18,7 @@ export class SubscribePage implements OnInit {
 	allContacts: any;
 	contact_ids: [];
 	subscribeForm: FormGroup
+	validation_messages = this.global.getValidationMessages();
 
 	constructor(
 		private api: RestService,
@@ -33,7 +34,7 @@ export class SubscribePage implements OnInit {
 
 	ngOnInit() {
 		this.subscribeForm = this.fb.group({
-			contact_ids: '',
+			contact_ids: ['', Validators.required],
 		});
 		this.groupId = this.navParams.data.contactGrpId;
 		this.getAllContacts();

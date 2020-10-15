@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GlobalService } from '../services/global.service';
@@ -20,6 +20,8 @@ export class LoginPage implements OnInit {
 		email: '',
 		pass: ''
 	};
+
+	validation_messages = this.global.getValidationMessages();
 
 	constructor(
 		private api: RestService,
@@ -123,8 +125,7 @@ export class LoginPage implements OnInit {
 
 	async showError(err) {
 		const alert = await this.alertCtrl.create({
-			header: err.error.code,
-			subHeader: err.error.data.status,
+			header: 'Login Failed',
 			message: err.error.message,
 			buttons: ['OK']
 		});

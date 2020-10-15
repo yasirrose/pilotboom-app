@@ -8,13 +8,39 @@
                             <img src="/assets/img/Pilot-Boom.png" alt="">
                         </div>
                         <div class="ion-no-padding app-form">
-                            <ion-item lines="none">
-                                <ion-input type="email" placeholder="Username/Email" formControlName="username" name="username"></ion-input>
-                            </ion-item>
-                            <ion-item lines="none">
-                                <ion-input type="password" placeholder="Password" formControlName="password" name="password"></ion-input>
-                            </ion-item>
-                            <ion-button type="submit" size="large" shape="round" expand="block" color="danger">Login</ion-button>
+                            <div class="input_area">
+                                <ion-item lines="none">
+                                    <ion-input type="text" placeholder="Username/Email" formControlName="username"
+                                        name="username"></ion-input>
+                                </ion-item>
+                                <div class="validation-errors">
+                                    <ng-container *ngFor="let validation of validation_messages.username">
+                                        <div class="error-message"
+                                            *ngIf="userForm.get('username').hasError(validation.type) && (userForm.get('username').dirty || userForm.get('username').touched)">
+                                            <ion-icon name="information-circle-outline"></ion-icon>
+                                            {{ validation.message }}
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="input_area">
+                                <ion-item lines="none">
+                                    <ion-input type="password" placeholder="Password" formControlName="password"
+                                        name="password"></ion-input>
+                                </ion-item>
+                                <div class="validation-errors">
+                                    <ng-container *ngFor="let validation of validation_messages.password">
+                                        <div class="error-message"
+                                            *ngIf="userForm.get('password').hasError(validation.type) && (userForm.get('password').dirty || userForm.get('password').touched)">
+                                            <ion-icon name="information-circle-outline"></ion-icon>
+                                            {{ validation.message }}
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+                                [disabled]="!userForm.valid">Login
+                            </ion-button>
                         </div>
                     </div>
                 </ion-col>

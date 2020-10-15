@@ -20,7 +20,8 @@
 						<ion-textarea placeholder="Type your note..." formControlName="content" name="content">
 						</ion-textarea>
 					</ion-item>
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!add_note_form.valid">Update
 					</ion-button>
 				</div>
 			</form>
@@ -39,7 +40,8 @@
 						</ion-textarea>
 					</ion-item>
 
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!add_email_form.valid">Update
 					</ion-button>
 				</div>
 			</form>
@@ -66,7 +68,8 @@
 						<ion-textarea placeholder="Type your description..." formControlName="content" name="content">
 						</ion-textarea>
 					</ion-item>
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!add_log_form.valid">Update
 					</ion-button>
 				</div>
 			</form>
@@ -145,7 +148,8 @@
 							</ion-select>
 						</ion-item>
 					</div>
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!add_schedule_form.valid">Update
 					</ion-button>
 				</div>
 			</form>
@@ -179,7 +183,8 @@
 						</ion-textarea>
 					</ion-item>
 
-					<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Update
+					<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+						[disabled]="!add_task_form.valid">Update
 					</ion-button>
 				</div>
 			</form>

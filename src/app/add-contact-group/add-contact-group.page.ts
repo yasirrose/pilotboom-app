@@ -15,6 +15,8 @@ export class AddContactGroupPage implements OnInit {
 
 	user = this.api.getCurrentUser();
 	toggleAdvance = false;
+	validation_messages = this.global.getValidationMessages();
+	
 	constructor(
 		private api: RestService,
 		private fb: FormBuilder,

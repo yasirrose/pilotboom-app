@@ -16,6 +16,8 @@ export class AddContactPage implements OnInit {
 	user = this.api.getCurrentUser();
 	toggleAdvance = false;
 	allUsers = [];
+	validation_messages = this.global.getValidationMessages();
+
 	constructor(
 		private api: RestService,
 		private fb: FormBuilder,
@@ -39,9 +41,15 @@ export class AddContactPage implements OnInit {
 		this.addContactForm = this.fb.group({
 			type: "contact",
 			first_name: ['', Validators.required],
-			last_name: ['', Validators.required],
-			email: '',
-			phone: ['', Validators.required],
+			last_name: '',
+			email: [
+				'',
+				Validators.compose([
+					Validators.required,
+					Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+				])
+			],
+			phone: '',
 			life_stage: ['', Validators.required],
 			owner: ['', Validators.required],
 			company: '',

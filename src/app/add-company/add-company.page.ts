@@ -16,6 +16,8 @@ export class AddCompanyPage implements OnInit {
 	user = this.api.getCurrentUser();
 	toggleAdvance = false;
 	allUsers = [];
+	validation_messages = this.global.getValidationMessages();
+	
 	constructor(
 		private api: RestService,
 		private fb: FormBuilder,
@@ -39,8 +41,14 @@ export class AddCompanyPage implements OnInit {
 		this.addCompanyForm = this.fb.group({
 			type: "company",
 			company: ['', Validators.required],
-			email: '',
-			phone: ['', Validators.required],
+			email: [
+				'',
+				Validators.compose([
+					Validators.required,
+					Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+				])
+			],
+			phone: '',
 			life_stage: ['', Validators.required],
 			owner: ['', Validators.required],
 			mobile: '',

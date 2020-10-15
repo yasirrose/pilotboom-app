@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AlertController, ToastController, NavController, NavParams } from '@ionic/angular';
@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 	selector: 'app-edit-activity',
 	templateUrl: './edit-activity.page.html',
 	styleUrls: ['./edit-activity.page.scss'],
+	// changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditActivityPage implements OnInit {
 	add_note_form: FormGroup;
@@ -23,6 +24,7 @@ export class EditActivityPage implements OnInit {
 	type = '';
 	activityData: any;
 	allUsers: any;
+	validation_messages = this.global.getValidationMessages();
 
 	scheduleExpandNotify = false;
 	constructor(
@@ -56,49 +58,48 @@ export class EditActivityPage implements OnInit {
 		this.add_note_form = this.fb.group({
 			type: "note",
 			contact_id: this.contact_id,
-			content: ''
+			content: ['', Validators.required]
 		});
 
 		this.add_email_form = this.fb.group({
 			type: "email",
 			contact_id: this.contact_id,
-			subject: "",
-			body: ''
+			subject: ['', Validators.required],
+			body: ['', Validators.required]
 		});
 
 		this.add_log_form = this.fb.group({
 			type: "log",
 			contact_id: this.contact_id,
-			log_type: '',
-			date_time: '',
-			date: '',
-			time: '',
-			content: ''
+			log_type: ['', Validators.required],
+			date_time: ['', Validators.required],
+			content: ['', Validators.required],
+			// title: ['', Validators.required]
 		});
 
 		this.add_schedule_form = this.fb.group({
 			type: "schedule",
 			contact_id: this.contact_id,
-			title: "",
-			content: '',
-			start_date_time: "",
-			end_date_time: "",
+			title: ['', Validators.required],
+			content: ['', Validators.required],
+			start_date_time: ['', Validators.required],
+			end_date_time: ['', Validators.required],
 			all_day: "false",
-			schedule_type: "",
+			employee_ids: [[], Validators.required],
+			schedule_type: ['', Validators.required],
 			allow_notification: false,
 			notification_via: "",
 			notification_time: "",
-			notification_time_interval: "",
-			employee_ids: []
+			notification_time_interval: ""
 		});
 
 		this.add_task_form = this.fb.group({
 			type: "task",
 			contact_id: this.contact_id,
-			title: "",
-			content: '',
-			employee_ids: [],
-			date_time: ""
+			title: ['', Validators.required],
+			content: ['', Validators.required],
+			employee_ids: [[], Validators.required],
+			date_time: ['', Validators.required]
 		});
 	}
 
@@ -107,11 +108,12 @@ export class EditActivityPage implements OnInit {
 			this.activityData = res;
 			delete this.activityData.created_by;
 			this.type = this.activityData.type;
-			if(this.activityData['employee_ids']){
+			if (this.activityData['employee_ids']) {
 				this.activityData.employee_ids = [this.activityData.employee_ids];
 			}
 
-			this[`add_${this.type}_form`] = this.fb.group(this.activityData);
+			this[`add_${this.type}_form`].patchValue(this.activityData);
+			// this[`add_${this.type}_form`] = this.fb.group(this.activityData);
 			// this.activityData = res;
 		});
 	}
@@ -142,7 +144,7 @@ export class EditActivityPage implements OnInit {
 		}
 
 		this.global.showLoading("bubbles", "Please wait...");
-		this.api.updateActivity(this.activity_id,formData).subscribe(
+		this.api.updateActivity(this.activity_id, formData).subscribe(
 			res => {
 				this.global.closeLoading();
 				this.navCtrl.back();
@@ -166,6 +168,21 @@ export class EditActivityPage implements OnInit {
 
 	scheduleAllowNotification(e) {
 		this.scheduleExpandNotify = e;
+		if (e) { // for setting validations
+			this.add_schedule_form.get('notification_via').setValidators([Validators.required]);
+			this.add_schedule_form.get('notification_via').updateValueAndValidity();
+			this.add_schedule_form.get('notification_time').setValidators([Validators.required]);
+			this.add_schedule_form.get('notification_time').updateValueAndValidity();
+			this.add_schedule_form.get('notification_time_interval').setValidators([Validators.required]);
+			this.add_schedule_form.get('notification_time_interval').updateValueAndValidity();
+		} else { // for clearing validations;
+			this.add_schedule_form.get('notification_via').clearValidators();
+			this.add_schedule_form.get('notification_via').updateValueAndValidity();
+			this.add_schedule_form.get('notification_time').clearValidators();
+			this.add_schedule_form.get('notification_time').updateValueAndValidity();
+			this.add_schedule_form.get('notification_time_interval').clearValidators();
+			this.add_schedule_form.get('notification_time_interval').updateValueAndValidity();
+		}
 	}
 
 }

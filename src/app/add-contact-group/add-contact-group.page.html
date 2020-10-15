@@ -18,17 +18,31 @@
 			<div class="uploaded-img">
 				<img src="./../../assets/img/upload-img.png" alt="" />
 			</div>
-			<ion-button shape="round" color="danger">
+			<!-- <ion-button shape="round" color="danger">
 				<ion-icon name="cloud-upload-sharp"></ion-icon>
-			</ion-button>
+			</ion-button> -->
 		</div>
 		<div class="ion-no-padding app-form">
-			<ion-item lines="none">
-				<ion-input type="text" placeholder="Name *" formControlName="name" name="name"></ion-input>
-			</ion-item>
-			<ion-item lines="none">
-				<ion-textarea placeholder="Description" formControlName="description" name="description"></ion-textarea>
-			</ion-item>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Name *" formControlName="name" name="name"></ion-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.name">
+						<div class="error-message"
+							*ngIf="addContactGrpForm.get('name').hasError(validation.type) && (addContactGrpForm.get('name').dirty || addContactGrpForm.get('name').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-textarea placeholder="Description" formControlName="description" name="description">
+					</ion-textarea>
+				</ion-item>
+			</div>
 
 			<!-- <ion-list radio-group >
 		<ion-item>
@@ -41,7 +55,8 @@
 		</ion-item>
 	  </ion-list> -->
 
-			<ion-button type="submit" size="large" shape="round" expand="block" color="danger">Add New</ion-button>
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+				[disabled]="!addContactGrpForm.valid">Add New</ion-button>
 		</div>
 	</form>
 </ion-content>

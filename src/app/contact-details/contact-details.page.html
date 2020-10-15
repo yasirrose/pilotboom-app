@@ -11,7 +11,7 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" *ngIf="(contactData | keyvalue)?.length">
 	<ion-card mode="md">
 		<ion-card-content>
 			<div class="profile-info">
@@ -128,15 +128,14 @@
 					<label for="#">
 						<ion-icon name="call-sharp"></ion-icon>Contact Owner
 					</label>
-					<span> &nbsp;&nbsp;&nbsp; ___________</span>
 				</div>
 				<div class="profile-info">
 					<div class="image-hol">
 						<img src="assets/img/upload-img.png" alt="" />
 					</div>
 					<div class="detail-hol">
-						<p>Adams</p>
-						<span><a href="milto:kentadamsk9@gmail.com">kentadamsk9@gmail.com</a></span>
+						<p>{{contactData.owner.display_name}}</p>
+						<span><a href="milto:{{contactData.owner.user_email}}">{{contactData.owner.user_email}}</a></span>
 					</div>
 				</div>
 			</div>

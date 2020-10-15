@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AlertController, ToastController, NavController, NavParams } from '@ionic/angular';
@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 	selector: 'app-add-activity',
 	templateUrl: './add-activity.page.html',
 	styleUrls: ['./add-activity.page.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddActivityPage implements OnInit {
 	addNoteForm: FormGroup;
@@ -21,6 +22,7 @@ export class AddActivityPage implements OnInit {
 	contact_id: any;
 	tab = 'note';
 	allUsers: any;
+	validation_messages = this.global.getValidationMessages();
 
 	scheduleExpandNotify = false;
 	constructor(
@@ -52,49 +54,48 @@ export class AddActivityPage implements OnInit {
 		this.addNoteForm = this.fb.group({
 			type: "note",
 			contact_id: this.contact_id,
-			content: ''
+			content: ['', Validators.required]
 		});
 
 		this.addEmailForm = this.fb.group({
 			type: "email",
 			contact_id: this.contact_id,
-			subject: "",
-			body: ''
+			subject: ['', Validators.required],
+			body: ['', Validators.required]
 		});
 
 		this.addLogForm = this.fb.group({
 			type: "log",
 			contact_id: this.contact_id,
-			log_type: '',
-			date_time: '',
-			date: '',
-			time: '',
-			content: ''
+			log_type: ['', Validators.required],
+			date_time: ['', Validators.required],
+			content: ['', Validators.required],
+			// title: ['', Validators.required]
 		});
 
 		this.addScheduleForm = this.fb.group({
 			type: "schedule",
 			contact_id: this.contact_id,
-			title: "",
-			content: '',
-			start_date_time: "",
-			end_date_time: "",
+			title: ['', Validators.required],
+			content: ['', Validators.required],
+			start_date_time: ['', Validators.required],
+			end_date_time: ['', Validators.required],
 			all_day: "false",
-			schedule_type: "",
+			employee_ids: [[], Validators.required],
+			schedule_type: ['', Validators.required],
 			allow_notification: false,
 			notification_via: "",
 			notification_time: "",
-			notification_time_interval: "",
-			employee_ids: []
+			notification_time_interval: ""
 		});
 
 		this.addTaskForm = this.fb.group({
 			type: "task",
 			contact_id: this.contact_id,
-			title: "",
-			content: '',
-			employee_ids: [],
-			date_time: ""
+			title: ['', Validators.required],
+			content: ['', Validators.required],
+			employee_ids: [[], Validators.required],
+			date_time: ['', Validators.required]
 		});
 	}
 
@@ -148,6 +149,21 @@ export class AddActivityPage implements OnInit {
 
 	scheduleAllowNotification(e) {
 		this.scheduleExpandNotify = e;
+		if (e) { // for setting validations
+			this.addScheduleForm.get('notification_via').setValidators([Validators.required]);
+			this.addScheduleForm.get('notification_via').updateValueAndValidity();
+			this.addScheduleForm.get('notification_time').setValidators([Validators.required]);
+			this.addScheduleForm.get('notification_time').updateValueAndValidity();
+			this.addScheduleForm.get('notification_time_interval').setValidators([Validators.required]);
+			this.addScheduleForm.get('notification_time_interval').updateValueAndValidity();
+		} else { // for clearing validations;
+			this.addScheduleForm.get('notification_via').clearValidators();
+			this.addScheduleForm.get('notification_via').updateValueAndValidity();
+			this.addScheduleForm.get('notification_time').clearValidators();
+			this.addScheduleForm.get('notification_time').updateValueAndValidity();
+			this.addScheduleForm.get('notification_time_interval').clearValidators();
+			this.addScheduleForm.get('notification_time_interval').updateValueAndValidity();
+		}
 	}
 
 }

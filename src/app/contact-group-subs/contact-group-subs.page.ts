@@ -56,8 +56,8 @@ export class ContactGroupSubsPage implements OnInit {
 
 	async unsubscribe(event, contact_id) {
 		let alert = await this.alertCtrl.create({
-			header: 'Confirm Delete',
-			message: 'Do you really want to delete?',
+			header: 'Confirm Unsubscribe',
+			message: 'Do you really want to unsubscribe this contact?',
 			buttons: [
 				{
 					text: 'Cancel',

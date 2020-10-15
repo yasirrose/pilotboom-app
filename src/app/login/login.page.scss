@@ -2,43 +2,42 @@ $height100: 100%;
 $textColor: #1c0d2e;
 $colorgray: #e2e2e2;
 ion-grid {
-    width: 100%;
-    height: $height100;
+	width: 100%;
+	height: $height100;
 }
 
 ion-row {
-    height: $height100;
+	height: $height100;
 }
 
 ion-button {
-    font-weight: 300;
+	font-weight: 300;
 }
 
 ion-content {
-    // --background: #45aaf2;
-    --background: url('/assets/img/app-bg.jpg') top left / 100% auto no-repeat;
-    ion-item {
-        margin-bottom: 20px;
-        --background: #fff;
-        border: 1px solid $colorgray;
-        color: $textColor;
-        border-radius: 50px;
-        ion-input {
-            --placeholder-opacity: 0.4;
-        }
-    }
-    ion-button {
-        --box-shadow: none;
-        --border-radius: 50px;
-        height: 48px;
-    }
-    .app-wrap {
-        .app-logo {
-            max-width: 40vw;
-            margin: 18vh auto 30px auto;
-        }
-    }
-    .bottom-col {
-        margin-top: auto;
-    }
+	// --background: #45aaf2;
+	--background: url("/assets/img/app-bg.jpg") top left / 100% auto no-repeat;
+	ion-item {
+		--background: #fff;
+		border: 1px solid $colorgray;
+		color: $textColor;
+		border-radius: 50px;
+		ion-input {
+			--placeholder-opacity: 0.4;
+		}
+	}
+	ion-button {
+		--box-shadow: none;
+		--border-radius: 50px;
+		height: 48px;
+	}
+	.app-wrap {
+		.app-logo {
+			max-width: 40vw;
+			margin: 18vh auto 30px auto;
+		}
+	}
+	.bottom-col {
+		margin-top: auto;
+	}
 }
