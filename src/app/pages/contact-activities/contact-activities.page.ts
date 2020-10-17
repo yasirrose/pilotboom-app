@@ -52,7 +52,7 @@ export class ContactActivitiesPage implements OnInit {
 	}
 
 	getContactActivities(event?) {
-		this.api.getActivities(this.contactData.id).subscribe(res => {
+		this.api.getActivities(this.contactData.id, this.per_page, this.page).subscribe(res => {
 			if (event) {
 				if (res.length < this.per_page) {
 					this.hasMore = false
@@ -63,6 +63,7 @@ export class ContactActivitiesPage implements OnInit {
 			}
 			this.contactActivities = this.contactActivities.concat(res);
 			this.global.closeLoading();
+			this.loadView = true;
 		});
 	}
 
