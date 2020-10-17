@@ -76,10 +76,20 @@ export class RestService {
 		return this.user.getValue();
 	}
 
-	getCrmContacts(type = 'contact', status = 'all', per_page = 20, page = 1, search = '' , include_owner = true) {
+	getCrmContacts(type = 'contact', status = 'all', per_page = 20, page = 1, search = '', include_owner = true) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
 		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}${include_owner ? '&include=owner' : ''}`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	CountCrmContacts(contact = true, company = true) {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/count?contact=${contact}&company=${company}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -150,10 +160,10 @@ export class RestService {
 
 	//Contact Groups
 
-	getCrmContactGroups(type = 'contact', status = 'all', per_page = 20, page = 1, search = '') {
+	getCrmContactGroups(page = 1, per_page = 20, search = '') {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups?per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -227,7 +237,7 @@ export class RestService {
 	}
 
 	//Activities
-	getActivities(customer_id = '', type = 'log%7Cnote%7Cemail%7Cschedule%7Ctask', per_page = 40, page = 1) {
+	getActivities(customer_id = '', per_page = 10, page = 1, type = 'log%7Cnote%7Cemail%7Cschedule%7Ctask') {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
 		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities?type=${type}&per_page=${per_page}&page=${page}&customer_id=${customer_id}`, { headers: headers }).pipe(

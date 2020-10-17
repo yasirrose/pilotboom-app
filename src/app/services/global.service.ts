@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, ToastController } from '@ionic/angular';
 // import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { environment } from '../../environments/environment';
 
@@ -15,6 +15,7 @@ export class GlobalService {
 		private _santizer: DomSanitizer,
 		private loadingCtrl: LoadingController,
 		private alertCtrl: AlertController,
+		private toastCtrl: ToastController,
 		// private iab: InAppBrowser
 	) {
 	}
@@ -78,7 +79,7 @@ export class GlobalService {
 			],
 			'name': [
 				{ type: 'required', message: 'Name is required.' }
-			], 
+			],
 			'first_name': [
 				{ type: 'required', message: 'First name is required.' }
 			],
@@ -120,5 +121,14 @@ export class GlobalService {
 				{ type: 'required', message: 'At Least one Contact is required.' }
 			],
 		};
+	}
+
+	async showPopup(header, message) {
+		const alert = await this.alertCtrl.create({
+			header: header,
+			message: message,
+			buttons: ['OK']
+		});
+		await alert.present();
 	}
 }

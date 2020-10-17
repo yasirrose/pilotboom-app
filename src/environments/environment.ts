@@ -7,9 +7,9 @@ export const environment = {
 	environmentName: 'Development Environment',
 	ionicEnvName: 'dev',
 	baseUrl: 'https://demo.pilotboom.com',
-	apiUrl: 'https://demo.pilotboom.com/wp-json',
+	apiUrl: 'http://localhost/pilotboom/wp-json',
 	key: ",GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W'",
-	showloader: true
+	showloader: false
 };
 // baseUrl: 'http://localhost/pilotboom',
 // baseUrl: 'https://demo.pilotboom.com',

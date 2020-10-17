@@ -63,19 +63,8 @@ export class SubscribePage implements OnInit {
 			},
 			err => {
 				this.global.closeLoading();
-				this.showError(err);
+				this.global.showPopup('Failed', err.error.message);
 			}
 		);
 	}
-
-	async showError(err) {
-		const alert = await this.alertCtrl.create({
-			header: err.error.code,
-			subHeader: err.error.data.status,
-			message: err.error.message,
-			buttons: ['OK']
-		});
-		await alert.present();
-	}
-
 }
