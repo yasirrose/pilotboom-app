@@ -1,21 +1,69 @@
 <ion-header>
-	<ion-toolbar>
-		<ion-title style="float: left">Posts</ion-title>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Posts</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-
-<ion-content>
-	<div class="container">
-		<div *ngFor="let post of posts; index as i">
-			Post # {{i+1}}
-			<div class="connect-box">
-				<div class="connect-img-box hoverClass">
-					<p class="white-bkg">{{post.title.rendered}}</p>
-					<div class="white-bkg" [innerHTML]="post.content.rendered"></div>
-					<p class="white-bkg">{{post.date}}</p>
-				</div>
-			</div>
-			<br /><br />
+<ion-content class="ion-padding">
+	<div *ngIf="loadView">
+		<div *ngIf="posts.length > 0; else no_result">
+			<ion-card mode="md" *ngFor="let post of posts;; index as i">
+				<ion-card-content>
+					<div class="detail-wrap">
+						<!-- <div class="top-right-btn">
+							<ion-button fill="solid" shape="round" color="danger"
+								(click)="editContactGroup($event, contact.id)">
+								<ion-icon name="pencil-sharp"></ion-icon>
+							</ion-button>
+							<ion-button fill="solid" shape="round" color="danger"
+								(click)="getSubscribers($event, contact.id)">
+								<ion-icon name="eye-sharp"></ion-icon>
+							</ion-button>
+							<ion-button fill="solid" shape="round" color="danger" (click)="delete($event, contact.id)">
+								<ion-icon name="trash-sharp"></ion-icon>
+							</ion-button>
+						</div> -->
+						<div class="left-detail">
+							<ul>
+								<li>
+									<ion-icon name="person-circle-sharp"></ion-icon>
+									<span>Title: {{post.title.rendered}}</span>
+								</li>
+								<li>
+									<ion-icon name="reader-outline"></ion-icon>
+									<span [innerHTML]="'Description: '+ post.content.rendered"></span>
+								</li>
+								<li>
+									<ion-icon name="lock-open-outline"></ion-icon>
+									<span>Status: {{post.ping_status}}</span>
+								</li>
+								<li>
+									<ion-icon name="calendar-outline"></ion-icon>
+									<span>Date: {{post.date}}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore">
+				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
+				</ion-infinite-scroll-content>
+			</ion-infinite-scroll>
 		</div>
+		<ng-template #no_result>
+			<ion-card mode="md">
+				<ion-card-content>
+					<h2>No result found</h2>
+				</ion-card-content>
+			</ion-card>
+		</ng-template>
 	</div>
 </ion-content>

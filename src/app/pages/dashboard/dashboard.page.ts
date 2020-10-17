@@ -56,7 +56,6 @@ export class DashboardPage implements OnInit {
 
 	getDashboardInfo() {
 		this.api.CountCrmContacts().subscribe(res => {
-			console.log(res);
 			this.reset();
 			this.setData(res);
 			this.loadView = true;

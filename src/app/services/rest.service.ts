@@ -48,10 +48,10 @@ export class RestService {
 		return this.http.post(`${environment.apiUrl}/wp/v2/users/lostpassword`, { user_login: usernameOrEmail });
 	}
 
-	getPosts() {
+	getPosts(per_page = 10, page = 1) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/posts`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/posts?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
