@@ -73,10 +73,10 @@ export class ContactsPage implements OnInit {
 			this.loadView = true;
 			//Getting Trashed Contacts
 			this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
+				if (all_length < this.per_page && trashed.length < this.per_page) {
+					this.hasMore = false
+				}
 				if (event) {
-					if (all_length < this.per_page && trashed.length < this.per_page) {
-						this.hasMore = false
-					}
 					event.target.complete();
 				} else {
 					this.trash = [];

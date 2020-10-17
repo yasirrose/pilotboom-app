@@ -55,10 +55,10 @@ export class ActivitiesPage implements OnInit {
 
 	getActivities(event?) {
 		this.api.getActivities('', this.per_page, this.page).subscribe(res => {
+			if (res.length < this.per_page) {
+				this.hasMore = false
+			}
 			if (event) {
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
 				event.target.complete();
 			} else {
 				this.activities = [];

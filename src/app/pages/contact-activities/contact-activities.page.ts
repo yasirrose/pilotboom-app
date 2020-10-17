@@ -53,10 +53,10 @@ export class ContactActivitiesPage implements OnInit {
 
 	getContactActivities(event?) {
 		this.api.getActivities(this.contactData.id, this.per_page, this.page).subscribe(res => {
+			if (res.length < this.per_page) {
+				this.hasMore = false
+			}
 			if (event) {
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
 				event.target.complete();
 			} else {
 				this.contactActivities = [];

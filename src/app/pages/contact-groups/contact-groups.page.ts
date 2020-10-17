@@ -54,10 +54,10 @@ export class ContactGroupsPage implements OnInit {
 
 	getContactGroups(event?) {
 		this.api.getCrmContactGroups(this.page, this.per_page).subscribe(res => {
+			if (res.length < this.per_page) {
+				this.hasMore = false
+			}
 			if (event) {
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
 				event.target.complete();
 			} else {
 				this.contactGroups = [];
