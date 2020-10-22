@@ -48,10 +48,15 @@ export class SubscribePage implements OnInit {
 
 	getAllContacts() {
 		this.global.showLoading("bubbles", "Loading...");
-		this.api.getCrmContacts('all').subscribe(res => {
-			this.allContacts = res;
-			this.global.closeLoading();
-		});
+		this.api.getCrmContacts('all').subscribe(
+			res => {
+				this.allContacts = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	subscribeContact() {
@@ -62,8 +67,7 @@ export class SubscribePage implements OnInit {
 				this.closeModal();
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

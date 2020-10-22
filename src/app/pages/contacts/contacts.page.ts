@@ -11,7 +11,6 @@ import { RestService } from 'src/app/services/rest.service';
 	providers: [NavParams]
 })
 export class ContactsPage implements OnInit {
-	user = this.api.getCurrentUser();
 	categories = 'All';
 	contacts = [];
 	customer = [];
@@ -36,11 +35,6 @@ export class ContactsPage implements OnInit {
 		private navCtrl: NavController,
 		private navParam: NavParams,
 	) {
-		this.user.subscribe(user => {
-			if (!user) {
-				this.router.navigate(["/login"]);
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -60,31 +54,36 @@ export class ContactsPage implements OnInit {
 	}
 
 	getContacts(event?) {
-		this.api.getCrmContacts('contact', 'all', this.per_page, this.page).subscribe(res => {
-			let all_length = res.length;
-			if (!event) {
-				this.contacts = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
-			}
-			this.contacts = this.contacts.concat(res);
-			for (let i = 0; i < res.length; i++) {
-				const elem = res[i];
-				this[elem.life_stage].push(elem);
-			}
-			this.loadView = true;
-			//Getting Trashed Contacts
-			this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
-				if (all_length < this.per_page && trashed.length < this.per_page) {
-					this.hasMore = false
+		this.api.getCrmContacts('contact', 'all', this.per_page, this.page).subscribe(
+			res => {
+				let all_length = res.length;
+				if (!event) {
+					this.contacts = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
 				}
-				if (event) {
-					event.target.complete();
-				} else {
-					this.trash = [];
+				this.contacts = this.contacts.concat(res);
+				for (let i = 0; i < res.length; i++) {
+					const elem = res[i];
+					this[elem.life_stage].push(elem);
 				}
-				this.trash = this.trash.concat(trashed);
-				this.global.closeLoading();
-			});
-		});
+				this.loadView = true;
+				//Getting Trashed Contacts
+				this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
+					if (all_length < this.per_page && trashed.length < this.per_page) {
+						this.hasMore = false
+					}
+					if (event) {
+						event.target.complete();
+					} else {
+						this.trash = [];
+					}
+					this.trash = this.trash.concat(trashed);
+					this.global.closeLoading();
+				});
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	getDetail(event, id) {
@@ -120,10 +119,15 @@ export class ContactsPage implements OnInit {
 					text: 'Delete',
 					handler: () => {
 						this.global.showLoading("bubbles", "Please wait...");
-						this.api.deleteContact(id).subscribe(res => {
-							this.resetData();
-							this.getContacts();
-						});
+						this.api.deleteContact(id).subscribe(
+							res => {
+								this.resetData();
+								this.getContacts();
+							},
+							err => {
+								this.global.checkErrorStatus(err);
+							}
+						);
 					}
 				}
 			]

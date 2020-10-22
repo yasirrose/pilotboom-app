@@ -12,8 +12,6 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class AddCompanyPage implements OnInit {
 	addCompanyForm: FormGroup;
-
-	user = this.api.getCurrentUser();
 	toggleAdvance = false;
 	allUsers = [];
 	validation_messages = this.global.getValidationMessages();
@@ -27,14 +25,8 @@ export class AddCompanyPage implements OnInit {
 		private navCtrl: NavController,
 		private global: GlobalService
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.global.showLoading("bubbles", "Please wait...");
-				this.getAllUsers();
-			} else {
-				this.router.navigate(["/login"]);
-			}
-		});
+		this.global.showLoading("bubbles", "Please wait...");
+		this.getAllUsers();
 	}
 
 	ngOnInit() {
@@ -67,10 +59,15 @@ export class AddCompanyPage implements OnInit {
 	}
 
 	getAllUsers() {
-		this.api.getUsers().subscribe(res => {
-			this.allUsers = res;
-			this.global.closeLoading();
-		});
+		this.api.getUsers().subscribe(
+			res => {
+				this.allUsers = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	addContact() {
@@ -81,8 +78,7 @@ export class AddCompanyPage implements OnInit {
 				this.router.navigate(["/companies"]);
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

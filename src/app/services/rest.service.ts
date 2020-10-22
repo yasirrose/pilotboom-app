@@ -13,7 +13,11 @@ const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fw
 })
 export class RestService {
 	private user = new BehaviorSubject(null);
-	constructor(private http: HttpClient, private storage: Storage, private plt: Platform) {
+	constructor(
+		private http: HttpClient,
+		private storage: Storage,
+		private plt: Platform
+	) {
 		this.plt.ready().then(() => {
 			this.storage.get(JWT_KEY).then(data => {
 				if (data) {
@@ -27,6 +31,7 @@ export class RestService {
 		return this.http.post(`${environment.apiUrl}/jwt-auth/v1/token`, { username, password }).pipe(
 			switchMap(data => {
 				return from(this.storage.set(JWT_KEY, data));
+				// return from(this.storage.set(JWT_KEY, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL3BpbG90Ym9vbSIsImlhdCI6MTYwMzI5MTMwMywibmJmIjoxNjAzMjkxMzAzLCJleHAiOjE2MDM4OTYxMDMsImRhdGEiOnsidXNlciI6eyJpZCI6IjQifX19.vPf1Tvrqbp9zfieMGE3w6K4LkegemhQFvYzxqdUpqNM'));
 			}),
 			tap(data => {
 				this.user.next(data);

@@ -18,7 +18,6 @@ export class EditActivityPage implements OnInit {
 	add_schedule_form: FormGroup;
 	add_task_form: FormGroup;
 
-	user = this.api.getCurrentUser();
 	contact_id: any;
 	activity_id: any;
 	type = '';
@@ -37,19 +36,13 @@ export class EditActivityPage implements OnInit {
 		private toastCtrl: ToastController,
 		private navCtrl: NavController
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Please wait...");
-					if (params && params.conatctId && params.activityId) {
-						this.contact_id = params.conatctId;
-						this.activity_id = params.activityId;
-						this.getActivityDetail();
-						this.getAllUsers();
-					}
-				})
-			} else {
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.conatctId && params.activityId) {
+				this.contact_id = params.conatctId;
+				this.activity_id = params.activityId;
+				this.getActivityDetail();
+				this.getAllUsers();
 			}
 		});
 	}
@@ -104,25 +97,33 @@ export class EditActivityPage implements OnInit {
 	}
 
 	getActivityDetail() {
-		this.api.getActivityDetail(this.activity_id).subscribe(res => {
-			this.activityData = res;
-			delete this.activityData.created_by;
-			this.type = this.activityData.type;
-			if (this.activityData['employee_ids']) {
-				this.activityData.employee_ids = [this.activityData.employee_ids];
-			}
+		this.api.getActivityDetail(this.activity_id).subscribe(
+			res => {
+				this.activityData = res;
+				delete this.activityData.created_by;
+				this.type = this.activityData.type;
+				if (this.activityData['employee_ids']) {
+					this.activityData.employee_ids = [this.activityData.employee_ids];
+				}
 
-			this[`add_${this.type}_form`].patchValue(this.activityData);
-			// this[`add_${this.type}_form`] = this.fb.group(this.activityData);
-			// this.activityData = res;
-		});
+				this[`add_${this.type}_form`].patchValue(this.activityData);
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	getAllUsers() {
-		this.api.getUsers().subscribe(res => {
-			this.allUsers = res;
-			this.global.closeLoading();
-		});
+		this.api.getUsers().subscribe(
+			res => {
+				this.allUsers = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	updateActivity(type) {
@@ -150,8 +151,7 @@ export class EditActivityPage implements OnInit {
 				this.navCtrl.back();
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

@@ -12,8 +12,6 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class EditCompanyPage implements OnInit {
 	editCompanyForm: FormGroup;
-
-	user = this.api.getCurrentUser();
 	id: any;
 	allUsers = [];
 	validation_messages = this.global.getValidationMessages();
@@ -28,18 +26,12 @@ export class EditCompanyPage implements OnInit {
 		private route: ActivatedRoute,
 		private navCtrl: NavController
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Please wait...");
-					if (params && params.contactId) {
-						this.id = params.contactId;
-						this.getContactDetail();
-						this.getAllUsers();
-					}
-				})
-			} else {
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.contactId) {
+				this.id = params.contactId;
+				this.getContactDetail();
+				this.getAllUsers();
 			}
 		});
 	}
@@ -75,20 +67,29 @@ export class EditCompanyPage implements OnInit {
 	}
 
 	getContactDetail() {
-		this.api.getContactDetail(this.id).subscribe(response => {
-			let res: any = response;
-			res.owner = res.owner['ID'].toString();
-			this.editCompanyForm.patchValue(res);
-		});
+		this.api.getContactDetail(this.id).subscribe(
+			response => {
+				let res: any = response;
+				res.owner = res.owner['ID'].toString();
+				this.editCompanyForm.patchValue(res);
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	getAllUsers() {
-		this.api.getUsers().subscribe(res => {
-			this.allUsers = res;
-			this.global.closeLoading();
-		});
+		this.api.getUsers().subscribe(
+			res => {
+				this.allUsers = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
-
 
 	updateCompany() {
 		this.global.showLoading("bubbles", "Please wait...");
@@ -98,8 +99,7 @@ export class EditCompanyPage implements OnInit {
 				this.router.navigate(["/companies"]);
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

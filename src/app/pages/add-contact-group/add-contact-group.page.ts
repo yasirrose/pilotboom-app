@@ -12,8 +12,6 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class AddContactGroupPage implements OnInit {
 	addContactGrpForm: FormGroup;
-
-	user = this.api.getCurrentUser();
 	toggleAdvance = false;
 	validation_messages = this.global.getValidationMessages();
 
@@ -26,11 +24,6 @@ export class AddContactGroupPage implements OnInit {
 		private navCtrl: NavController,
 		private global: GlobalService
 	) {
-		this.user.subscribe(user => {
-			if (!user) {
-				this.router.navigate(["/login"]);
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -49,8 +42,7 @@ export class AddContactGroupPage implements OnInit {
 				this.router.navigate(["/contact-groups"]);
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

@@ -12,15 +12,6 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class LoginPage implements OnInit {
 	userForm: FormGroup;
-
-	user = this.api.getCurrentUser();
-	posts = [];
-
-	loginObj: object = {
-		email: '',
-		pass: ''
-	};
-
 	validation_messages = this.global.getValidationMessages();
 
 	constructor(
@@ -31,14 +22,6 @@ export class LoginPage implements OnInit {
 		private router: Router,
 		private global: GlobalService
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				// this.loadPrivatePosts();
-				this.router.navigate(["/dashboard"]);
-			} else {
-				this.posts = [];
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -56,7 +39,6 @@ export class LoginPage implements OnInit {
 				this.global.closeLoading();
 			},
 			err => {
-				this.global.closeLoading();
 				this.global.showPopup('Login Failed', err.error.message);
 			}
 		);
@@ -72,8 +54,9 @@ export class LoginPage implements OnInit {
 				toast.present();
 			},
 			err => {
-				this.global.showPopup('Sign up Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
+			
 		);
 	}
 
@@ -100,7 +83,6 @@ export class LoginPage implements OnInit {
 				}
 			]
 		});
-
 		await alert.present();
 	}
 
@@ -114,12 +96,8 @@ export class LoginPage implements OnInit {
 				toast.present();
 			},
 			err => {
-				this.global.showPopup('Reset Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
-	}
-
-	logout() {
-		this.api.logout();
 	}
 }

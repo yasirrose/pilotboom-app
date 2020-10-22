@@ -18,7 +18,6 @@ export class AddActivityPage implements OnInit {
 	addScheduleForm: FormGroup;
 	addTaskForm: FormGroup;
 
-	user = this.api.getCurrentUser();
 	contact_id: any;
 	tab = 'note';
 	allUsers: any;
@@ -35,17 +34,11 @@ export class AddActivityPage implements OnInit {
 		private toastCtrl: ToastController,
 		private navCtrl: NavController
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Please wait...");
-					if (params && params.conatctId) {
-						this.contact_id = params.conatctId;
-						this.getAllUsers();
-					}
-				})
-			} else {
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.conatctId) {
+				this.contact_id = params.conatctId;
+				this.getAllUsers();
 			}
 		});
 	}
@@ -100,10 +93,15 @@ export class AddActivityPage implements OnInit {
 	}
 
 	getAllUsers() {
-		this.api.getUsers().subscribe(res => {
-			this.allUsers = res;
-			this.global.closeLoading();
-		});
+		this.api.getUsers().subscribe(
+			res => {
+				this.allUsers = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	addActivity(type) {
@@ -131,8 +129,7 @@ export class AddActivityPage implements OnInit {
 				this.navCtrl.back();
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}
@@ -155,5 +152,4 @@ export class AddActivityPage implements OnInit {
 			this.addScheduleForm.get('notification_time_interval').updateValueAndValidity();
 		}
 	}
-
 }

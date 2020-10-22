@@ -10,15 +10,11 @@ import { RestService } from 'src/app/services/rest.service';
 	styleUrls: ['./posts.page.scss'],
 })
 export class PostsPage implements OnInit {
-
-	user = this.api.getCurrentUser();
 	posts = [];
-
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
-
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -26,14 +22,6 @@ export class PostsPage implements OnInit {
 		private api: RestService,
 		private global: GlobalService
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.loadPosts();
-			} else {
-				this.posts = [];
-				this.router.navigate(["/login"]);
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -42,6 +30,7 @@ export class PostsPage implements OnInit {
 	ionViewDidEnter() {
 		this.resetData();
 		this.global.showLoading("bubbles", "Loading...");
+		this.loadPosts();
 	}
 
 	resetData() {
@@ -52,21 +41,29 @@ export class PostsPage implements OnInit {
 	}
 
 	loadPosts(event?) {
-		this.api.getPosts(this.per_page, this.page).subscribe(res => {
-			this.posts = res;
+		this.api.getPosts(this.per_page, this.page).subscribe(
+			res => {
+				this.posts = res;
 
-			if (res.length < this.per_page) {
-				this.hasMore = false
+				if (res.length < this.per_page) {
+					this.hasMore = false
+				}
+				if (event) {
+					event.target.complete();
+				} else {
+					this.posts = [];
+				}
+				this.posts = this.posts.concat(res);
+				this.global.closeLoading();
+				this.loadView = true;
+			},
+			err => {
+				if (event) {
+					event.target.complete();
+				}
+				this.global.checkErrorStatus(err);
 			}
-			if (event) {
-				event.target.complete();
-			} else {
-				this.posts = [];
-			}
-			this.posts = this.posts.concat(res);
-			this.global.closeLoading();
-			this.loadView = true;
-		});
+		);
 	}
 
 	loadMore(event) {
@@ -74,7 +71,8 @@ export class PostsPage implements OnInit {
 		this.loadPosts(event);
 	}
 
-	userLogout() {
-		this.api.logout();
+	doRefresh(event) {
+		this.resetData();
+		this.loadPosts(event);
 	}
 }

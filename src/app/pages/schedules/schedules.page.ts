@@ -12,6 +12,8 @@ import { GlobalService } from 'src/app/services/global.service';
 	styleUrls: ['./schedules.page.scss'],
 })
 export class SchedulesPage implements OnInit {
+	schedules = [];
+	tab = 'own';
 	event = {
 		title: '',
 		desc: '',
@@ -19,22 +21,14 @@ export class SchedulesPage implements OnInit {
 		endTime: '',
 		allDay: false
 	};
-
 	minDate = new Date().toISOString();
-
 	eventSource = [];
 	viewTitle;
-
 	calendar = {
 		mode: 'month',
 		currentDate: new Date(),
 	};
-
 	@ViewChild(CalendarComponent) myCal: CalendarComponent;
-
-	user = this.api.getCurrentUser();
-	schedules = [];
-	tab = 'own';
 
 	constructor(
 		private alertCtrl: AlertController, @Inject(LOCALE_ID)
@@ -43,15 +37,8 @@ export class SchedulesPage implements OnInit {
 		private api: RestService,
 		private global: GlobalService
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.global.showLoading("bubbles", "Loading...");
-				this.getSchedules();
-			} else {
-				this.schedules = [];
-				this.router.navigate(["/login"]);
-			}
-		});
+		this.global.showLoading("bubbles", "Loading...");
+		this.getSchedules();
 	}
 
 	ngOnInit() {
@@ -144,11 +131,16 @@ export class SchedulesPage implements OnInit {
 	}
 
 	getSchedules() {
-		this.api.getSchedules(this.tab).subscribe(res => {
-			this.schedules = res;
-			this.global.closeLoading();
-			this.populateEvents();
-		});
+		this.api.getSchedules(this.tab).subscribe(
+			res => {
+				this.schedules = res;
+				this.global.closeLoading();
+				this.populateEvents();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	populateEvents() {

@@ -1,31 +1,32 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import { AlertController, ToastController, NavController, NavParams, IonContent } from '@ionic/angular';
+import { NavigationExtras, Router } from '@angular/router';
+import { AlertController, IonContent, NavController, NavParams, ToastController } from '@ionic/angular';
+import { AutoblogService } from 'src/app/services/autoblog.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
-	selector: 'app-activities',
-	templateUrl: './activities.page.html',
-	styleUrls: ['./activities.page.scss'],
+	selector: 'app-auto-blogging',
+	templateUrl: './auto-blogging.page.html',
+	styleUrls: ['./auto-blogging.page.scss'],
 	providers: [NavParams]
 })
-export class ActivitiesPage implements OnInit {
-	activities = [];
-	loadView = false;
+export class AutoBloggingPage implements OnInit {
+	posts = [];
+	loadView = true;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
-		private api: RestService,
-		private global: GlobalService,
 		private router: Router,
+		private global: GlobalService,
+		private autoBlogApi: AutoblogService,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
 		private navCtrl: NavController,
-		private navParam: NavParams
+		private navParam: NavParams,
 	) {
 	}
 
@@ -35,7 +36,7 @@ export class ActivitiesPage implements OnInit {
 	ionViewDidEnter() {
 		this.resetData();
 		this.global.showLoading("bubbles", "Loading...");
-		this.getActivities();
+		this.loadAutoBlogging();
 	}
 
 	resetData() {
@@ -45,37 +46,42 @@ export class ActivitiesPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	getActivities(event?) {
-		this.api.getActivities('', this.per_page, this.page).subscribe(
+	loadAutoBlogging(event?) {
+		this.autoBlogApi.getAutoBlog(this.per_page, this.page).subscribe(
 			res => {
+
 				if (res.length < this.per_page) {
 					this.hasMore = false
 				}
 				if (event) {
 					event.target.complete();
 				} else {
-					this.activities = [];
+					this.posts = [];
 				}
-				this.activities = this.activities.concat(res);
 				this.global.closeLoading();
-				this.loadView = true;
+				this.posts = res;
 			},
 			err => {
+				if (event) {
+					event.target.complete();
+				}
 				this.global.checkErrorStatus(err);
 			}
 		);
 	}
 
-	getSubscribers(event, id) {
+	getDetail(event, id) {
 		let navigationExtras: NavigationExtras = {
 			queryParams: {
-				contactGrpId: id
+				blogId: id
 			}
 		}
-		this.router.navigate(["/contact-group-subs"], navigationExtras);
+		this.router.navigate(["/autoblog-details"], navigationExtras);
 	}
 
-	editContactGroup(event, id) {
+	editAutoBlog(event, id) {
+		return false;
+
 		let navigationExtras: NavigationExtras = {
 			queryParams: {
 				contactGrpId: id
@@ -87,7 +93,7 @@ export class ActivitiesPage implements OnInit {
 	async delete(event, id) {
 		let alert = await this.alertCtrl.create({
 			header: 'Confirm Delete',
-			message: 'Do you really want to delete this contact group?',
+			message: 'Do you really want to delete this post?',
 			buttons: [
 				{
 					text: 'Cancel',
@@ -99,9 +105,9 @@ export class ActivitiesPage implements OnInit {
 					text: 'Delete',
 					handler: () => {
 						this.global.showLoading("bubbles", "Please wait...");
-						this.api.deleteContactGroup(id).subscribe(
+						this.autoBlogApi.delete(id).subscribe(
 							res => {
-								this.getActivities();
+								this.loadAutoBlogging();
 							},
 							err => {
 								this.global.checkErrorStatus(err);
@@ -114,29 +120,13 @@ export class ActivitiesPage implements OnInit {
 		await alert.present();
 	}
 
-	async permanentDelete(event, id) {
-		let alert = await this.alertCtrl.create({
-			header: 'Confirm Delete',
-			message: 'Do you really want to delete this contact permanently?',
-			buttons: [
-				{
-					text: 'Cancel',
-					role: 'cancel',
-					handler: () => {
-					}
-				},
-				{
-					text: 'Delete',
-					handler: () => {
-					}
-				}
-			]
-		});
-		await alert.present();
-	}
-
 	loadMore(event) {
 		this.page++;
-		this.getActivities(event);
+		// this.loadPosts(event);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.loadAutoBlogging(event);
 	}
 }

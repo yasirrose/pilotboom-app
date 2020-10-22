@@ -12,8 +12,6 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class EditContactPage implements OnInit {
 	editContactForm: FormGroup;
-
-	user = this.api.getCurrentUser();
 	id: any;
 	allUsers = [];
 	toggleAdvance = false;
@@ -27,18 +25,12 @@ export class EditContactPage implements OnInit {
 		private route: ActivatedRoute,
 		private navCtrl: NavController
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Please wait...");
-					if (params && params.contactId) {
-						this.id = params.contactId;
-						this.getContactDetail();
-						this.getAllUsers();
-					}
-				})
-			} else {
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.contactId) {
+				this.id = params.contactId;
+				this.getContactDetail();
+				this.getAllUsers();
 			}
 		});
 	}
@@ -76,11 +68,16 @@ export class EditContactPage implements OnInit {
 	}
 
 	getContactDetail() {
-		this.api.getContactDetail(this.id).subscribe(response => {
-			let res: any = response;
-			res.owner = res.owner['ID'].toString();
-			this.editContactForm.patchValue(res);
-		});
+		this.api.getContactDetail(this.id).subscribe(
+			response => {
+				let res: any = response;
+				res.owner = res.owner['ID'].toString();
+				this.editContactForm.patchValue(res);
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	getAllUsers() {
@@ -90,12 +87,10 @@ export class EditContactPage implements OnInit {
 				this.global.closeLoading();
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Error', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}
-
 
 	updateContact() {
 		this.global.showLoading("bubbles", "Please wait...");
@@ -105,8 +100,7 @@ export class EditContactPage implements OnInit {
 				this.router.navigate(["/contacts"]);
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

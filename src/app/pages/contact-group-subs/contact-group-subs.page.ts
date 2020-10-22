@@ -11,8 +11,6 @@ import { RestService } from 'src/app/services/rest.service';
 	styleUrls: ['./contact-group-subs.page.scss'],
 })
 export class ContactGroupSubsPage implements OnInit {
-
-	user = this.api.getCurrentUser();
 	subsContactData = [];
 	group_id: any;
 
@@ -25,16 +23,9 @@ export class ContactGroupSubsPage implements OnInit {
 		private toastCtrl: ToastController,
 		private modalCtrl: ModalController,
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					if (params && params.contactGrpId) {
-						this.group_id = params.contactGrpId;
-					}
-				})
-			} else {
-				this.subsContactData = [];
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			if (params && params.contactGrpId) {
+				this.group_id = params.contactGrpId;
 			}
 		});
 	}
@@ -48,10 +39,15 @@ export class ContactGroupSubsPage implements OnInit {
 	}
 
 	getSubsContacts() {
-		this.api.getContactGrpSubs(this.group_id).subscribe(res => {
-			this.subsContactData = res;
-			this.global.closeLoading();
-		});
+		this.api.getContactGrpSubs(this.group_id).subscribe(
+			res => {
+				this.subsContactData = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	async unsubscribe(event, contact_id) {
@@ -69,9 +65,14 @@ export class ContactGroupSubsPage implements OnInit {
 					text: 'Delete',
 					handler: () => {
 						this.global.showLoading("bubbles", "Please wait...");
-						this.api.unsubContact(this.group_id, contact_id).subscribe(res => {
-							this.getSubsContacts();
-						});
+						this.api.unsubContact(this.group_id, contact_id).subscribe(
+							res => {
+								this.getSubsContacts();
+							},
+							err => {
+								this.global.checkErrorStatus(err);
+							}
+						);
 					}
 				}
 			]

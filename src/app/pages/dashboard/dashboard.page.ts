@@ -11,7 +11,6 @@ import { RestService } from 'src/app/services/rest.service';
 	providers: [NavParams]
 })
 export class DashboardPage implements OnInit {
-	user = this.api.getCurrentUser();
 	contact = 0;
 	contact_customer = 0;
 	contact_lead = 0;
@@ -35,11 +34,6 @@ export class DashboardPage implements OnInit {
 		private navCtrl: NavController,
 		private navParam: NavParams,
 	) {
-		this.user.subscribe(user => {
-			if (!user) {
-				this.router.navigate(["/login"]);
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -55,12 +49,17 @@ export class DashboardPage implements OnInit {
 	}
 
 	getDashboardInfo() {
-		this.api.CountCrmContacts().subscribe(res => {
-			this.reset();
-			this.setData(res);
-			this.loadView = true;
-			this.global.closeLoading();
-		});
+		this.api.CountCrmContacts().subscribe(
+			res => {
+				this.reset();
+				this.setData(res);
+				this.loadView = true;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	reset() {
@@ -77,7 +76,7 @@ export class DashboardPage implements OnInit {
 		this.company_subscriber = 0;
 	}
 
-	setData(data){
+	setData(data) {
 		this.contact = data.contact.all.count;
 		this.contact_customer = data.contact.customer.count
 		this.contact_lead = data.contact.lead.count

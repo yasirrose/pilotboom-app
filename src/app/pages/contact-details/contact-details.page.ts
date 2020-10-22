@@ -11,7 +11,6 @@ import { RestService } from 'src/app/services/rest.service';
 })
 
 export class ContactDetailsPage implements OnInit {
-	user = this.api.getCurrentUser();
 	contactData = [];
 	contact_id: any;
 	openActSection = false;
@@ -24,18 +23,11 @@ export class ContactDetailsPage implements OnInit {
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Please wait...");
-					if (params && params.contactId) {
-						this.contact_id = params.contactId;
-						this.getContact();
-					}
-				})
-			} else {
-				this.contactData = [];
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.contactId) {
+				this.contact_id = params.contactId;
+				this.getContact();
 			}
 		});
 	}
@@ -44,10 +36,15 @@ export class ContactDetailsPage implements OnInit {
 	}
 
 	getContact() {
-		this.api.getContactDetail(this.contact_id).subscribe(res => {
-			this.contactData = res;
-			this.global.closeLoading();
-		});
+		this.api.getContactDetail(this.contact_id).subscribe(
+			res => {
+				this.contactData = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	showActivity() {

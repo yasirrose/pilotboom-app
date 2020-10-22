@@ -3,6 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LoadingController, AlertController, ToastController } from '@ionic/angular';
 // import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { environment } from '../../environments/environment';
+import { RestService } from './rest.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,6 +17,7 @@ export class GlobalService {
 		private loadingCtrl: LoadingController,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
+		private restApi: RestService
 		// private iab: InAppBrowser
 	) {
 	}
@@ -124,11 +126,21 @@ export class GlobalService {
 	}
 
 	async showPopup(header, message) {
+		this.closeLoading();
 		const alert = await this.alertCtrl.create({
 			header: header,
 			message: message,
 			buttons: ['OK']
 		});
 		await alert.present();
+	}
+
+	checkErrorStatus(error, header='Failed') {
+		this.closeLoading();
+		if (error.status == 403 || error.status == 401) {
+			this.restApi.logout();
+		} else {
+			this.showPopup(header, error.error.message);
+		}
 	}
 }

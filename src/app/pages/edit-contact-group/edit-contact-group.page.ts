@@ -12,8 +12,6 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class EditContactGroupPage implements OnInit {
 	editContactGrpForm: FormGroup;
-
-	user = this.api.getCurrentUser();
 	toggleAdvance = false;
 	id: any;
 	validation_messages = this.global.getValidationMessages();
@@ -28,20 +26,12 @@ export class EditContactGroupPage implements OnInit {
 		private route: ActivatedRoute,
 		private navCtrl: NavController
 	) {
-		this.user.subscribe(user => {
-			this.user.subscribe(user => {
-				if (user) {
-					this.route.queryParams.subscribe(params => {
-						this.global.showLoading("bubbles", "Please wait...");
-						if (params && params.contactGrpId) {
-							this.id = params.contactGrpId;
-							this.getContactGrpDetail();
-						}
-					})
-				} else {
-					this.router.navigate(["/login"]);
-				}
-			});
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.contactGrpId) {
+				this.id = params.contactGrpId;
+				this.getContactGrpDetail();
+			}
 		});
 	}
 
@@ -54,10 +44,15 @@ export class EditContactGroupPage implements OnInit {
 	}
 
 	getContactGrpDetail() {
-		this.api.getContactGroupDetail(this.id).subscribe(res => {
-			this.editContactGrpForm.patchValue(res);
-			this.global.closeLoading();
-		});
+		this.api.getContactGroupDetail(this.id).subscribe(
+			res => {
+				this.editContactGrpForm.patchValue(res);
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	updateContactGrp() {
@@ -68,8 +63,7 @@ export class EditContactGroupPage implements OnInit {
 				this.router.navigate(["/contact-groups"]);
 			},
 			err => {
-				this.global.closeLoading();
-				this.global.showPopup('Failed', err.error.message);
+				this.global.checkErrorStatus(err);
 			}
 		);
 	}

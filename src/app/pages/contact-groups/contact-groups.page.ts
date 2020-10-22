@@ -11,13 +11,11 @@ import { RestService } from 'src/app/services/rest.service';
 	providers: [NavParams]
 })
 export class ContactGroupsPage implements OnInit {
-	user = this.api.getCurrentUser();
 	loadView = false;
 	contactGroups = [];
 	page = 1;
 	per_page = 10;
 	hasMore = true;
-
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -29,11 +27,6 @@ export class ContactGroupsPage implements OnInit {
 		private navCtrl: NavController,
 		private navParam: NavParams
 	) {
-		this.user.subscribe(user => {
-			if (!user) {
-				this.router.navigate(["/login"]);
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -53,19 +46,24 @@ export class ContactGroupsPage implements OnInit {
 	}
 
 	getContactGroups(event?) {
-		this.api.getCrmContactGroups(this.page, this.per_page).subscribe(res => {
-			if (res.length < this.per_page) {
-				this.hasMore = false
+		this.api.getCrmContactGroups(this.page, this.per_page).subscribe(
+			res => {
+				if (res.length < this.per_page) {
+					this.hasMore = false
+				}
+				if (event) {
+					event.target.complete();
+				} else {
+					this.contactGroups = [];
+				}
+				this.contactGroups = this.contactGroups.concat(res);
+				this.global.closeLoading();
+				this.loadView = true;
+			},
+			err => {
+				this.global.checkErrorStatus(err);
 			}
-			if (event) {
-				event.target.complete();
-			} else {
-				this.contactGroups = [];
-			}
-			this.contactGroups = this.contactGroups.concat(res);
-			this.global.closeLoading();
-			this.loadView = true;
-		});
+		);
 	}
 
 	getSubscribers(event, id) {
@@ -101,9 +99,14 @@ export class ContactGroupsPage implements OnInit {
 					text: 'Delete',
 					handler: () => {
 						this.global.showLoading("bubbles", "Please wait...");
-						this.api.deleteContactGroup(id).subscribe(res => {
-							this.getContactGroups();
-						});
+						this.api.deleteContactGroup(id).subscribe(
+							res => {
+								this.getContactGroups();
+							},
+							err => {
+								this.global.checkErrorStatus(err);
+							}
+						);
 					}
 				}
 			]

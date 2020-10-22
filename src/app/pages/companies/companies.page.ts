@@ -11,7 +11,6 @@ import { RestService } from 'src/app/services/rest.service';
 	providers: [NavParams]
 })
 export class CompaniesPage implements OnInit {
-	user = this.api.getCurrentUser();
 	categories = 'All';
 	companies = [];
 	customer = [];
@@ -24,7 +23,6 @@ export class CompaniesPage implements OnInit {
 	page = 1;
 	per_page = 10;
 	hasMore = true;
-
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -36,12 +34,6 @@ export class CompaniesPage implements OnInit {
 		private navCtrl: NavController,
 		private navParam: NavParams,
 	) {
-		this.user.subscribe(user => {
-			if (!user) {
-				this.companies = [];
-				this.router.navigate(["/login"]);
-			}
-		});
 	}
 
 	ngOnInit() {
@@ -61,31 +53,36 @@ export class CompaniesPage implements OnInit {
 	}
 
 	getContacts(event?) {
-		this.api.getCrmContacts('company', 'all', this.per_page, this.page).subscribe(res => {
-			let all_length = res.length;
-			if (!event) {
-				this.companies = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
-			}
-			this.companies = this.companies.concat(res);
-			for (let i = 0; i < res.length; i++) {
-				const elem = res[i];
-				this[elem.life_stage].push(elem);
-			}
-			this.loadView = true;
-			//Getting Trashed Contacts
-			this.api.getCrmContacts('company', 'trash', this.per_page, this.page).subscribe(trashed => {
-				if (all_length < this.per_page && trashed.length < this.per_page) {
-					this.hasMore = false
+		this.api.getCrmContacts('company', 'all', this.per_page, this.page).subscribe(
+			res => {
+				let all_length = res.length;
+				if (!event) {
+					this.companies = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
 				}
-				if (event) {
-					event.target.complete();
-				} else {
-					this.trash = [];
+				this.companies = this.companies.concat(res);
+				for (let i = 0; i < res.length; i++) {
+					const elem = res[i];
+					this[elem.life_stage].push(elem);
 				}
-				this.trash = this.trash.concat(trashed);
-				this.global.closeLoading();
-			});
-		});
+				this.loadView = true;
+				//Getting Trashed Contacts
+				this.api.getCrmContacts('company', 'trash', this.per_page, this.page).subscribe(trashed => {
+					if (all_length < this.per_page && trashed.length < this.per_page) {
+						this.hasMore = false
+					}
+					if (event) {
+						event.target.complete();
+					} else {
+						this.trash = [];
+					}
+					this.trash = this.trash.concat(trashed);
+					this.global.closeLoading();
+				});
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	getDetail(event, id) {
@@ -121,10 +118,15 @@ export class CompaniesPage implements OnInit {
 					text: 'Delete',
 					handler: () => {
 						this.global.showLoading("bubbles", "Please wait...");
-						this.api.deleteCompany(id).subscribe(res => {
-							this.resetData();
-							this.getContacts();
-						});
+						this.api.deleteCompany(id).subscribe(
+							res => {
+								this.resetData();
+								this.getContacts();
+							},
+							err => {
+								this.global.checkErrorStatus(err);
+							}
+						);
 					}
 				}
 			]
@@ -146,9 +148,6 @@ export class CompaniesPage implements OnInit {
 				{
 					text: 'Delete',
 					handler: () => {
-						// this.api.deleteContact(id).subscribe(res => {
-						// 	this.getContacts();
-						// });
 					}
 				}
 			]

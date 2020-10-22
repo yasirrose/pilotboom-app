@@ -3,7 +3,7 @@
 		<ion-buttons slot="start">
 			<ion-back-button color="light" text="" mode="md"></ion-back-button>
 		</ion-buttons>
-		<ion-title>Posts</ion-title>
+		<ion-title>Auto Blogging Posts</ion-title>
 		<ion-buttons slot="end">
 			<ion-menu-button color="light" text="">
 				<img src="./../../assets/icon/menu-icon.png" alt="" />
@@ -12,6 +12,18 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
+	<div class="ion-flex inline-filters">
+		<ion-button fill="solid" shape="round" color="danger" routerLink="/">
+			<ion-icon name="add-outline"></ion-icon> Add New Post
+		</ion-button>
+		<!-- <ion-button fill="solid" shape="round" color="danger" routerLink="/addcontact">
+			<ion-icon name="add-outline"></ion-icon> View all Subscribers
+		</ion-button> -->
+
+		<!-- <ion-button color="light" fill="solid" shape="round">
+			<ion-icon name="search"></ion-icon>
+		</ion-button> -->
+	</div>
 	<div *ngIf="loadView">
 		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
 			<ion-refresher-content></ion-refresher-content>
@@ -20,19 +32,19 @@
 			<ion-card mode="md" *ngFor="let post of posts; index as i">
 				<ion-card-content>
 					<div class="detail-wrap">
-						<!-- <div class="top-right-btn">
+						<div class="top-right-btn">
 							<ion-button fill="solid" shape="round" color="danger"
-								(click)="editContactGroup($event, contact.id)">
+								(click)="editAutoBlog($event, post.id)">
 								<ion-icon name="pencil-sharp"></ion-icon>
 							</ion-button>
 							<ion-button fill="solid" shape="round" color="danger"
-								(click)="getSubscribers($event, contact.id)">
+								(click)="getDetail($event, post.id)">
 								<ion-icon name="eye-sharp"></ion-icon>
 							</ion-button>
-							<ion-button fill="solid" shape="round" color="danger" (click)="delete($event, contact.id)">
+							<ion-button fill="solid" shape="round" color="danger" (click)="delete($event, post.id)">
 								<ion-icon name="trash-sharp"></ion-icon>
 							</ion-button>
-						</div> -->
+						</div>
 						<div class="left-detail">
 							<ul>
 								<li>
@@ -40,16 +52,12 @@
 									<span>Title: {{post.title.rendered}}</span>
 								</li>
 								<li>
-									<ion-icon name="reader-outline"></ion-icon>
-									<span [innerHTML]="'Description: '+ post.content.rendered"></span>
-								</li>
-								<li>
 									<ion-icon name="lock-open-outline"></ion-icon>
-									<span>Status: {{post.ping_status}}</span>
+									<span>Status: {{post.status}}</span>
 								</li>
 								<li>
 									<ion-icon name="calendar-outline"></ion-icon>
-									<span>Date: {{post.date}}</span>
+									<span>Type: {{post.type}}</span>
 								</li>
 							</ul>
 						</div>

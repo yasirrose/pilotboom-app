@@ -10,7 +10,6 @@ import { RestService } from 'src/app/services/rest.service';
 	styleUrls: ['./company-details.page.scss'],
 })
 export class CompanyDetailsPage implements OnInit {
-	user = this.api.getCurrentUser();
 	contactData = [];
 	constructor(
 		private api: RestService,
@@ -20,17 +19,10 @@ export class CompanyDetailsPage implements OnInit {
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Please wait...");
-					if (params && params.contactId) {
-						this.getContact(params.contactId);
-					}
-				})
-			} else {
-				this.contactData = [];
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Please wait...");
+			if (params && params.contactId) {
+				this.getContact(params.contactId);
 			}
 		});
 	}
@@ -39,10 +31,15 @@ export class CompanyDetailsPage implements OnInit {
 	}
 
 	getContact(id) {
-		this.api.getContactDetail(id).subscribe(res => {
-			this.contactData = res;
-			this.global.closeLoading();
-		});
+		this.api.getContactDetail(id).subscribe(
+			res => {
+				this.contactData = res;
+				this.global.closeLoading();
+			},
+			err => {
+				this.global.checkErrorStatus(err);
+			}
+		);
 	}
 
 	showActivity() {

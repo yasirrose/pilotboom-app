@@ -14,7 +14,7 @@ if (production) {
 }
 
 export const environment = {
-	production: false,
+	production: production,
 	environmentName: 'Development Environment',
 	ionicEnvName: 'dev',
 	baseUrl: baseUrl,

@@ -10,16 +10,13 @@ import { RestService } from 'src/app/services/rest.service';
 	styleUrls: ['./contact-activities.page.scss'],
 })
 export class ContactActivitiesPage implements OnInit {
-	user = this.api.getCurrentUser();
 	contactActivities = [];
 	contactData: any;
 	openActSection = false;
-
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
-
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -29,20 +26,12 @@ export class ContactActivitiesPage implements OnInit {
 		private route: ActivatedRoute,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
-
 	) {
-		this.user.subscribe(user => {
-			if (user) {
-				this.route.queryParams.subscribe(params => {
-					this.global.showLoading("bubbles", "Loading...");
-					if (params && params.id) {
-						this.contactData = params;
-						this.getContactActivities();
-					}
-				})
-			} else {
-				this.contactData = [];
-				this.router.navigate(["/login"]);
+		this.route.queryParams.subscribe(params => {
+			this.global.showLoading("bubbles", "Loading...");
+			if (params && params.id) {
+				this.contactData = params;
+				this.getContactActivities();
 			}
 		});
 	}
@@ -52,19 +41,24 @@ export class ContactActivitiesPage implements OnInit {
 	}
 
 	getContactActivities(event?) {
-		this.api.getActivities(this.contactData.id, this.per_page, this.page).subscribe(res => {
-			if (res.length < this.per_page) {
-				this.hasMore = false
+		this.api.getActivities(this.contactData.id, this.per_page, this.page).subscribe(
+			res => {
+				if (res.length < this.per_page) {
+					this.hasMore = false
+				}
+				if (event) {
+					event.target.complete();
+				} else {
+					this.contactActivities = [];
+				}
+				this.contactActivities = this.contactActivities.concat(res);
+				this.global.closeLoading();
+				this.loadView = true;
+			},
+			err => {
+				this.global.checkErrorStatus(err);
 			}
-			if (event) {
-				event.target.complete();
-			} else {
-				this.contactActivities = [];
-			}
-			this.contactActivities = this.contactActivities.concat(res);
-			this.global.closeLoading();
-			this.loadView = true;
-		});
+		);
 	}
 
 	resetData() {
@@ -102,16 +96,20 @@ export class ContactActivitiesPage implements OnInit {
 					text: 'Cancel',
 					role: 'cancel',
 					handler: () => {
-						// console.log('cancelled');
 					}
 				},
 				{
 					text: 'Delete',
 					handler: () => {
 						this.global.showLoading("bubbles", "Please wait...");
-						this.api.deleteActivity(id).subscribe(res => {
-							this.getContactActivities();
-						});
+						this.api.deleteActivity(id).subscribe(
+							res => {
+								this.getContactActivities();
+							},
+							err => {
+								this.global.checkErrorStatus(err);
+							}
+						);
 					}
 				}
 			]
