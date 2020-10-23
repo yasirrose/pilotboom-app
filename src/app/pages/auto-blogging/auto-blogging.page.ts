@@ -3,7 +3,6 @@ import { NavigationExtras, Router } from '@angular/router';
 import { AlertController, IonContent, NavController, NavParams, ToastController } from '@ionic/angular';
 import { AutoblogService } from 'src/app/services/autoblog.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { RestService } from 'src/app/services/rest.service';
 
 @Component({
 	selector: 'app-auto-blogging',
@@ -13,7 +12,7 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class AutoBloggingPage implements OnInit {
 	posts = [];
-	loadView = true;
+	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
@@ -46,20 +45,25 @@ export class AutoBloggingPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	loadAutoBlogging(event?) {
+	loadAutoBlogging(event?, scroll = false) {
 		this.autoBlogApi.getAutoBlog(this.per_page, this.page).subscribe(
 			res => {
-
 				if (res.length < this.per_page) {
-					this.hasMore = false
+					this.hasMore = false;
+				} else {
+					this.hasMore = true;
 				}
 				if (event) {
+					if (scroll) {
+						this.posts = [];
+					}
 					event.target.complete();
 				} else {
 					this.posts = [];
 				}
 				this.global.closeLoading();
-				this.posts = res;
+				this.posts = this.posts.concat(res);
+				this.loadView = true;
 			},
 			err => {
 				if (event) {
@@ -80,14 +84,12 @@ export class AutoBloggingPage implements OnInit {
 	}
 
 	editAutoBlog(event, id) {
-		return false;
-
 		let navigationExtras: NavigationExtras = {
 			queryParams: {
-				contactGrpId: id
+				blogId: id
 			}
 		}
-		this.router.navigate(["/edit-contact-group"], navigationExtras);
+		this.router.navigate(["/edit-autoblog"], navigationExtras);
 	}
 
 	async delete(event, id) {
@@ -122,11 +124,11 @@ export class AutoBloggingPage implements OnInit {
 
 	loadMore(event) {
 		this.page++;
-		// this.loadPosts(event);
+		this.loadAutoBlogging(event);
 	}
 
 	doRefresh(event) {
 		this.resetData();
-		this.loadAutoBlogging(event);
+		this.loadAutoBlogging(event, true);
 	}
 }

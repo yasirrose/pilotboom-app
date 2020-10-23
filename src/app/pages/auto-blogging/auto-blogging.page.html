@@ -12,19 +12,15 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-	<div class="ion-flex inline-filters">
-		<ion-button fill="solid" shape="round" color="danger" routerLink="/">
-			<ion-icon name="add-outline"></ion-icon> Add New Post
-		</ion-button>
-		<!-- <ion-button fill="solid" shape="round" color="danger" routerLink="/addcontact">
-			<ion-icon name="add-outline"></ion-icon> View all Subscribers
-		</ion-button> -->
-
-		<!-- <ion-button color="light" fill="solid" shape="round">
+	<div *ngIf="loadView">
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" routerLink="/add-autoblog">
+				<ion-icon name="add-outline"></ion-icon> Add New Post
+			</ion-button>
+			<!-- <ion-button color="light" fill="solid" shape="round">
 			<ion-icon name="search"></ion-icon>
 		</ion-button> -->
-	</div>
-	<div *ngIf="loadView">
+		</div>
 		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
 			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
@@ -37,8 +33,7 @@
 								(click)="editAutoBlog($event, post.id)">
 								<ion-icon name="pencil-sharp"></ion-icon>
 							</ion-button>
-							<ion-button fill="solid" shape="round" color="danger"
-								(click)="getDetail($event, post.id)">
+							<ion-button fill="solid" shape="round" color="danger" (click)="getDetail($event, post.id)">
 								<ion-icon name="eye-sharp"></ion-icon>
 							</ion-button>
 							<ion-button fill="solid" shape="round" color="danger" (click)="delete($event, post.id)">

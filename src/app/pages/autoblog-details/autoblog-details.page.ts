@@ -23,7 +23,7 @@ export class AutoblogDetailsPage implements OnInit {
 			this.global.showLoading("bubbles", "Please wait...");
 			if (params && params.blogId) {
 				this.blog_id = params.blogId;
-				this.getContact();
+				this.getBlog();
 			}
 		});
 	}
@@ -31,12 +31,9 @@ export class AutoblogDetailsPage implements OnInit {
 	ngOnInit() {
 	}
 
-	getContact() {
+	getBlog() {
 		this.autoBlogApi.getAutoBlogDetail(this.blog_id).subscribe(
 			res => {
-
-				console.log(res);
-
 				this.blogData = res;
 				this.global.closeLoading();
 			},
@@ -46,10 +43,12 @@ export class AutoblogDetailsPage implements OnInit {
 		);
 	}
 
-	// showActivity() {
-	// 	let navigationExtras: NavigationExtras = {
-	// 		queryParams: this.blogData
-	// 	}
-	// 	this.router.navigate(["/contact-activities"], navigationExtras);
-	// }
+	editPost(id) {
+		let navigationExtras: NavigationExtras = {
+			queryParams: {
+				blogId: id
+			}
+		}
+		this.router.navigate(["/edit-autoblog"], navigationExtras);
+	}
 }

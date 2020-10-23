@@ -24,7 +24,6 @@ export class AutoblogService {
 	}
 
 	getAutoBlog(per_page = 10, page = 1) {
-		console.log('hererere');
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
 		return this.http.get<any[]>(`${environment.apiUrl}/autoblog/v1/blogs?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
@@ -50,4 +49,19 @@ export class AutoblogService {
 		);
 	}
 
+	addAutoBlog(formData) {
+		return this.http.post(`${environment.apiUrl}/autoblog/v1/blogs`, formData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	updateAutoBlog(formData, id) {
+		return this.http.put(`${environment.apiUrl}/autoblog/v1/blogs/${id}`, formData).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
 }

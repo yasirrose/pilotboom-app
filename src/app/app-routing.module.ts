@@ -121,6 +121,18 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/autoblog-details/autoblog-details.module').then(m => m.AutoblogDetailsPageModule),
 		canActivate: [AuthGuard]
 	},
+	{
+		path: 'add-autoblog',
+		loadChildren: () => import('./pages/add-autoblog/add-autoblog.module').then(m => m.AddAutoblogPageModule),
+		canActivate: [AuthGuard]
+	},
+	{
+		path: 'edit-autoblog',
+		loadChildren: () => import('./pages/edit-autoblog/edit-autoblog.module').then(m => m.EditAutoblogPageModule),
+		canActivate: [AuthGuard]
+	},
+
+
 
 ];
 

@@ -55,6 +55,8 @@ export class PostsPage implements OnInit {
 				}
 				this.posts = this.posts.concat(res);
 				this.global.closeLoading();
+				console.log('Before', this.posts);
+				console.log('After', this.global.filterObjectByValue(this.posts, 'id', 1, 'remove'));
 				this.loadView = true;
 			},
 			err => {

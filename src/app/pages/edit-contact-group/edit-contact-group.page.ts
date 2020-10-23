@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -20,11 +19,8 @@ export class EditContactGroupPage implements OnInit {
 		private api: RestService,
 		private global: GlobalService,
 		private fb: FormBuilder,
-		private alertCtrl: AlertController,
-		private toastCtrl: ToastController,
 		private router: Router,
 		private route: ActivatedRoute,
-		private navCtrl: NavController
 	) {
 		this.route.queryParams.subscribe(params => {
 			this.global.showLoading("bubbles", "Please wait...");

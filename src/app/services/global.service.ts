@@ -135,12 +135,26 @@ export class GlobalService {
 		await alert.present();
 	}
 
-	checkErrorStatus(error, header='Failed') {
+	checkErrorStatus(error, header = 'Failed') {
 		this.closeLoading();
 		if (error.status == 403 || error.status == 401) {
 			this.restApi.logout();
 		} else {
 			this.showPopup(header, error.error.message);
 		}
+	}
+
+	filterObjectByValue(objArray, key, value, type = 'remove') {
+		return objArray.filter(obj => {
+			if (type == 'remove') {
+				return obj[key] != value;
+			} else if (type == 'get') {
+				return obj[key] == value;
+			}
+		});
+	}
+
+	stripHtmlTags(text) {
+		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	}
 }
