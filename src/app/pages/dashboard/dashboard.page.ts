@@ -48,21 +48,23 @@ export class DashboardPage implements OnInit {
 		this.api.logout();
 	}
 
-	getDashboardInfo() {
+	getDashboardInfo(event?) {
 		this.api.CountCrmContacts().subscribe(
 			res => {
-				this.reset();
+				event ? event.target.complete() : '';
+				this.resetData();
 				this.setData(res);
 				this.loadView = true;
 				this.global.closeLoading();
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
 	}
 
-	reset() {
+	resetData() {
 		this.contact = 0;
 		this.contact_customer = 0;
 		this.contact_lead = 0;
@@ -88,5 +90,9 @@ export class DashboardPage implements OnInit {
 		this.company_lead = data.company.lead.count
 		this.company_opportunity = data.company.opportunity.count
 		this.company_subscriber = data.company.subscriber.count
+	}
+
+	doRefresh(event) {
+		this.getDashboardInfo(event);
 	}
 }

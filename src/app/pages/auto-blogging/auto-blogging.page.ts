@@ -45,30 +45,22 @@ export class AutoBloggingPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	loadAutoBlogging(event?, scroll = false) {
+	loadAutoBlogging(event?, refresh?) {
 		this.autoBlogApi.getAutoBlog(this.per_page, this.page).subscribe(
 			res => {
-				if (res.length < this.per_page) {
-					this.hasMore = false;
-				} else {
-					this.hasMore = true;
-				}
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (event) {
-					if (scroll) {
-						this.posts = [];
-					}
+					this.posts = refresh ? [] : this.posts;
 					event.target.complete();
 				} else {
 					this.posts = [];
 				}
-				this.global.closeLoading();
 				this.posts = this.posts.concat(res);
+				this.global.closeLoading();
 				this.loadView = true;
 			},
 			err => {
-				if (event) {
-					event.target.complete();
-				}
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
@@ -109,7 +101,8 @@ export class AutoBloggingPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.autoBlogApi.delete(id).subscribe(
 							res => {
-								this.loadAutoBlogging();
+								this.posts = this.global.filterObjectByValue(this.posts, 'id', id, 'remove');
+								this.global.closeLoading();
 							},
 							err => {
 								this.global.checkErrorStatus(err);

@@ -40,23 +40,19 @@ export class PostsPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	loadPosts(event?) {
+	loadPosts(event?, refresh?) {
 		this.api.getPosts(this.per_page, this.page).subscribe(
 			res => {
-				this.posts = res;
-
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (event) {
+					this.posts = refresh ? [] : this.posts;
 					event.target.complete();
 				} else {
 					this.posts = [];
 				}
+
 				this.posts = this.posts.concat(res);
 				this.global.closeLoading();
-				console.log('Before', this.posts);
-				console.log('After', this.global.filterObjectByValue(this.posts, 'id', 1, 'remove'));
 				this.loadView = true;
 			},
 			err => {
@@ -75,6 +71,6 @@ export class PostsPage implements OnInit {
 
 	doRefresh(event) {
 		this.resetData();
-		this.loadPosts(event);
+		this.loadPosts(event, true);
 	}
 }

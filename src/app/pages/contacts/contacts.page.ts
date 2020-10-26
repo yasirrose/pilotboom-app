@@ -23,7 +23,6 @@ export class ContactsPage implements OnInit {
 	page = 1;
 	per_page = 10;
 	hasMore = true;
-
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -53,37 +52,40 @@ export class ContactsPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	getContacts(event?) {
+	resetContactsData() {
+		this.contacts = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = []; this.trash = [];
+	}
+
+	getContacts(event?, refresh?) {
 		this.api.getCrmContacts('contact', 'all', this.per_page, this.page).subscribe(
 			res => {
 				let all_length = res.length;
-				if (!event) {
-					this.contacts = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
+				if (!event || refresh) {
+					this.resetContactsData();
 				}
 				this.contacts = this.contacts.concat(res);
-				for (let i = 0; i < res.length; i++) {
-					const elem = res[i];
-					this[elem.life_stage].push(elem);
-				}
+				this.setCategoriesData(res);
 				this.loadView = true;
 				//Getting Trashed Contacts
 				this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
-					if (all_length < this.per_page && trashed.length < this.per_page) {
-						this.hasMore = false
-					}
-					if (event) {
-						event.target.complete();
-					} else {
-						this.trash = [];
-					}
+					this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
+					event ? event.target.complete() : '';
 					this.trash = this.trash.concat(trashed);
 					this.global.closeLoading();
 				});
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
+	}
+
+	setCategoriesData(result) {
+		for (let i = 0; i < result.length; i++) {
+			const elem = result[i];
+			this[elem.life_stage].push(elem);
+		}
 	}
 
 	getDetail(event, id) {
@@ -121,8 +123,11 @@ export class ContactsPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteContact(id).subscribe(
 							res => {
-								this.resetData();
-								this.getContacts();
+								this.contacts = this.global.filterObjectByValue(this.contacts, 'id', id, 'remove');
+								this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
+								this.setCategoriesData(this.contacts);
+								this.trash.unshift(res);
+								this.global.closeLoading();
 							},
 							err => {
 								this.global.checkErrorStatus(err);
@@ -149,9 +154,6 @@ export class ContactsPage implements OnInit {
 				{
 					text: 'Delete',
 					handler: () => {
-						// this.api.deleteContact(id).subscribe(res => {
-						// 	this.getContacts();
-						// });
 					}
 				}
 			]
@@ -162,5 +164,10 @@ export class ContactsPage implements OnInit {
 	loadMore(event) {
 		this.page++;
 		this.getContacts(event);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.getContacts(event, true);
 	}
 }

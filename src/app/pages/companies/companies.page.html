@@ -41,6 +41,9 @@
 			<ion-icon name="search"></ion-icon>
 		</ion-button> -->
 		</div>
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
 		<div [ngSwitch]="categories">
 			<div *ngSwitchCase="'All'">
 				<div *ngIf="companies.length > 0; else no_result">
@@ -84,22 +87,32 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<div class="action-group">
+									<!-- <div class="action-group">
 										<ion-select placeholder="Select">
 											<ion-select-option value="New">New Campaign</ion-select-option>
 											<ion-select-option value="Test">Test Campaign</ion-select-option>
 											<ion-select-option value="Old">Old Campaign</ion-select-option>
 										</ion-select>
 										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</ion-card-content>
 					</ion-card>
-					<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore">
+					<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)"
+						*ngIf="hasMore; else no_more">
 						<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
 						</ion-infinite-scroll-content>
 					</ion-infinite-scroll>
+					<ng-template #no_more>
+						<ion-card mode="md">
+							<div class="no_more">
+								<ion-card-content>
+									<h3>No more data</h3>
+								</ion-card-content>
+							</div>
+						</ion-card>
+					</ng-template>
 				</div>
 				<ng-template #no_result>
 					<ion-card mode="md">
@@ -151,14 +164,14 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<div class="action-group">
+									<!-- <div class="action-group">
 										<ion-select placeholder="Select">
 											<ion-select-option value="New">New Campaign</ion-select-option>
 											<ion-select-option value="Test">Test Campaign</ion-select-option>
 											<ion-select-option value="Old">Old Campaign</ion-select-option>
 										</ion-select>
 										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</ion-card-content>
@@ -214,14 +227,14 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<div class="action-group">
+									<!-- <div class="action-group">
 										<ion-select placeholder="Select">
 											<ion-select-option value="New">New Campaign</ion-select-option>
 											<ion-select-option value="Test">Test Campaign</ion-select-option>
 											<ion-select-option value="Old">Old Campaign</ion-select-option>
 										</ion-select>
 										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</ion-card-content>
@@ -278,14 +291,14 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<div class="action-group">
+									<!-- <div class="action-group">
 										<ion-select placeholder="Select">
 											<ion-select-option value="New">New Campaign</ion-select-option>
 											<ion-select-option value="Test">Test Campaign</ion-select-option>
 											<ion-select-option value="Old">Old Campaign</ion-select-option>
 										</ion-select>
 										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</ion-card-content>
@@ -341,14 +354,14 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<div class="action-group">
+									<!-- <div class="action-group">
 										<ion-select placeholder="Select">
 											<ion-select-option value="New">New Campaign</ion-select-option>
 											<ion-select-option value="Test">Test Campaign</ion-select-option>
 											<ion-select-option value="Old">Old Campaign</ion-select-option>
 										</ion-select>
 										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</ion-card-content>
@@ -376,9 +389,6 @@
 										(click)="getDetail($event, contact.id)">
 										<ion-icon name="eye-sharp"></ion-icon>
 									</ion-button>
-									<!-- <ion-button fill="solid" shape="round" color="danger" (click)="permanentDelete($event, contact.id)">
-                      <ion-icon name="trash-sharp"></ion-icon>
-                    </ion-button> -->
 								</div>
 								<div class="left-detail">
 									<ul>
@@ -403,14 +413,14 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<div class="action-group">
+									<!-- <div class="action-group">
 										<ion-select placeholder="Select">
 											<ion-select-option value="New">New Campaign</ion-select-option>
 											<ion-select-option value="Test">Test Campaign</ion-select-option>
 											<ion-select-option value="Old">Old Campaign</ion-select-option>
 										</ion-select>
 										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</ion-card-content>

@@ -40,13 +40,19 @@ export class ContactActivitiesPage implements OnInit {
 		this.resetData();
 	}
 
-	getContactActivities(event?) {
+	resetData() {
+		this.hasMore = true;
+		this.page = 1;
+		this.per_page = 10;
+		// this.content.scrollToTop();
+	}
+
+	getContactActivities(event?, refresh?) {
 		this.api.getActivities(this.contactData.id, this.per_page, this.page).subscribe(
 			res => {
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (event) {
+					this.contactActivities = refresh ? [] : this.contactActivities;
 					event.target.complete();
 				} else {
 					this.contactActivities = [];
@@ -56,16 +62,10 @@ export class ContactActivitiesPage implements OnInit {
 				this.loadView = true;
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
-	}
-
-	resetData() {
-		this.hasMore = true;
-		this.page = 1;
-		this.per_page = 10;
-		// this.content.scrollToTop();
 	}
 
 	addActivityPage() {
@@ -104,7 +104,8 @@ export class ContactActivitiesPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteActivity(id).subscribe(
 							res => {
-								this.getContactActivities();
+								this.contactActivities = this.global.filterObjectByValue(this.contactActivities, 'id', id, 'remove');
+								this.global.closeLoading();
 							},
 							err => {
 								this.global.checkErrorStatus(err);
@@ -117,17 +118,13 @@ export class ContactActivitiesPage implements OnInit {
 		await alert.present();
 	}
 
-	doRefresh(event) {
-		// console.log('Begin async operation');
-		setTimeout(() => {
-			this.getContactActivities();
-			// console.log('Async operation has ended');
-			event.target.complete();
-		}, 2000);
-	}
-
 	loadMore(event) {
 		this.page++;
 		this.getContactActivities(event);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.getContactActivities(event, true);
 	}
 }

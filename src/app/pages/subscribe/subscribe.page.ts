@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, ToastController, NavController, ModalController, NavParams } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { GlobalService } from 'src/app/services/global.service';
+import { AlertController, ToastController, NavController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
-	selector: "app-subscribe",
-	templateUrl: "./subscribe.page.html",
-	styleUrls: ["./subscribe.page.scss"],
-	providers: [FormBuilder],
+	selector: 'app-subscribe',
+	templateUrl: './subscribe.page.html',
+	styleUrls: ['./subscribe.page.scss']
 })
-
 export class SubscribePage implements OnInit {
-	modalTitle: string;
 	groupId: number;
 	allContacts: any;
 	contact_ids: [];
@@ -26,24 +23,23 @@ export class SubscribePage implements OnInit {
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
 		private router: Router,
+		private route: ActivatedRoute,
 		private navCtrl: NavController,
 		private global: GlobalService,
-		private modalCtrl: ModalController,
-		private navParams: NavParams,
-	) { }
+	) {
+		this.route.queryParams.subscribe(params => {
+			if (params && params.contactGrpId) {
+				this.groupId = params.contactGrpId;
+				this.getAllContacts();
+			}
+		});
+	}
 
 	ngOnInit() {
 		this.subscribeForm = this.fb.group({
 			contact_ids: [[], Validators.required],
 		});
-		this.groupId = this.navParams.data.contactGrpId;
-		this.getAllContacts();
 		// this.modalTitle = this.navParams.data.paramTitle;
-	}
-
-	closeModal() {
-		this.global.closeLoading();
-		this.modalCtrl.dismiss();
 	}
 
 	getAllContacts() {
@@ -64,7 +60,7 @@ export class SubscribePage implements OnInit {
 		this.api.subscribeContact(this.groupId, this.subscribeForm.value.contact_ids.toString()).subscribe(
 			res => {
 				this.global.closeLoading();
-				this.closeModal();
+				this.router.navigate(["/contact-group-subs"]);
 			},
 			err => {
 				this.global.checkErrorStatus(err);

@@ -45,13 +45,12 @@ export class ActivitiesPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	getActivities(event?) {
+	getActivities(event?, refresh?) {
 		this.api.getActivities('', this.per_page, this.page).subscribe(
 			res => {
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (event) {
+					this.activities = refresh ? [] : this.activities;
 					event.target.complete();
 				} else {
 					this.activities = [];
@@ -61,6 +60,7 @@ export class ActivitiesPage implements OnInit {
 				this.loadView = true;
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
@@ -138,5 +138,10 @@ export class ActivitiesPage implements OnInit {
 	loadMore(event) {
 		this.page++;
 		this.getActivities(event);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.getActivities(event, true);
 	}
 }

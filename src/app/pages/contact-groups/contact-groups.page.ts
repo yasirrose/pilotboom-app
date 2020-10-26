@@ -45,13 +45,12 @@ export class ContactGroupsPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	getContactGroups(event?) {
+	getContactGroups(event?, refresh?) {
 		this.api.getCrmContactGroups(this.page, this.per_page).subscribe(
 			res => {
-				if (res.length < this.per_page) {
-					this.hasMore = false
-				}
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (event) {
+					this.contactGroups = refresh ? [] : this.contactGroups;
 					event.target.complete();
 				} else {
 					this.contactGroups = [];
@@ -61,6 +60,7 @@ export class ContactGroupsPage implements OnInit {
 				this.loadView = true;
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
@@ -101,7 +101,8 @@ export class ContactGroupsPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteContactGroup(id).subscribe(
 							res => {
-								this.getContactGroups();
+								this.contactGroups = this.global.filterObjectByValue(this.contactGroups, 'id', id, 'remove');
+								this.global.closeLoading();
 							},
 							err => {
 								this.global.checkErrorStatus(err);
@@ -141,5 +142,10 @@ export class ContactGroupsPage implements OnInit {
 	loadMore(event) {
 		this.page++;
 		this.getContactGroups(event);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.getContactGroups(event, true);
 	}
 }

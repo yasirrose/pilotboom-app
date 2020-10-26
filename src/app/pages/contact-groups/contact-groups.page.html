@@ -12,19 +12,18 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-	<div class="ion-flex inline-filters">
-		<ion-button fill="solid" shape="round" color="danger" routerLink="/add-contact-group">
-			<ion-icon name="add-outline"></ion-icon> Add New Contact Group
-		</ion-button>
-		<!-- <ion-button fill="solid" shape="round" color="danger" routerLink="/addcontact">
-			<ion-icon name="add-outline"></ion-icon> View all Subscribers
-		</ion-button> -->
-
-		<!-- <ion-button color="light" fill="solid" shape="round">
-			<ion-icon name="search"></ion-icon>
-		</ion-button> -->
-	</div>
 	<div *ngIf="loadView">
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" routerLink="/add-contact-group">
+				<ion-icon name="add-outline"></ion-icon> Add New Contact Group
+			</ion-button>
+			<!-- <ion-button color="light" fill="solid" shape="round">
+				<ion-icon name="search"></ion-icon>
+			</ion-button> -->
+		</div>
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
 		<div *ngIf="contactGroups.length > 0; else no_result">
 			<ion-card mode="md" *ngFor="let contact of contactGroups; index as i">
 				<ion-card-content>
@@ -72,10 +71,19 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
-			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore">
+			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
 				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
 				</ion-infinite-scroll-content>
 			</ion-infinite-scroll>
+			<ng-template #no_more>
+				<ion-card mode="md">
+					<div class="no_more">
+						<ion-card-content>
+							<h3>No more data</h3>
+						</ion-card-content>
+					</div>
+				</ion-card>
+			</ng-template>
 		</div>
 		<ng-template #no_result>
 			<ion-card mode="md">

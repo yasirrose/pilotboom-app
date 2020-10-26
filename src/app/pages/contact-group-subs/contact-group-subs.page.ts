@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { AlertController, ToastController, NavController, NavParams, ModalController } from '@ionic/angular';
-import { SubscribePage } from 'src/app/modal/subscribe/subscribe.page';
+import { AlertController, ToastController, NavController, NavParams, ModalController, IonContent } from '@ionic/angular';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -13,6 +12,12 @@ import { RestService } from 'src/app/services/rest.service';
 export class ContactGroupSubsPage implements OnInit {
 	subsContactData = [];
 	group_id: any;
+
+	loadView = false;
+	page = 1;
+	per_page = 10;
+	hasMore = true;
+	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
 		private api: RestService,
@@ -34,17 +39,34 @@ export class ContactGroupSubsPage implements OnInit {
 	}
 
 	ionViewDidEnter() {
+		this.resetData();
 		this.global.showLoading("bubbles", "Loading...");
 		this.getSubsContacts();
 	}
 
-	getSubsContacts() {
-		this.api.getContactGrpSubs(this.group_id).subscribe(
+	resetData() {
+		this.hasMore = true;
+		this.page = 1;
+		this.per_page = 10;
+		this.content.scrollToTop();
+	}
+
+	getSubsContacts(event?, refresh?) {
+		this.api.getContactGrpSubs(this.group_id,this.page, this.per_page).subscribe(
 			res => {
-				this.subsContactData = res;
+				this.hasMore = res.length < this.per_page ? false : true;
+				if (event) {
+					this.subsContactData = refresh ? [] : this.subsContactData;
+					event.target.complete();
+				} else {
+					this.subsContactData = [];
+				}
+				this.subsContactData = this.subsContactData.concat(res);
 				this.global.closeLoading();
+				this.loadView = true;
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
@@ -67,7 +89,8 @@ export class ContactGroupSubsPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.unsubContact(this.group_id, contact_id).subscribe(
 							res => {
-								this.getSubsContacts();
+								this.subsContactData = this.global.filterObjectByValue(this.subsContactData, 'user_id', contact_id, 'remove');
+								this.global.closeLoading();
 							},
 							err => {
 								this.global.checkErrorStatus(err);
@@ -80,19 +103,22 @@ export class ContactGroupSubsPage implements OnInit {
 		await alert.present();
 	}
 
-	async presentModal() {
-		let profileModal = await this.modalCtrl.create({
-			component: SubscribePage,
-			componentProps: {
-				contactGrpId: this.group_id,
+	async subscribeContacts() {
+		let navigationExtras: NavigationExtras = {
+			queryParams: {
+				contactGrpId: this.group_id
 			}
-		});
+		}
+		this.router.navigate(["/subscribe"], navigationExtras);
+	}
 
-		profileModal.onDidDismiss().then(() => {
-			this.global.showLoading("bubbles", "Loading...");
-			this.getSubsContacts();
+	loadMore(event) {
+		this.page++;
+		this.getSubsContacts(event);
+	}
 
-		});
-		return await profileModal.present();
+	doRefresh(event) {
+		this.resetData();
+		this.getSubsContacts(event, true);
 	}
 }

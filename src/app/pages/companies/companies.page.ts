@@ -52,37 +52,40 @@ export class CompaniesPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	getContacts(event?) {
+	resetContactsData() {
+		this.companies = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = []; this.trash = [];
+	}
+
+	getContacts(event?, refresh?) {
 		this.api.getCrmContacts('company', 'all', this.per_page, this.page).subscribe(
 			res => {
 				let all_length = res.length;
-				if (!event) {
-					this.companies = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
+				if (!event || refresh) {
+					this.resetContactsData();
 				}
 				this.companies = this.companies.concat(res);
-				for (let i = 0; i < res.length; i++) {
-					const elem = res[i];
-					this[elem.life_stage].push(elem);
-				}
+				this.setCategoriesData(res);
 				this.loadView = true;
 				//Getting Trashed Contacts
 				this.api.getCrmContacts('company', 'trash', this.per_page, this.page).subscribe(trashed => {
-					if (all_length < this.per_page && trashed.length < this.per_page) {
-						this.hasMore = false
-					}
-					if (event) {
-						event.target.complete();
-					} else {
-						this.trash = [];
-					}
+					this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
+					event ? event.target.complete() : '';
 					this.trash = this.trash.concat(trashed);
 					this.global.closeLoading();
 				});
 			},
 			err => {
+				event ? event.target.complete() : '';
 				this.global.checkErrorStatus(err);
 			}
 		);
+	}
+
+	setCategoriesData(result) {
+		for (let i = 0; i < result.length; i++) {
+			const elem = result[i];
+			this[elem.life_stage].push(elem);
+		}
 	}
 
 	getDetail(event, id) {
@@ -120,8 +123,11 @@ export class CompaniesPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteCompany(id).subscribe(
 							res => {
-								this.resetData();
-								this.getContacts();
+								this.companies = this.global.filterObjectByValue(this.companies, 'id', id, 'remove');
+								this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
+								this.setCategoriesData(this.companies);
+								this.trash.unshift(res); //Pushing the object at start of array.
+								this.global.closeLoading();
 							},
 							err => {
 								this.global.checkErrorStatus(err);
@@ -158,5 +164,10 @@ export class CompaniesPage implements OnInit {
 	loadMore(event) {
 		this.page++;
 		this.getContacts(event);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.getContacts(event, true);
 	}
 }

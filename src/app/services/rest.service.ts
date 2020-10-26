@@ -211,10 +211,10 @@ export class RestService {
 		);
 	}
 
-	getContactGrpSubs(contactGrpId) {
+	getContactGrpSubs(contactGrpId, page = 1, per_page = 10) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${contactGrpId}/subscribes`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${contactGrpId}/subscribes?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})

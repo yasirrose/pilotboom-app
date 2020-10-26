@@ -76,6 +76,14 @@ ion-header {
     }
 }
 
+ion-card {
+    .no_more {
+        ion-card-content  {
+            text-align: center;
+        }
+    }
+}
+
 .alert-head h2 {
     text-align: center;
 }

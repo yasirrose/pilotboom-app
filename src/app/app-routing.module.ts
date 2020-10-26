@@ -92,10 +92,6 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/edit-contact-group/edit-contact-group.module').then(m => m.EditContactGroupPageModule),
 		canActivate: [AuthGuard]
 	},
-	// {
-	// 	path: 'subscribe',
-	// 	loadChildren: () => import('./modal/subscribe/subscribe.module').then(m => m.SubscribePageModule)
-	// },
 	{
 		path: 'contact-activities',
 		loadChildren: () => import('./pages/contact-activities/contact-activities.module').then(m => m.ContactActivitiesPageModule),
@@ -131,6 +127,12 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/edit-autoblog/edit-autoblog.module').then(m => m.EditAutoblogPageModule),
 		canActivate: [AuthGuard]
 	},
+	{
+		path: 'subscribe',
+		loadChildren: () => import('./pages/subscribe/subscribe.module').then(m => m.SubscribePageModule),
+		canActivate: [AuthGuard]
+	},
+
 
 
 

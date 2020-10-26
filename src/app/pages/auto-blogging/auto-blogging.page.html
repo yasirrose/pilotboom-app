@@ -59,11 +59,21 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
-			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore">
+			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
 				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
 				</ion-infinite-scroll-content>
 			</ion-infinite-scroll>
+			<ng-template #no_more>
+				<ion-card mode="md">
+					<div class="no_more">
+						<ion-card-content>
+							<h3>No more data</h3>
+						</ion-card-content>
+					</div>
+				</ion-card>
+			</ng-template>
 		</div>
+
 		<ng-template #no_result>
 			<ion-card mode="md">
 				<ion-card-content>
