@@ -1,0 +1,90 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Add New Contact</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<form [formGroup]="addContactForm" (ngSubmit)="addContact()">
+	<ion-content class="ion-padding">
+		<div class="upload-image">
+			<div class="uploaded-img">
+				<img src="./../../assets/img/upload-img.png" alt="" />
+			</div>
+			<ion-button shape="round" color="danger">
+				<ion-icon name="cloud-upload-sharp"></ion-icon>
+			</ion-button>
+		</div>
+		<div class="ion-no-padding app-form">
+			<ion-item lines="none">
+				<ion-input type="text" placeholder="First Name" name="first_name"></ion-input>
+			</ion-item>
+			<ion-item lines="none">
+				<ion-input type="text" placeholder="Last Name" name="last_name"></ion-input>
+			</ion-item>
+			<ion-item lines="none">
+				<ion-input type="email" placeholder="Email" name="email"></ion-input>
+			</ion-item>
+			<ion-item lines="none">
+				<ion-input type="tel" placeholder="Phone Number" name="phone"></ion-input>
+			</ion-item>
+			<ion-item lines="none">
+				<ion-select placeholder="Life Stage *" name="life_stage">
+					<ion-select-option value="New">New Campaign</ion-select-option>
+					<ion-select-option value="Test">Test Campaign</ion-select-option>
+					<ion-select-option value="Old">Old Campaign</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item lines="none">
+				<ion-select placeholder="Contact Owner *" name="owner">
+					<ion-select-option value="New">New Campaign</ion-select-option>
+					<ion-select-option value="Test">Test Campaign</ion-select-option>
+					<ion-select-option value="Old">Old Campaign</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item lines="none" class="time-input">
+				<ion-label>Start Time</ion-label>
+				<ion-input type="time" placeholder="Start Time" name="start"></ion-input>
+			</ion-item>
+			<ion-item lines="none" class="time-input">
+				<ion-label>End Time</ion-label>
+				<ion-input type="time" placeholder="End Time" name="end"></ion-input>
+			</ion-item>
+
+			
+			<ion-item lines="none" class="cus-checkbox">
+				<ion-checkbox></ion-checkbox>
+				<ion-label>Show Advanced Fields</ion-label>
+			</ion-item>
+			<div class="other-info" [ngClass]="{'expanded' : toggleAdvance === true }">
+				<h4>Others Info</h4>
+				<ion-item lines="none" class="time-input">
+					<ion-label>Date of Birth</ion-label>
+					<ion-input type="date" placeholder="Date of Birth" name="date"></ion-input>
+				</ion-item>
+				<ion-item lines="none">
+					<ion-input type="number" placeholder="Age (years)" name="number"></ion-input>
+				</ion-item>
+				<ion-item lines="none">
+					<ion-input type="tel" placeholder="Mobile" name="tel"></ion-input>
+				</ion-item>
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Website" name="Website"></ion-input>
+				</ion-item>
+			</div>
+			<!-- <p class="ion-no-margin ion-text-center">
+              <ion-button size="large" shape="round" fill="clear" color="primary">Show Advanced Fields
+                  <ion-icon name="add-sharp"></ion-icon>
+              </ion-button>
+          </p> -->
+			<ion-button size="large" shape="round" expand="block" color="danger" routerLink="/dashboard">Add New
+			</ion-button>
+		</div>
+</form>
+</ion-content>

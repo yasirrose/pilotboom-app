@@ -3,5 +3,11 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular",
+  "proxies": [
+    {
+      "path": "/posts",
+      "proxyUrl": "https://demo.pilotboom.com/wp-json/wp/v2/posts"
+    }
+  ]
 }

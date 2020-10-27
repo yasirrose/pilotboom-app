@@ -1,0 +1,439 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Companies</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-segment scrollable="true" mode="md" [(ngModel)]="categories" *ngIf="loadView">
+		<ion-segment-button value="All">
+			<ion-label>All({{companies.length}})</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Customer">
+			<ion-label>Customer({{customer.length}})</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Lead">
+			<ion-label>Lead({{lead.length}})</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Opportunity">
+			<ion-label>Opportunity({{opportunity.length}})</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Subscriber">
+			<ion-label>Subscriber({{subscriber.length}})</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Trash">
+			<ion-label>Trash({{trash.length}})</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+</ion-header>
+<ion-content class="ion-padding">
+	<div *ngIf="loadView">
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" routerLink="/addcompany">
+				<ion-icon name="add-outline"></ion-icon> Add New Company
+			</ion-button>
+			<!-- <ion-button color="light" fill="solid" shape="round">
+			<ion-icon name="search"></ion-icon>
+		</ion-button> -->
+		</div>
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+		<div [ngSwitch]="categories">
+			<div *ngSwitchCase="'All'">
+				<div *ngIf="companies.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of companies; index as i">
+						<ion-card-content>
+							<div class="detail-wrap">
+								<div class="top-right-btn">
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="editContact($event, contact.id)">
+										<ion-icon name="pencil-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="getDetail($event, contact.id)">
+										<ion-icon name="eye-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="delete($event, contact.id)">
+										<ion-icon name="trash-sharp"></ion-icon>
+									</ion-button>
+								</div>
+								<div class="left-detail">
+									<ul>
+										<li>
+											<ion-icon name="person-circle-sharp"></ion-icon>
+											<span>{{contact.company}}</span>
+										</li>
+										<li>
+											<ion-icon name="mail"></ion-icon>
+											<span>{{contact.email}}</span>
+										</li>
+										<li>
+											<ion-icon name="call-sharp"></ion-icon>
+											<span>{{contact.phone}}</span>
+										</li>
+										<li>
+											<ion-icon name="person"></ion-icon>
+											<span>{{contact.life_stage}}</span>
+										</li>
+										<li>
+											<ion-icon name="business-sharp"></ion-icon>
+											<span>{{contact.owner.display_name}}</span>
+										</li>
+									</ul>
+									<!-- <div class="action-group">
+										<ion-select placeholder="Select">
+											<ion-select-option value="New">New Campaign</ion-select-option>
+											<ion-select-option value="Test">Test Campaign</ion-select-option>
+											<ion-select-option value="Old">Old Campaign</ion-select-option>
+										</ion-select>
+										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+									</div> -->
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+					<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)"
+						*ngIf="hasMore; else no_more">
+						<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
+						</ion-infinite-scroll-content>
+					</ion-infinite-scroll>
+					<ng-template #no_more>
+						<ion-card mode="md">
+							<div class="no_more">
+								<ion-card-content>
+									<h3>No more data</h3>
+								</ion-card-content>
+							</div>
+						</ion-card>
+					</ng-template>
+				</div>
+				<ng-template #no_result>
+					<ion-card mode="md">
+						<ion-card-content>
+							<h2>No result found</h2>
+						</ion-card-content>
+					</ion-card>
+				</ng-template>
+			</div>
+			<div *ngSwitchCase="'Customer'">
+				<div *ngIf="customer.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of customer; index as i">
+						<ion-card-content>
+							<div class="detail-wrap">
+								<div class="top-right-btn">
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="editContact($event, contact.id)">
+										<ion-icon name="pencil-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="getDetail($event, contact.id)">
+										<ion-icon name="eye-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="delete($event, contact.id)">
+										<ion-icon name="trash-sharp"></ion-icon>
+									</ion-button>
+								</div>
+								<div class="left-detail">
+									<ul>
+										<li>
+											<ion-icon name="person-circle-sharp"></ion-icon>
+											<span>{{contact.company}}</span>
+										</li>
+										<li>
+											<ion-icon name="mail"></ion-icon>
+											<span>{{contact.email}}</span>
+										</li>
+										<li>
+											<ion-icon name="call-sharp"></ion-icon>
+											<span>{{contact.phone}}</span>
+										</li>
+										<li>
+											<ion-icon name="person"></ion-icon>
+											<span>{{contact.life_stage}}</span>
+										</li>
+										<li>
+											<ion-icon name="business-sharp"></ion-icon>
+											<span>{{contact.owner.display_name}}</span>
+										</li>
+									</ul>
+									<!-- <div class="action-group">
+										<ion-select placeholder="Select">
+											<ion-select-option value="New">New Campaign</ion-select-option>
+											<ion-select-option value="Test">Test Campaign</ion-select-option>
+											<ion-select-option value="Old">Old Campaign</ion-select-option>
+										</ion-select>
+										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+									</div> -->
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+				<ng-template #no_result>
+					<ion-card mode="md">
+						<ion-card-content>
+							<h2>No result found</h2>
+						</ion-card-content>
+					</ion-card>
+				</ng-template>
+			</div>
+			<div *ngSwitchCase="'Lead'">
+				<div *ngIf="lead.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of lead; index as i">
+						<ion-card-content>
+							<div class="detail-wrap">
+								<div class="top-right-btn">
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="editContact($event, contact.id)">
+										<ion-icon name="pencil-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="getDetail($event, contact.id)">
+										<ion-icon name="eye-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="delete($event, contact.id)">
+										<ion-icon name="trash-sharp"></ion-icon>
+									</ion-button>
+								</div>
+								<div class="left-detail">
+									<ul>
+										<li>
+											<ion-icon name="person-circle-sharp"></ion-icon>
+											<span>{{contact.company}}</span>
+										</li>
+										<li>
+											<ion-icon name="mail"></ion-icon>
+											<span>{{contact.email}}</span>
+										</li>
+										<li>
+											<ion-icon name="call-sharp"></ion-icon>
+											<span>{{contact.phone}}</span>
+										</li>
+										<li>
+											<ion-icon name="person"></ion-icon>
+											<span>{{contact.life_stage}}</span>
+										</li>
+										<li>
+											<ion-icon name="business-sharp"></ion-icon>
+											<span>{{contact.owner.display_name}}</span>
+										</li>
+									</ul>
+									<!-- <div class="action-group">
+										<ion-select placeholder="Select">
+											<ion-select-option value="New">New Campaign</ion-select-option>
+											<ion-select-option value="Test">Test Campaign</ion-select-option>
+											<ion-select-option value="Old">Old Campaign</ion-select-option>
+										</ion-select>
+										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+									</div> -->
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+
+				<ng-template #no_result>
+					<ion-card mode="md">
+						<ion-card-content>
+							<h2>No result found</h2>
+						</ion-card-content>
+					</ion-card>
+				</ng-template>
+			</div>
+			<div *ngSwitchCase="'Opportunity'">
+				<div *ngIf="opportunity.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of opportunity; index as i">
+						<ion-card-content>
+							<div class="detail-wrap">
+								<div class="top-right-btn">
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="editContact($event, contact.id)">
+										<ion-icon name="pencil-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="getDetail($event, contact.id)">
+										<ion-icon name="eye-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="delete($event, contact.id)">
+										<ion-icon name="trash-sharp"></ion-icon>
+									</ion-button>
+								</div>
+								<div class="left-detail">
+									<ul>
+										<li>
+											<ion-icon name="person-circle-sharp"></ion-icon>
+											<span>{{contact.company}}</span>
+										</li>
+										<li>
+											<ion-icon name="mail"></ion-icon>
+											<span>{{contact.email}}</span>
+										</li>
+										<li>
+											<ion-icon name="call-sharp"></ion-icon>
+											<span>{{contact.phone}}</span>
+										</li>
+										<li>
+											<ion-icon name="person"></ion-icon>
+											<span>{{contact.life_stage}}</span>
+										</li>
+										<li>
+											<ion-icon name="business-sharp"></ion-icon>
+											<span>{{contact.owner.display_name}}</span>
+										</li>
+									</ul>
+									<!-- <div class="action-group">
+										<ion-select placeholder="Select">
+											<ion-select-option value="New">New Campaign</ion-select-option>
+											<ion-select-option value="Test">Test Campaign</ion-select-option>
+											<ion-select-option value="Old">Old Campaign</ion-select-option>
+										</ion-select>
+										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+									</div> -->
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+				<ng-template #no_result>
+					<ion-card mode="md">
+						<ion-card-content>
+							<h2>No result found</h2>
+						</ion-card-content>
+					</ion-card>
+				</ng-template>
+			</div>
+			<div *ngSwitchCase="'Subscriber'">
+				<div *ngIf="subscriber.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of subscriber; index as i">
+						<ion-card-content>
+							<div class="detail-wrap">
+								<div class="top-right-btn">
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="editContact($event, contact.id)">
+										<ion-icon name="pencil-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="getDetail($event, contact.id)">
+										<ion-icon name="eye-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="delete($event, contact.id)">
+										<ion-icon name="trash-sharp"></ion-icon>
+									</ion-button>
+								</div>
+								<div class="left-detail">
+									<ul>
+										<li>
+											<ion-icon name="person-circle-sharp"></ion-icon>
+											<span>{{contact.company}}</span>
+										</li>
+										<li>
+											<ion-icon name="mail"></ion-icon>
+											<span>{{contact.email}}</span>
+										</li>
+										<li>
+											<ion-icon name="call-sharp"></ion-icon>
+											<span>{{contact.phone}}</span>
+										</li>
+										<li>
+											<ion-icon name="person"></ion-icon>
+											<span>{{contact.life_stage}}</span>
+										</li>
+										<li>
+											<ion-icon name="business-sharp"></ion-icon>
+											<span>{{contact.owner.display_name}}</span>
+										</li>
+									</ul>
+									<!-- <div class="action-group">
+										<ion-select placeholder="Select">
+											<ion-select-option value="New">New Campaign</ion-select-option>
+											<ion-select-option value="Test">Test Campaign</ion-select-option>
+											<ion-select-option value="Old">Old Campaign</ion-select-option>
+										</ion-select>
+										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+									</div> -->
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+				<ng-template #no_result>
+					<ion-card mode="md">
+						<ion-card-content>
+							<h2>No result found</h2>
+						</ion-card-content>
+					</ion-card>
+				</ng-template>
+			</div>
+			<div *ngSwitchCase="'Trash'">
+				<div *ngIf="trash.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of trash; index as i">
+						<ion-card-content>
+							<div class="detail-wrap">
+								<div class="top-right-btn">
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="editContact($event, contact.id)">
+										<ion-icon name="pencil-sharp"></ion-icon>
+									</ion-button>
+									<ion-button fill="solid" shape="round" color="danger"
+										(click)="getDetail($event, contact.id)">
+										<ion-icon name="eye-sharp"></ion-icon>
+									</ion-button>
+								</div>
+								<div class="left-detail">
+									<ul>
+										<li>
+											<ion-icon name="person-circle-sharp"></ion-icon>
+											<span>{{contact.company}}</span>
+										</li>
+										<li>
+											<ion-icon name="mail"></ion-icon>
+											<span>{{contact.email}}</span>
+										</li>
+										<li>
+											<ion-icon name="call-sharp"></ion-icon>
+											<span>{{contact.phone}}</span>
+										</li>
+										<li>
+											<ion-icon name="person"></ion-icon>
+											<span>{{contact.life_stage}}</span>
+										</li>
+										<li>
+											<ion-icon name="business-sharp"></ion-icon>
+											<span>{{contact.owner.display_name}}</span>
+										</li>
+									</ul>
+									<!-- <div class="action-group">
+										<ion-select placeholder="Select">
+											<ion-select-option value="New">New Campaign</ion-select-option>
+											<ion-select-option value="Test">Test Campaign</ion-select-option>
+											<ion-select-option value="Old">Old Campaign</ion-select-option>
+										</ion-select>
+										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
+									</div> -->
+								</div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+				<ng-template #no_result>
+					<ion-card mode="md">
+						<ion-card-content>
+							<h2>No result found</h2>
+						</ion-card-content>
+					</ion-card>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+</ion-content>

@@ -1,0 +1,21 @@
+ion-col.right-arrow {
+  text-align: right;
+}
+
+ion-row.first-row {
+  ion-col:nth-child(1) {
+    margin-top: 10px;
+    font-size: 17px;
+  }
+  ion-col:nth-child(2) {
+    ion-button {
+      padding: 4px;
+    }
+  }
+}
+
+ion-row.second-row {
+  ion-button {
+    padding: 2px;
+  }
+}

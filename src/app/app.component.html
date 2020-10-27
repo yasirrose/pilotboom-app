@@ -1,3 +1,42 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+	<ion-menu side="start" menuId="first" contentId="main">
+		<ion-header>
+			<ion-toolbar color="primary">
+				<ion-title>Menu</ion-title>
+			</ion-toolbar>
+		</ion-header>
+		<ion-content>
+			<ion-list>
+				<ion-menu-toggle>
+					<ion-item routerLink="/dashboard">Dashboard</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/contacts">Contacts</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/companies">Companies</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/contact-groups">Contact Groups</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/activities">Activities</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/schedules">Schedules</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/posts">Posts</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item routerLink="/auto-blogging">Auto Blogging</ion-item>
+				</ion-menu-toggle>
+				<ion-menu-toggle>
+					<ion-item (click)="logout()">Logout</ion-item>
+				</ion-menu-toggle>
+			</ion-list>
+			<div class="version-number"><span>Version: {{versionNo}}</span></div>
+		</ion-content>
+	</ion-menu>
+	<ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>

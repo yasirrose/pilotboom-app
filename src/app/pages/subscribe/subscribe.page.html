@@ -1,0 +1,46 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Assign Contacts</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<form [formGroup]="subscribeForm" (ngSubmit)="subscribeContact()">
+		<div class="upload-image">
+			<div class="uploaded-img">
+				<img src="./../../assets/img/upload-img.png" alt="" />
+			</div>
+		</div>
+		<div class="ion-no-padding app-form">
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="Select Contacts *" formControlName="contact_ids" name="contact_ids[]"
+						multiple="true">
+						<ion-select-option *ngFor="let user of allContacts; index as i" value="{{user.id}}">
+							{{user.first_name}} {{user.last_name}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.contact_ids">
+						<div class="error-message"
+							*ngIf="subscribeForm.get('contact_ids').hasError(validation.type) && (subscribeForm.get('contact_ids').dirty || subscribeForm.get('contact_ids').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+				[disabled]="!subscribeForm.valid">Subscribe</ion-button>
+		</div>
+	</form>
+</ion-content>

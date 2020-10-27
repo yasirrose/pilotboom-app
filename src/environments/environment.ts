@@ -1,9 +1,26 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+var production = true;
+
+var baseUrl: any;
+var apiUrl: any;
+if (production) {
+	baseUrl = 'https://demo.pilotboom.com';
+	apiUrl = 'https://demo.pilotboom.com/wp-json';
+} else {
+	baseUrl = 'http://localhost/pilotboom';
+	apiUrl = 'http://localhost/pilotboom/wp-json';
+}
 
 export const environment = {
-  production: false
+	production: production,
+	environmentName: 'Development Environment',
+	ionicEnvName: 'dev',
+	baseUrl: baseUrl,
+	apiUrl: apiUrl,
+	key: ",GV7|uQrxQ0)8$lN..:m1R@WSKA{v58yq6l4}I&(eAAaeGheZ;gW:>-q{I6}fv;W'",
+	showloader: true
 };
 
 /*

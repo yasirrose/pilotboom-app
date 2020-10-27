@@ -1,0 +1,84 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Subscribed Contacts</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+	<div *ngIf="loadView">
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" (click)="subscribeContacts()">
+				<ion-icon name="add-outline"></ion-icon> Assign a Contact
+			</ion-button>
+		</div>
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+		<div *ngIf="subsContactData.length > 0; else no_result">
+			<ion-card mode="md" *ngFor="let contact of subsContactData; index as i">
+				<ion-card-content>
+					<div class="detail-wrap">
+						<div class="top-right-btn">
+							<ion-button fill="solid" shape="round" color="danger"
+								(click)="unsubscribe($event, contact.user_id)">
+								<ion-icon name="trash-sharp"></ion-icon>
+							</ion-button>
+						</div>
+						<div class="left-detail">
+							<ul>
+								<li>
+									<ion-icon name="person-circle-sharp"></ion-icon>
+									<span>Name: {{contact.user_data.first_name}} {{contact.user_data.last_name}}</span>
+								</li>
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Email: {{contact.user_data.email}}</span>
+								</li>
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Contact Type: {{contact.user_data.types[0] | titlecase}}</span>
+								</li>
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Group: {{contact.data[0].name}}</span>
+								</li>
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Status:
+										{{contact.data[0].status=='subscribe'?'Subscribed':'Unsubscribed'}}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
+				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
+				</ion-infinite-scroll-content>
+			</ion-infinite-scroll>
+			<ng-template #no_more>
+				<ion-card mode="md">
+					<div class="no_more">
+						<ion-card-content>
+							<h3>No more data</h3>
+						</ion-card-content>
+					</div>
+				</ion-card>
+			</ng-template>
+		</div>
+		<ng-template #no_result>
+			<ion-card mode="md">
+				<ion-card-content>
+					<h2>No result found</h2>
+				</ion-card-content>
+			</ion-card>
+		</ng-template>
+	</div>
+</ion-content>

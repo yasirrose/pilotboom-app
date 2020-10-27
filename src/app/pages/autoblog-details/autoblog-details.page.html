@@ -1,0 +1,74 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Post Details</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding" *ngIf="(blogData | keyvalue)?.length">
+	<ion-card mode="md">
+		<ion-card-content>
+			<div class="profile-info">
+				<div class="image-hol">
+					<img src="assets/img/list.png" alt="" />
+				</div>
+				<div class="detail-hol">
+					<h2>{{blogData.title.rendered}}</h2>
+				</div>
+			</div>
+		</ion-card-content>
+	</ion-card>
+	<ion-card mode="md">
+		<ion-card-content>
+			<div class="basic-info">
+				<div class="info">
+					<label for="#">
+						<ion-icon name="person-circle-sharp"></ion-icon>Title :
+					</label>
+					<span>{{blogData.title.rendered}}</span>
+				</div>
+				<div class="info desc">
+					<label for="#">
+						<ion-icon name="information-circle"></ion-icon>Description :
+					</label>
+					<div [innerHTML]="blogData.content.rendered"></div>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="calendar-outline"></ion-icon>Date :
+					</label>
+					<span>{{blogData.date | date: 'yyyy-MM-dd hh:mm:ss'}}</span>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="browsers-outline"></ion-icon>Status :
+					</label>
+					<span>{{blogData.status}}</span>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="person-outline"></ion-icon>Author :
+					</label>
+					<span>{{blogData.author}}</span>
+				</div>
+				<div class="info desc">
+					<label for="#">
+						<ion-icon name="link"></ion-icon>Link :
+					</label>
+					<span><a href="{{blogData.link}}">{{blogData.link}}</a></span>
+				</div>
+			</div>
+		</ion-card-content>
+	</ion-card>
+
+	<div class="ion-flex inline-filters">
+		<ion-button fill="solid" shape="round" color="danger" (click)="editPost(blogData.id)">Edit Post</ion-button>
+	</div>
+
+</ion-content>

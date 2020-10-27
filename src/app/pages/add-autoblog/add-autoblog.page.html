@@ -1,0 +1,60 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Add Auto Blogging Post</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<form [formGroup]="addAutoBlogForm" (ngSubmit)="addAutoBlog()">
+		<div class="ion-no-padding app-form">
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Title" formControlName="title" name="title">
+					</ion-input>
+				</ion-item>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-textarea placeholder="Description" formControlName="content" name="content">
+					</ion-textarea>
+				</ion-item>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-textarea placeholder="Excerpt" formControlName="excerpt" name="excerpt">
+					</ion-textarea>
+				</ion-item>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="Status" formControlName="status" name="status">
+						<ion-select-option value="publish">Publish</ion-select-option>
+						<ion-select-option value="pending">Pending Review</ion-select-option>
+						<ion-select-option value="draft">Draft</ion-select-option>
+					</ion-select>
+				</ion-item>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="Author" formControlName="author" name="author">
+						<ion-select-option *ngFor="let user of allUsers; index as i" value="{{user.id}}">
+							{{user.name}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+			</div>
+
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+				[disabled]="!addAutoBlogForm.valid">Publish
+			</ion-button>
+		</div>
+	</form>
+</ion-content>

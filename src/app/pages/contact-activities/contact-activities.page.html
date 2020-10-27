@@ -1,0 +1,76 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Contact Activities</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="">
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+	<div *ngIf="loadView">
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" (click)="addActivityPage()">
+				<ion-icon name="add-outline"></ion-icon> Add Activity
+			</ion-button>
+		</div>
+		<div *ngIf="contactActivities.length > 0; else no_result">
+			<div class="activities-sec">
+				<div class="activity-col"
+					*ngFor="let data of contactActivities | formatActivities: 'created_timeline_date'">
+					<div class="activity-date">
+						<p>{{data.month_year | date:'MMMM, y'}}</p>
+					</div>
+
+					<div class="activity-dis" *ngFor="let activity of data.list">
+						<div class="icon">
+							<ion-icon name="document-text-outline"></ion-icon>
+						</div>
+						<div class="discription">
+							<div class="heading">
+								<h3><strong>{{ activity.created_by.display_name }}</strong>{{activity.activity}}{{activity.start_date}}
+									for <strong>{{activity.contact.first_name}}</strong></h3>
+							</div>
+							<div class="dis">
+								<p [innerHTML]="activity.message"></p>
+							</div>
+							<div class="dis" *ngIf="activity.type != 'email'">
+								<ion-button (click)="editActivity($event, activity.id)">Edit</ion-button>
+								<ion-button (click)="deleteActivity($event, activity.id)" color="danger">Delete
+								</ion-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
+				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
+				</ion-infinite-scroll-content>
+			</ion-infinite-scroll>
+			<ng-template #no_more>
+				<ion-card mode="md">
+					<div class="no_more">
+						<ion-card-content>
+							<h3>No more data</h3>
+						</ion-card-content>
+					</div>
+				</ion-card>
+			</ng-template>
+		</div>
+		<ng-template #no_result>
+			<ion-card mode="md">
+				<ion-card-content>
+					<h2>No result found</h2>
+				</ion-card-content>
+			</ion-card>
+		</ng-template>
+	</div>
+
+</ion-content>

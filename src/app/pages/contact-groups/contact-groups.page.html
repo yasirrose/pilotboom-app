@@ -1,0 +1,96 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Contact Groups</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+	<div *ngIf="loadView">
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" routerLink="/add-contact-group">
+				<ion-icon name="add-outline"></ion-icon> Add New Contact Group
+			</ion-button>
+			<!-- <ion-button color="light" fill="solid" shape="round">
+				<ion-icon name="search"></ion-icon>
+			</ion-button> -->
+		</div>
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+		<div *ngIf="contactGroups.length > 0; else no_result">
+			<ion-card mode="md" *ngFor="let contact of contactGroups; index as i">
+				<ion-card-content>
+					<div class="detail-wrap">
+						<div class="top-right-btn">
+							<ion-button fill="solid" shape="round" color="danger"
+								(click)="editContactGroup($event, contact.id)">
+								<ion-icon name="pencil-sharp"></ion-icon>
+							</ion-button>
+							<ion-button fill="solid" shape="round" color="danger"
+								(click)="getSubscribers($event, contact.id)">
+								<ion-icon name="eye-sharp"></ion-icon>
+							</ion-button>
+							<ion-button fill="solid" shape="round" color="danger" (click)="delete($event, contact.id)">
+								<ion-icon name="trash-sharp"></ion-icon>
+							</ion-button>
+						</div>
+						<div class="left-detail">
+							<ul>
+								<li>
+									<ion-icon name="person-circle-sharp"></ion-icon>
+									<span>Name: {{contact.name}}</span>
+								</li>
+								<!--Subscribed-->
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Subscribed: {{contact.subscriber}}</span>
+								</li>
+								<!--Unconfirmed-->
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Unconfirmed: {{contact.unconfirmed}}</span>
+								</li>
+								<!--Unsubscribed-->
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Unsubscribed: {{contact.unsubscriber}}</span>
+								</li>
+								<li>
+									<ion-icon name="person"></ion-icon>
+									<span>Created at: {{contact.created_at}}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
+				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
+				</ion-infinite-scroll-content>
+			</ion-infinite-scroll>
+			<ng-template #no_more>
+				<ion-card mode="md">
+					<div class="no_more">
+						<ion-card-content>
+							<h3>No more data</h3>
+						</ion-card-content>
+					</div>
+				</ion-card>
+			</ng-template>
+		</div>
+		<ng-template #no_result>
+			<ion-card mode="md">
+				<ion-card-content>
+					<h2>No result found</h2>
+				</ion-card-content>
+			</ion-card>
+		</ng-template>
+	</div>
+</ion-content>
