@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
 import { GlobalService } from 'src/app/services/global.service';
@@ -13,8 +13,10 @@ import { GlobalService } from 'src/app/services/global.service';
 export class LoginPage implements OnInit {
 	userForm: FormGroup;
 	validation_messages = this.global.getValidationMessages();
+	subscription: any;
 
 	constructor(
+		private platform: Platform,
 		private api: RestService,
 		private fb: FormBuilder,
 		private alertCtrl: AlertController,
@@ -32,17 +34,32 @@ export class LoginPage implements OnInit {
 		});
 	}
 
-	login() {
-		this.global.showLoading("bubbles", "Logging in...");
-		this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
-			res => {
-				this.global.closeLoading();
-			},
-			err => {
-				this.global.showPopup('Login Failed', err.error.message);
-			}
-		);
+	ionViewDidEnter() {
+		this.subscription = this.platform.backButton.subscribe(() => {
+			this.global.confirmExitApp();
+		});
 	}
+
+	ionViewWillLeave() {
+		this.subscription.unsubscribe();
+	}
+
+	login() {
+		if (!this.global.checkConnection()) {
+			return false;
+		} else {
+			this.global.showLoading("bubbles", "Logging in...");
+			this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
+				res => {
+					this.global.closeLoading();
+				},
+				err => {
+					this.global.checkErrorStatus(err, 'Login Failed', false, true);
+				}
+			);
+		}
+	}
+
 
 	signUp() {
 		this.api.signUp(this.userForm.value.username, this.userForm.value.email, this.userForm.value.password).subscribe(
@@ -56,7 +73,6 @@ export class LoginPage implements OnInit {
 			err => {
 				this.global.checkErrorStatus(err);
 			}
-			
 		);
 	}
 

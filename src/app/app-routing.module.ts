@@ -132,10 +132,6 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/subscribe/subscribe.module').then(m => m.SubscribePageModule),
 		canActivate: [AuthGuard]
 	},
-
-
-
-
 ];
 
 @NgModule({

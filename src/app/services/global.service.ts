@@ -3,6 +3,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LoadingController, AlertController, ToastController } from '@ionic/angular';
 // import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { environment } from '../../environments/environment';
+import { NetworkService } from './network.service';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -17,7 +18,8 @@ export class GlobalService {
 		private loadingCtrl: LoadingController,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
-		private restApi: RestService
+		private restApi: RestService,
+		private network: NetworkService
 		// private iab: InAppBrowser
 	) {
 	}
@@ -125,22 +127,34 @@ export class GlobalService {
 		};
 	}
 
-	async showPopup(header, message) {
+	async showPopup(header, message, exitApp = false) {
 		this.closeLoading();
 		const alert = await this.alertCtrl.create({
 			header: header,
 			message: message,
-			buttons: ['OK']
+			buttons: exitApp ?
+				[
+					{
+						text: 'OK',
+						handler: () => {
+							navigator['app'].exitApp();
+						}
+					}
+				] :
+				['OK']
 		});
 		await alert.present();
 	}
 
-	checkErrorStatus(error, header = 'Failed') {
+	checkErrorStatus(error, header = 'Failed', exitApp = false, login = false) {
 		this.closeLoading();
-		if (error.status == 403 || error.status == 401) {
+		if (!this.checkConnection()) {
+			return false;
+		}
+		if ((error.status == 403 || error.status == 401) && !login) {
 			this.restApi.logout();
 		} else {
-			this.showPopup(header, error.error.message);
+			this.showPopup(header, error.error.message, exitApp);
 		}
 	}
 
@@ -156,5 +170,47 @@ export class GlobalService {
 
 	stripHtmlTags(text) {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
+	}
+
+	checkConnection(exitApp = false) {
+		if (this.network.getConnectionType() == "none") {
+			this.closeLoading();
+			this.showPopup(
+				"Network connection error",
+				"Please check your internet connection and try again.",
+				exitApp
+			);
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	async confirmExitApp(confirm = true) {
+		if (!confirm) {
+			navigator['app'].exitApp();
+			return false;
+		}
+		let alert = await this.alertCtrl.create({
+			header: 'Pilotboom',
+			message: 'Are you sure you want to exit?',
+			buttons: [
+				{
+					text: 'Cancel',
+					role: 'cancel',
+					handler: () => {
+					}
+				},
+				{
+					text: 'Exit',
+					handler: async () => {
+						await alert.onDidDismiss().then(() => {
+							navigator['app'].exitApp();
+						});
+					}
+				}
+			]
+		});
+		await alert.present();
 	}
 }

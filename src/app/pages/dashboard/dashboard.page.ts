@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
-import { AlertController, ToastController, NavController, NavParams } from '@ionic/angular';
+import { AlertController, ToastController, NavController, NavParams, Platform } from '@ionic/angular';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -25,7 +25,9 @@ export class DashboardPage implements OnInit {
 
 	loadView = false;
 
+	subscription: any;
 	constructor(
+		private platform: Platform,
 		private api: RestService,
 		private global: GlobalService,
 		private router: Router,
@@ -42,6 +44,14 @@ export class DashboardPage implements OnInit {
 	ionViewDidEnter() {
 		this.global.showLoading("bubbles", "Loading...");
 		this.getDashboardInfo();
+
+		this.subscription = this.platform.backButton.subscribe(() => {
+			this.api.logout();
+		});
+	}
+
+	ionViewWillLeave() {
+		this.subscription.unsubscribe();
 	}
 
 	userLogout() {

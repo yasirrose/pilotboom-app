@@ -32,7 +32,9 @@ export class AppComponent {
 				}
 			});
 			this.statusBar.styleDefault();
-			this.splashScreen.hide();
+			setTimeout(function(){
+                this.splashScreen.hide();
+            }, 2500);
 		});
 	}
 
