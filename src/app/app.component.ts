@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
 	versionNo: string = '1.0.0';
 	user = this.api.getCurrentUser();
-	
+
 	constructor(
 		private platform: Platform,
 		private splashScreen: SplashScreen,
@@ -32,9 +32,7 @@ export class AppComponent {
 				}
 			});
 			this.statusBar.styleDefault();
-			setTimeout(function(){
-                this.splashScreen.hide();
-            }, 2500);
+			this.splashScreen.hide();
 		});
 	}
 
