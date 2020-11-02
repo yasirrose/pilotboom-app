@@ -1,13 +1,7 @@
 {
-  "name": "Pilotboom",
+  "name": "pilotboom",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular",
-  "proxies": [
-    {
-      "path": "/posts",
-      "proxyUrl": "https://demo.pilotboom.com/wp-json/wp/v2/posts"
-    }
-  ]
+  "type": "angular"
 }

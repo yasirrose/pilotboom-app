@@ -5,3 +5,29 @@
     color: #bbb5b5;
     font-size: 13px;
 }
+
+.avatar {
+    margin: 7px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .avatar-img {
+        img {
+            width: 100%;
+            height: auto;
+            max-width: 100px;
+            border-radius: 70%;
+        }
+    }
+}
+
+.display_name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.nicename {
+    font-size: 12px;
+}

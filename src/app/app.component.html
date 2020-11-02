@@ -1,9 +1,17 @@
 <ion-app>
 	<ion-menu side="start" menuId="first" contentId="main">
-		<ion-header>
-			<ion-toolbar color="primary">
-				<ion-title>Menu</ion-title>
-			</ion-toolbar>
+		<ion-header *ngIf="userData">
+			<div class="avatar">
+				<div class="avatar-img">
+					<img src="{{userData.avatar}}" alt="">
+				</div>
+			</div>
+			<div class="display_name">
+				{{userData.user_display_name}}
+			</div>
+			<div class="display_name nicename">
+				@{{userData.user_nicename}}
+			</div>
 		</ion-header>
 		<ion-content>
 			<ion-list>

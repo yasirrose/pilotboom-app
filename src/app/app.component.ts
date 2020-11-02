@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
 	versionNo: string = '1.0.0';
 	user = this.api.getCurrentUser();
+	userData :any;
 
 	constructor(
 		private platform: Platform,
@@ -28,6 +29,7 @@ export class AppComponent {
 		this.platform.ready().then(() => {
 			this.user.subscribe(user => {
 				if (user) {
+					this.userData = this.api.getCurrentUserData();
 					this.router.navigate(["/dashboard"]);
 				}
 			});

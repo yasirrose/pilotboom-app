@@ -25,8 +25,10 @@
                             </div>
                             <div class="input_area">
                                 <ion-item lines="none">
-                                    <ion-input type="password" placeholder="Password" formControlName="password"
-                                        name="password"></ion-input>
+                                    <ion-input placeholder="Password" formControlName="password" [type]="passwordType"
+                                        clearOnEdit="false" name="password"></ion-input>
+                                    <ion-icon item-end [name]="passwordIcon" class="passwordIcon"
+                                        (click)='hideShowPassword()'></ion-icon>
                                 </ion-item>
                                 <div class="validation-errors">
                                     <ng-container *ngFor="let validation of validation_messages.password">
@@ -41,6 +43,10 @@
                             <ion-button type="submit" size="large" shape="round" expand="block" color="danger"
                                 [disabled]="!userForm.valid">Login
                             </ion-button>
+                            <input type="submit" class="submit-enter" [disabled]="!userForm.valid" />
+                        </div>
+                        <div class="forgot_password">
+                            <a (click)="forgotPassword()">Forgot Password?</a>
                         </div>
                     </div>
                 </ion-col>

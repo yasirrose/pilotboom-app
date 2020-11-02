@@ -40,4 +40,24 @@ ion-content {
 	.bottom-col {
 		margin-top: auto;
 	}
+
+	.forgot_password {
+		text-align: center;
+		justify-content: center;
+		margin-top: 15px;
+		a {
+			text-decoration: none;
+		}
+	}
+
+	.submit-enter {
+		position: absolute;
+		visibility: hidden;
+		left: -1000px;
+	}
+
+	.passwordIcon{
+		font-size:1.8rem !important;
+		color: #909090;
+	 }
 }

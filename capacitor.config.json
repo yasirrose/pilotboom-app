@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "Pilotboom",
+  "appName": "pilotboom",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

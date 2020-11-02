@@ -4,6 +4,7 @@ import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-login',
@@ -115,5 +116,17 @@ export class LoginPage implements OnInit {
 				this.global.checkErrorStatus(err);
 			}
 		);
+	}
+
+	passwordType: string = 'password';
+	passwordIcon: string = 'eye-off';
+
+	hideShowPassword() {
+		this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+		this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+	}
+
+	forgotPassword() {
+		this.global.InAppBrowser(`${environment.baseUrl}/wp-login.php?action=lostpassword`);
 	}
 }

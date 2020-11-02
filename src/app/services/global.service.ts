@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LoadingController, AlertController, ToastController } from '@ionic/angular';
-// import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { environment } from '../../environments/environment';
 import { NetworkService } from './network.service';
 import { RestService } from './rest.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,8 +19,8 @@ export class GlobalService {
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
 		private restApi: RestService,
-		private network: NetworkService
-		// private iab: InAppBrowser
+		private network: NetworkService,
+		private iab: InAppBrowser
 	) {
 	}
 
@@ -49,7 +49,6 @@ export class GlobalService {
 			cssClass,
 			mode: "md"
 		});
-
 		await alert.present();
 	}
 
@@ -57,20 +56,21 @@ export class GlobalService {
 		return this._santizer.bypassSecurityTrustHtml(value);
 	}
 
-	// InAppBrowser(link) {
-	// 	// const openingMode = "_blank";
-	// 	const browser = this.iab.create(link);
-	// 	// browser.executeScript(...);
+	InAppBrowser(link) {
+		console.log("InAppBrowser called from global");
+		// const openingMode = "_blank";
+		const browser = this.iab.create(link);
+		// browser.executeScript(...);
 
-	// 	// browser.insertCSS(...);
-	// 	browser.on('loadstop').subscribe(event => {
-	// 		browser.insertCSS({ code: "body{color: red;" });
-	// 	});
-	// }
+		// browser.insertCSS(...);
+		browser.on('loadstop').subscribe(event => {
+			browser.insertCSS({ code: "body{color: red;" });
+		});
+	}
 
-	// InAppBrowserClose() {
-	// 	this.browser.close();
-	// }
+	InAppBrowserClose() {
+		this.browser.close();
+	}
 
 	getValidationMessages() {
 		return {

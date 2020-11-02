@@ -77,6 +77,21 @@ export class RestService {
 		return this.user.asObservable();
 	}
 
+	getCurrentUserData() {
+		let user: any = this.user;
+		return user._value;
+	}
+
+	getMyself() {
+		let headers = new HttpHeaders();
+		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
+		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/users`, { headers: headers }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
 	getUserValue() {
 		return this.user.getValue();
 	}
