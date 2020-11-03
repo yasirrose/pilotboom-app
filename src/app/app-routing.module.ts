@@ -132,6 +132,21 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/subscribe/subscribe.module').then(m => m.SubscribePageModule),
 		canActivate: [AuthGuard]
 	},
+	{
+		path: 'users',
+		loadChildren: () => import('./pages/users/users.module').then(m => m.UsersPageModule),
+		canActivate: [AuthGuard]
+	},
+	{
+		path: 'add-user',
+		loadChildren: () => import('./pages/add-user/add-user.module').then(m => m.AddUserPageModule),
+		canActivate: [AuthGuard]
+	},
+	{
+		path: 'edit-user',
+		loadChildren: () => import('./pages/edit-user/edit-user.module').then(m => m.EditUserPageModule),
+		canActivate: [AuthGuard]
+	},
 ];
 
 @NgModule({

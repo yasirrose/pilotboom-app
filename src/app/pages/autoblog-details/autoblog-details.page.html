@@ -61,7 +61,7 @@
 					<label for="#">
 						<ion-icon name="link"></ion-icon>Link :
 					</label>
-					<span><a href="{{blogData.link}}">{{blogData.link}}</a></span>
+					<span><a (click)="global.InAppBrowser(blogData.link)">{{blogData.link}}</a></span>
 				</div>
 			</div>
 		</ion-card-content>

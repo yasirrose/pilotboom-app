@@ -31,3 +31,12 @@
 .nicename {
     font-size: 12px;
 }
+
+ion-content {
+    ion-menu-toggle {
+        ion-item {
+            font-size: 14px;
+            padding: 0;
+        }
+    }
+}

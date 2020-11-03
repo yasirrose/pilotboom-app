@@ -1,0 +1,126 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Add New User</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<form [formGroup]="addUserForm" (ngSubmit)="addUser()">
+		<div class="upload-image">
+			<div class="uploaded-img">
+				<img src="./../../assets/img/upload-img.png" alt="" />
+			</div>
+			<!-- <ion-button shape="round" color="danger">
+				<ion-icon name="cloud-upload-sharp"></ion-icon>
+			</ion-button> -->
+		</div>
+		<div class="ion-no-padding app-form">
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Username *" formControlName="username" name="username">
+					</ion-input>
+
+					<!-- <ion-input type="text" placeholder="Username *" formControlName="username" name="username" (keydown.space)="$event.preventDefault();"></ion-input> -->
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.username">
+						<div class="error-message"
+							*ngIf="addUserForm.get('username').hasError(validation.type) && (addUserForm.get('username').dirty || addUserForm.get('username').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="email" placeholder="Email *" formControlName="email" name="email"></ion-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.email">
+						<div class="error-message"
+							*ngIf="addUserForm.get('email').hasError(validation.type) && (addUserForm.get('email').dirty || addUserForm.get('email').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Display Name" formControlName="name" name="name">
+					</ion-input>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="First Name" formControlName="first_name" name="first_name">
+					</ion-input>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Last Name" formControlName="last_name" name="last_name">
+					</ion-input>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Website (URL)" formControlName="url" name="url"></ion-input>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-textarea placeholder="Description" formControlName="description" name="description">
+					</ion-textarea>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="Roles" formControlName="roles" name="roles[]" multiple="true">
+						<ion-select-option selected value="subscriber">Subscriber</ion-select-option>
+						<ion-select-option value="contributor">Contributor</ion-select-option>
+						<ion-select-option value="author">Author</ion-select-option>
+						<ion-select-option value="editor">Editor</ion-select-option>
+						<ion-select-option value="administrator">Administrator</ion-select-option>
+					</ion-select>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-input type="text" placeholder="Password *" formControlName="password" name="password">
+					</ion-input>
+				</ion-item>
+				<div class="validation-errors">
+					<ng-container *ngFor="let validation of validation_messages.password">
+						<div class="error-message"
+							*ngIf="addUserForm.get('password').hasError(validation.type) && (addUserForm.get('password').dirty || addUserForm.get('password').touched)">
+							<ion-icon name="information-circle-outline"></ion-icon>
+							{{ validation.message }}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+				[disabled]="!addUserForm.valid">Add User</ion-button>
+		</div>
+	</form>
+</ion-content>

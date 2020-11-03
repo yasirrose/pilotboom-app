@@ -10,6 +10,9 @@
                         <div class="ion-no-padding app-form">
                             <div class="input_area">
                                 <ion-item lines="none">
+                                    <ion-label>
+                                        <ion-icon slot="start" name="person-outline"></ion-icon>
+                                    </ion-label>
                                     <ion-input type="text" placeholder="Username/Email" formControlName="username"
                                         name="username"></ion-input>
                                 </ion-item>
@@ -25,6 +28,9 @@
                             </div>
                             <div class="input_area">
                                 <ion-item lines="none">
+                                    <ion-label>
+                                        <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+                                    </ion-label>
                                     <ion-input placeholder="Password" formControlName="password" [type]="passwordType"
                                         clearOnEdit="false" name="password"></ion-input>
                                     <ion-icon item-end [name]="passwordIcon" class="passwordIcon"

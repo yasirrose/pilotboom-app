@@ -82,6 +82,10 @@ export class RestService {
 		return user._value;
 	}
 
+	getCurrentUserID(){
+		return this.getCurrentUserData().user_id;
+	}
+
 	getMyself() {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);

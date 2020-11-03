@@ -57,7 +57,6 @@ export class GlobalService {
 	}
 
 	InAppBrowser(link) {
-		console.log("InAppBrowser called from global");
 		// const openingMode = "_blank";
 		const browser = this.iab.create(link);
 		// browser.executeScript(...);
@@ -144,6 +143,14 @@ export class GlobalService {
 				['OK']
 		});
 		await alert.present();
+	}
+
+	async presentToast(message, duration = 2000) {
+		const toast = await this.toastCtrl.create({
+			message: message,
+			duration: duration
+		});
+		toast.present();
 	}
 
 	checkErrorStatus(error, header = 'Failed', exitApp = false, login = false) {

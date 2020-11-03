@@ -25,6 +25,12 @@ ion-content {
 		ion-input {
 			--placeholder-opacity: 0.4;
 		}
+		ion-label {
+			ion-icon {
+				font-size: 1.4rem !important;
+				color: #909090;
+			}
+		}
 	}
 	ion-button {
 		--box-shadow: none;
@@ -56,8 +62,8 @@ ion-content {
 		left: -1000px;
 	}
 
-	.passwordIcon{
-		font-size:1.8rem !important;
+	.passwordIcon {
+		font-size: 1.8rem !important;
 		color: #909090;
-	 }
+	}
 }

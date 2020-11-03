@@ -1,0 +1,74 @@
+$textColor: #1c0d2e;
+$colorgray: #e2e2e2;
+.app-form {
+	ion-item {
+		--background: #fff;
+		border: 1px solid $colorgray;
+		color: $textColor;
+		border-radius: 50px;
+		ion-input {
+			--placeholder-opacity: 0.4;
+		}
+		ion-select {
+			max-width: 100%;
+			flex: 100%;
+			--padding-start: 0;
+		}
+		&.cus-checkbox {
+			border-radius: 0;
+			border: none;
+			padding-left: 0;
+			--padding-start: 5px;
+			ion-checkbox {
+				margin-right: 10px;
+			}
+		}
+		&.time-input {
+			ion-label {
+				color: $textColor;
+				opacity: 0.4;
+			}
+		}
+	}
+	ion-button {
+		--box-shadow: none;
+		--border-radius: 50px;
+		height: 48px;
+	}
+}
+
+.upload-image {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	background-color: #f3f3f3;
+	position: relative;
+	margin: 10px auto 30px auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	.uploaded-img {
+		img {
+			width: 100%;
+			height: auto;
+			max-width: 100px;
+		}
+	}
+	ion-button {
+		position: absolute;
+		bottom: -10px;
+		right: 0;
+		width: 40px;
+		height: 40px;
+		--padding-bottom: 0;
+		--padding-top: 0;
+		--padding-end: 0;
+		--padding-start: 0;
+		--box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	}
+}
+
+.other-info:not(.expanded) {
+	display: none;
+}

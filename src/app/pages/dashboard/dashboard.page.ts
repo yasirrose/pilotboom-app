@@ -44,14 +44,16 @@ export class DashboardPage implements OnInit {
 	ionViewDidEnter() {
 		this.global.showLoading("bubbles", "Loading...");
 		this.getDashboardInfo();
+		const gb = this.global;
 
-		this.subscription = this.platform.backButton.subscribe(() => {
-			this.api.logout();
+		this.platform.backButton.subscribeWithPriority(99999, () => {
+			document.addEventListener('backbutton', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				// gb.presentToast('Press back button again to exit');
+				navigator['app'].exitApp();
+			}, false);
 		});
-	}
-
-	ionViewWillLeave() {
-		this.subscription.unsubscribe();
 	}
 
 	userLogout() {
