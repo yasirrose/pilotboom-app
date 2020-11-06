@@ -119,7 +119,7 @@ export class LoginPage implements OnInit {
 	}
 
 	passwordType: string = 'password';
-	passwordIcon: string = 'eye-off';
+	passwordIcon: string = 'eye';
 
 	hideShowPassword() {
 		this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
