@@ -11,11 +11,14 @@ import { RestService } from 'src/app/services/rest.service';
 	providers: [NavParams]
 })
 export class ActivitiesPage implements OnInit {
+	activitiesData = [];
 	activities = [];
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	filterType = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -49,13 +52,18 @@ export class ActivitiesPage implements OnInit {
 		this.api.getActivities('', this.per_page, this.page).subscribe(
 			res => {
 				this.hasMore = res.length < this.per_page ? false : true;
-				if (event) {
-					this.activities = refresh ? [] : this.activities;
-					event.target.complete();
-				} else {
-					this.activities = [];
+				if (!event || refresh) {
+					this.activitiesData = [];
+					this.filterType = '';
 				}
-				this.activities = this.activities.concat(res);
+				this.activitiesData = this.activitiesData.concat(res);
+
+				if (event && this.filterType) { //Pagination called and search exists already
+					this.activities = this.global.filterSearch(this.activitiesData, this.filterType, 'type');
+				} else {
+					this.activities = this.activitiesData;
+				}
+				event ? event.target.complete() : '';
 				this.global.closeLoading();
 				this.loadView = true;
 			},
@@ -143,5 +151,15 @@ export class ActivitiesPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.getActivities(event, true);
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		// this.filterType = this.filterType == 'all' ? '' : this.filterType;
+		var filtered = this.global.filterSearch(this.activitiesData, this.filterType, 'type');
+		setTimeout(() => {
+			this.activities = filtered;
+			this.searching = false;
+		}, 500);
 	}
 }

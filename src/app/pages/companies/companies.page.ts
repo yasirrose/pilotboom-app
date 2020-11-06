@@ -12,17 +12,21 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class CompaniesPage implements OnInit {
 	categories = 'All';
-	companies = [];
+	companiesData = [];
+	all = [];
 	customer = [];
 	lead = [];
 	opportunity = [];
 	subscriber = [];
-	trash = [];
+	// trash = [];
 
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	search = false;
+	searchTerm = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -52,27 +56,41 @@ export class CompaniesPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	resetContactsData() {
-		this.companies = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = []; this.trash = [];
+	clearSearch() {
+		this.search = false;
+		this.searchTerm = '';
+		this.searching = false;
 	}
 
 	getContacts(event?, refresh?) {
 		this.api.getCrmContacts('company', 'all', this.per_page, this.page).subscribe(
 			res => {
-				let all_length = res.length;
+				// let all_length = res.length;
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (!event || refresh) {
-					this.resetContactsData();
+					this.companiesData = [];
+					this.clearSearch();
 				}
-				this.companies = this.companies.concat(res);
-				this.setCategoriesData(res);
+				this.companiesData = this.companiesData.concat(res);
+
+				if (event && this.search && this.searchTerm) { //Pagination called and search exists already
+					var filtered = this.global.filterSearch(this.companiesData, this.searchTerm, 'first_name');
+					this.setData(filtered);
+				} else {
+					this.setData(this.companiesData);
+				}
+
+				event ? event.target.complete() : '';
 				this.loadView = true;
-				//Getting Trashed Contacts
-				this.api.getCrmContacts('company', 'trash', this.per_page, this.page).subscribe(trashed => {
-					this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
-					event ? event.target.complete() : '';
-					this.trash = this.trash.concat(trashed);
-					this.global.closeLoading();
-				});
+				this.global.closeLoading();
+
+				// //Getting Trashed Contacts
+				// this.api.getCrmContacts('company', 'trash', this.per_page, this.page).subscribe(trashed => {
+				// 	this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
+				// 	event ? event.target.complete() : '';
+				// 	this.trash = this.trash.concat(trashed);
+				// 	this.global.closeLoading();
+				// });
 			},
 			err => {
 				event ? event.target.complete() : '';
@@ -81,9 +99,11 @@ export class CompaniesPage implements OnInit {
 		);
 	}
 
-	setCategoriesData(result) {
-		for (let i = 0; i < result.length; i++) {
-			const elem = result[i];
+	setData(contactData) {
+		this.all = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
+		this.all = contactData;
+		for (let i = 0; i < contactData.length; i++) {
+			const elem = contactData[i];
 			this[elem.life_stage].push(elem);
 		}
 	}
@@ -123,10 +143,9 @@ export class CompaniesPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteCompany(id).subscribe(
 							res => {
-								this.companies = this.global.filterObjectByValue(this.companies, 'id', id, 'remove');
-								this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
-								this.setCategoriesData(this.companies);
-								this.trash.unshift(res); //Pushing the object at start of array.
+								this.companiesData = this.global.filterObjectByValue(this.companiesData, 'id', id, 'remove');
+								this.setData(this.companiesData);
+								// this.trash.unshift(res);
 								this.global.closeLoading();
 							},
 							err => {
@@ -169,5 +188,21 @@ export class CompaniesPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.getContacts(event, true);
+	}
+
+	enableSearch(evt) {
+		this.search = !this.search;
+		if (!this.search) {
+			this.searchTerm = '';
+		}
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		var filtered = this.global.filterSearch(this.companiesData, this.searchTerm, 'first_name');
+		setTimeout(() => {
+			this.setData(filtered);
+			this.searching = false;
+		}, 500);
 	}
 }

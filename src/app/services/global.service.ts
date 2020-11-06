@@ -175,6 +175,16 @@ export class GlobalService {
 		});
 	}
 
+	filterSearch(objArray, value, key1, key2?) {
+		return objArray.filter(obj => {
+			if (key2) {
+				return (obj[key1].toLowerCase().indexOf(value.toLowerCase()) > -1 || obj[key2].toLowerCase().indexOf(value.toLowerCase()) > -1);
+			} else {
+				return obj[key1].toLowerCase().indexOf(value.toLowerCase()) > -1;
+			}
+		});
+	}
+
 	stripHtmlTags(text) {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	}

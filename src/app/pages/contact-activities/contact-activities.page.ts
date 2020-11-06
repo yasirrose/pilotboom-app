@@ -10,13 +10,16 @@ import { RestService } from 'src/app/services/rest.service';
 	styleUrls: ['./contact-activities.page.scss'],
 })
 export class ContactActivitiesPage implements OnInit {
-	contactActivities = [];
+	activitiesData = [];
+	activities = [];
 	contactData: any;
 	openActSection = false;
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	filterType = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -51,13 +54,18 @@ export class ContactActivitiesPage implements OnInit {
 		this.api.getActivities(this.contactData.id, this.per_page, this.page).subscribe(
 			res => {
 				this.hasMore = res.length < this.per_page ? false : true;
-				if (event) {
-					this.contactActivities = refresh ? [] : this.contactActivities;
-					event.target.complete();
-				} else {
-					this.contactActivities = [];
+				if (!event || refresh) {
+					this.activitiesData = [];
+					this.filterType = '';
 				}
-				this.contactActivities = this.contactActivities.concat(res);
+				this.activitiesData = this.activitiesData.concat(res);
+
+				if (event && this.filterType) { //Pagination called and search exists already
+					this.activities = this.global.filterSearch(this.activitiesData, this.filterType, 'type');
+				} else {
+					this.activities = this.activitiesData;
+				}
+				event ? event.target.complete() : '';
 				this.global.closeLoading();
 				this.loadView = true;
 			},
@@ -104,7 +112,7 @@ export class ContactActivitiesPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteActivity(id).subscribe(
 							res => {
-								this.contactActivities = this.global.filterObjectByValue(this.contactActivities, 'id', id, 'remove');
+								this.getContactActivities();
 								this.global.closeLoading();
 							},
 							err => {
@@ -126,5 +134,15 @@ export class ContactActivitiesPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.getContactActivities(event, true);
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		// this.filterType = this.filterType == 'all' ? '' : this.filterType;
+		var filtered = this.global.filterSearch(this.activitiesData, this.filterType, 'type');
+		setTimeout(() => {
+			this.activities = filtered;
+			this.searching = false;
+		}, 500);
 	}
 }

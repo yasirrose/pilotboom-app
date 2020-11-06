@@ -12,7 +12,7 @@
 	</ion-toolbar>
 	<ion-segment scrollable="true" mode="md" [(ngModel)]="categories" *ngIf="loadView">
 		<ion-segment-button value="All">
-			<ion-label>All({{contacts.length}})</ion-label>
+			<ion-label>All({{all.length}})</ion-label>
 		</ion-segment-button>
 		<ion-segment-button value="Customer">
 			<ion-label>Customer({{customer.length}})</ion-label>
@@ -26,28 +26,37 @@
 		<ion-segment-button value="Subscriber">
 			<ion-label>Subscriber({{subscriber.length}})</ion-label>
 		</ion-segment-button>
-		<ion-segment-button value="Trash">
+		<!-- <ion-segment-button value="Trash">
 			<ion-label>Trash({{trash.length}})</ion-label>
-		</ion-segment-button>
+		</ion-segment-button> -->
 	</ion-segment>
 </ion-header>
 <ion-content class="ion-padding">
 	<div *ngIf="loadView">
+
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+
 		<div class="ion-flex inline-filters">
 			<ion-button fill="solid" shape="round" color="danger" routerLink="/addcontact">
 				<ion-icon name="add-outline"></ion-icon> Add New Contact
 			</ion-button>
-			<!-- <ion-button color="light" fill="solid" shape="round">
-			<ion-icon name="search"></ion-icon>
-		</ion-button> -->
+			<ion-button color="light" fill="solid" shape="round" (click)="enableSearch($event)">
+				<ion-icon name="search"></ion-icon>
+			</ion-button>
 		</div>
-		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-			<ion-refresher-content></ion-refresher-content>
-		</ion-refresher>
+		<div class="ion-flex inline-filters" [hidden]="!search">
+			<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterItems($event)" animated>
+			</ion-searchbar>
+			<div class="spinner-container" *ngIf="searching">
+				<ion-spinner></ion-spinner>
+			</div>
+		</div>
 		<div [ngSwitch]="categories">
 			<div *ngSwitchCase="'All'">
-				<div *ngIf="contacts.length > 0; else no_result">
-					<ion-card mode="md" *ngFor="let contact of contacts; index as i">
+				<div *ngIf="all.length > 0; else no_result">
+					<ion-card mode="md" *ngFor="let contact of all; index as i">
 						<ion-card-content>
 							<div class="detail-wrap">
 								<div class="top-right-btn">
@@ -99,7 +108,7 @@
 							</div>
 						</ion-card-content>
 					</ion-card>
-					<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)"
+					<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)"
 						*ngIf="hasMore; else no_more">
 						<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
 						</ion-infinite-scroll-content>
@@ -375,7 +384,7 @@
 					</ion-card>
 				</ng-template>
 			</div>
-			<div *ngSwitchCase="'Trash'">
+			<!-- <div *ngSwitchCase="'Trash'">
 				<div *ngIf="trash.length > 0; else no_result">
 					<ion-card mode="md" *ngFor="let contact of trash; index as i">
 						<ion-card-content>
@@ -413,14 +422,6 @@
 											<span>{{contact.owner.display_name}}</span>
 										</li>
 									</ul>
-									<!-- <div class="action-group">
-										<ion-select placeholder="Select">
-											<ion-select-option value="New">New Campaign</ion-select-option>
-											<ion-select-option value="Test">Test Campaign</ion-select-option>
-											<ion-select-option value="Old">Old Campaign</ion-select-option>
-										</ion-select>
-										<ion-button fill="solid" shape="round" color="primary">Stop</ion-button>
-									</div> -->
 								</div>
 							</div>
 						</ion-card-content>
@@ -433,7 +434,7 @@
 						</ion-card-content>
 					</ion-card>
 				</ng-template>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </ion-content>

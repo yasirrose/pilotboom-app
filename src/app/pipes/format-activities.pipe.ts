@@ -14,7 +14,7 @@ export class FormatActivitiesPipe implements PipeTransform {
 				groupedElements[obj[groupByKey]] = [];
 			}
 
-			obj.start_date = !obj.start_date ? '' : ' on ' + obj.start_date;
+			obj.start_date_on = !obj.start_date ? '' : ' on ' + obj.start_date;
 
 			if (obj.type == 'new_note') {
 				obj.activity = ' created a note ';
@@ -39,8 +39,6 @@ export class FormatActivitiesPipe implements PipeTransform {
 				});
 			}
 		}
-
 		return events;
 	}
-
 }

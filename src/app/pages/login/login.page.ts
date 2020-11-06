@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
 					this.global.closeLoading();
 				},
 				err => {
-					this.global.checkErrorStatus(err, 'Login Failed', false, true);
+					this.processLoginError(err);
 				}
 			);
 		}
@@ -128,5 +128,14 @@ export class LoginPage implements OnInit {
 
 	forgotPassword() {
 		this.global.InAppBrowser(`${environment.baseUrl}/wp-login.php?action=lostpassword`);
+	}
+
+	processLoginError(err) {
+		if (err.status == 403) {
+			if (err.error.code.indexOf('incorrect_password') > -1) {
+				err.error.message = 'The password you entered is incorrect. Please try again.'
+			}
+		}
+		this.global.checkErrorStatus(err, 'Login Failed', false, true);
 	}
 }

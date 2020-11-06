@@ -12,17 +12,21 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class ContactsPage implements OnInit {
 	categories = 'All';
-	contacts = [];
+	contactsData = [];
+	all = [];
 	customer = [];
 	lead = [];
 	opportunity = [];
 	subscriber = [];
-	trash = [];
+	// trash = [];
 
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	search = false;
+	searchTerm = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -52,27 +56,41 @@ export class ContactsPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
-	resetContactsData() {
-		this.contacts = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = []; this.trash = [];
+	clearSearch() {
+		this.search = false;
+		this.searchTerm = '';
+		this.searching = false;
 	}
 
 	getContacts(event?, refresh?) {
 		this.api.getCrmContacts('contact', 'all', this.per_page, this.page).subscribe(
 			res => {
-				let all_length = res.length;
+				// let all_length = res.length;
+				this.hasMore = res.length < this.per_page ? false : true;
 				if (!event || refresh) {
-					this.resetContactsData();
+					this.contactsData = [];
+					this.clearSearch();
 				}
-				this.contacts = this.contacts.concat(res);
-				this.setCategoriesData(res);
+				this.contactsData = this.contactsData.concat(res);
+
+				if (event && this.search && this.searchTerm) { //Pagination called and search exists already
+					var filtered = this.global.filterSearch(this.contactsData, this.searchTerm, 'first_name', 'last_name');
+					this.setData(filtered);
+				} else {
+					this.setData(this.contactsData);
+				}
+
+				event ? event.target.complete() : '';
 				this.loadView = true;
-				//Getting Trashed Contacts
-				this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
-					this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
-					event ? event.target.complete() : '';
-					this.trash = this.trash.concat(trashed);
-					this.global.closeLoading();
-				});
+				this.global.closeLoading();
+
+				// //Getting Trashed Contacts
+				// this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
+				// 	this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
+				// 	event ? event.target.complete() : '';
+				// 	this.trash = this.trash.concat(trashed);
+				// 	this.global.closeLoading();
+				// });
 			},
 			err => {
 				event ? event.target.complete() : '';
@@ -81,9 +99,11 @@ export class ContactsPage implements OnInit {
 		);
 	}
 
-	setCategoriesData(result) {
-		for (let i = 0; i < result.length; i++) {
-			const elem = result[i];
+	setData(contactData) {
+		this.all = []; this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
+		this.all = contactData;
+		for (let i = 0; i < contactData.length; i++) {
+			const elem = contactData[i];
 			this[elem.life_stage].push(elem);
 		}
 	}
@@ -123,10 +143,9 @@ export class ContactsPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteContact(id).subscribe(
 							res => {
-								this.contacts = this.global.filterObjectByValue(this.contacts, 'id', id, 'remove');
-								this.customer = []; this.lead = []; this.opportunity = []; this.subscriber = [];
-								this.setCategoriesData(this.contacts);
-								this.trash.unshift(res);
+								this.contactsData = this.global.filterObjectByValue(this.contactsData, 'id', id, 'remove');
+								this.setData(this.contactsData);
+								// this.trash.unshift(res); //Pushing the object at start of array.
 								this.global.closeLoading();
 							},
 							err => {
@@ -169,5 +188,21 @@ export class ContactsPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.getContacts(event, true);
+	}
+
+	enableSearch(evt) {
+		this.search = !this.search;
+		if (!this.search) {
+			this.searchTerm = '';
+		}
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		var filtered = this.global.filterSearch(this.contactsData, this.searchTerm, 'first_name', 'last_name');
+		setTimeout(() => {
+			this.setData(filtered);
+			this.searching = false;
+		}, 500);
 	}
 }

@@ -13,17 +13,26 @@
 </ion-header>
 <ion-content class="ion-padding">
 	<div *ngIf="loadView">
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+		
 		<div class="ion-flex inline-filters">
 			<ion-button fill="solid" shape="round" color="danger" routerLink="/add-contact-group">
 				<ion-icon name="add-outline"></ion-icon> Add New Contact Group
 			</ion-button>
-			<!-- <ion-button color="light" fill="solid" shape="round">
+			<ion-button color="light" fill="solid" shape="round" (click)="enableSearch($event)">
 				<ion-icon name="search"></ion-icon>
-			</ion-button> -->
+			</ion-button>
 		</div>
-		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-			<ion-refresher-content></ion-refresher-content>
-		</ion-refresher>
+		<div class="ion-flex inline-filters" [hidden]="!search">
+			<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterItems($event)" animated>
+			</ion-searchbar>
+			<div class="spinner-container" *ngIf="searching">
+				<ion-spinner></ion-spinner>
+			</div>
+		</div>
+
 		<div *ngIf="contactGroups.length > 0; else no_result">
 			<ion-card mode="md" *ngFor="let contact of contactGroups; index as i">
 				<ion-card-content>
@@ -71,7 +80,7 @@
 					</div>
 				</ion-card-content>
 			</ion-card>
-			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
+			<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
 				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
 				</ion-infinite-scroll-content>
 			</ion-infinite-scroll>

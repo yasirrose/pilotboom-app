@@ -21,10 +21,26 @@
 				<ion-icon name="add-outline"></ion-icon> Add Activity
 			</ion-button>
 		</div>
-		<div *ngIf="contactActivities.length > 0; else no_result">
+		
+		<div *ngIf="activitiesData.length > 0; else no_result">
+			<div class="ion-flex inline-filters app-form">
+				<ion-item>
+					<ion-select [(ngModel)]="filterType" (ionChange)="filterItems($event)">
+						<ion-select-option value="">Select a type</ion-select-option>
+						<ion-select-option value="new_note">New Note</ion-select-option>
+						<ion-select-option value="email">Email</ion-select-option>
+						<ion-select-option value="log_activity">Log Activity</ion-select-option>
+						<ion-select-option value="schedule">Schedule</ion-select-option>
+						<ion-select-option value="tasks">Tasks</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<div class="spinner-container" *ngIf="searching">
+					<ion-spinner></ion-spinner>
+				</div>
+			</div>
 			<div class="activities-sec">
 				<div class="activity-col"
-					*ngFor="let data of contactActivities | formatActivities: 'created_timeline_date'">
+					*ngFor="let data of activities | formatActivities: 'created_timeline_date'">
 					<div class="activity-date">
 						<p>{{data.month_year | date:'MMMM, y'}}</p>
 					</div>
@@ -35,7 +51,7 @@
 						</div>
 						<div class="discription">
 							<div class="heading">
-								<h3><strong>{{ activity.created_by.display_name }}</strong>{{activity.activity}}{{activity.start_date}}
+								<h3><strong>{{ activity.created_by.display_name }}</strong>{{activity.activity}}{{activity.start_date_on}}
 									for <strong>{{activity.contact.first_name}}</strong></h3>
 							</div>
 							<div class="dis">
@@ -50,7 +66,7 @@
 					</div>
 				</div>
 			</div>
-			<ion-infinite-scroll threshold="40px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
+			<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
 				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
 				</ion-infinite-scroll-content>
 			</ion-infinite-scroll>

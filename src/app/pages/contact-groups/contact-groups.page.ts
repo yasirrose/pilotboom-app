@@ -12,10 +12,14 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class ContactGroupsPage implements OnInit {
 	loadView = false;
+	contactGroupsData = [];
 	contactGroups = [];
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	search = false;
+	searchTerm = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -45,17 +49,29 @@ export class ContactGroupsPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
+	clearSearch() {
+		this.search = false;
+		this.searchTerm = '';
+		this.searching = false;
+	}
+
 	getContactGroups(event?, refresh?) {
 		this.api.getCrmContactGroups(this.page, this.per_page).subscribe(
 			res => {
 				this.hasMore = res.length < this.per_page ? false : true;
-				if (event) {
-					this.contactGroups = refresh ? [] : this.contactGroups;
-					event.target.complete();
-				} else {
-					this.contactGroups = [];
+				if (!event || refresh) {
+					this.contactGroupsData = [];
+					this.clearSearch();
 				}
-				this.contactGroups = this.contactGroups.concat(res);
+				this.contactGroupsData = this.contactGroupsData.concat(res);
+
+				if (event && this.search && this.searchTerm) { //Pagination called and search exists already
+					this.contactGroups = this.global.filterSearch(this.contactGroupsData, this.searchTerm, 'name');
+				} else {
+					this.contactGroups = this.contactGroupsData;
+				}
+
+				event ? event.target.complete() : '';
 				this.global.closeLoading();
 				this.loadView = true;
 			},
@@ -101,7 +117,7 @@ export class ContactGroupsPage implements OnInit {
 						this.global.showLoading("bubbles", "Please wait...");
 						this.api.deleteContactGroup(id).subscribe(
 							res => {
-								this.contactGroups = this.global.filterObjectByValue(this.contactGroups, 'id', id, 'remove');
+								this.contactGroupsData = this.global.filterObjectByValue(this.contactGroupsData, 'id', id, 'remove');
 								this.global.closeLoading();
 							},
 							err => {
@@ -147,5 +163,21 @@ export class ContactGroupsPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.getContactGroups(event, true);
+	}
+
+	enableSearch(evt) {
+		this.search = !this.search;
+		if (!this.search) {
+			this.searchTerm = '';
+		}
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		var filtered = this.global.filterSearch(this.contactGroupsData, this.searchTerm, 'name');
+		setTimeout(() => {
+			this.contactGroups = filtered;
+			this.searching = false;
+		}, 500);
 	}
 }

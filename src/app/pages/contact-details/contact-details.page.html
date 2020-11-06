@@ -45,82 +45,64 @@
 				</div>
 				<div class="info">
 					<label for="#">
-						<ion-icon name="calendar-outline"></ion-icon>Date of Birth
-					</label>
-					<span>: &nbsp;&nbsp; ___</span>
-				</div>
-				<div class="info">
-					<label for="#">
-						<ion-icon name="man-outline"></ion-icon>Age
-					</label>
-					<span>: &nbsp;&nbsp; ___</span>
-				</div>
-				<div class="info">
-					<label for="#">
 						<ion-icon name="call-sharp"></ion-icon>Phone
 					</label>
 					<span>: &nbsp;&nbsp;
-						<a href="tel:+13616526600">{{contactData.phone}}</a></span>
+						<a href="tel:{{contactData.phone}}">{{contactData.phone}}</a></span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="call-sharp"></ion-icon>Fax
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.fax}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="globe-outline"></ion-icon>Website
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.website}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="location-outline"></ion-icon>Street 1
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.street_1}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="location-outline"></ion-icon>Street 2
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.street_2}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="location-outline"></ion-icon>CIty
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.city}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="business-outline"></ion-icon>State
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.state}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="navigate-circle-outline"></ion-icon>Country
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
+					<span>: &nbsp;&nbsp; {{contactData.country}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="mail-outline"></ion-icon>Postal Code
 					</label>
-					<span>: &nbsp;&nbsp; ___</span>
-				</div>
-				<div class="info">
-					<label for="#">
-						<ion-icon name="browsers-outline"></ion-icon>Source
-					</label>
-					<span>: &nbsp;&nbsp; Advertisement</span>
+					<span>: &nbsp;&nbsp; {{contactData.postal_code}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="person-outline"></ion-icon>Life Stage
 					</label>
-					<span>: &nbsp;&nbsp; {{contactData.life_stage}}</span>
+					<span>: &nbsp;&nbsp; {{contactData.life_stage | titlecase }}</span>
 				</div>
 			</div>
 			<div class="basic-info">
@@ -131,7 +113,7 @@
 				</div>
 				<div class="profile-info">
 					<div class="image-hol">
-						<img src="assets/img/upload-img.png" alt="" />
+						<img src="{{contactData.owner.avatar}}" alt="" />
 					</div>
 					<div class="detail-hol">
 						<p>{{contactData.owner.display_name}}</p>
