@@ -47,7 +47,14 @@ const routes: Routes = [
     path: 'viewcontacts',
     loadChildren: () => import('./viewcontacts/viewcontacts.module').then( m => m.ViewcontactsPageModule)
   },
-
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'listing',
+    loadChildren: () => import('./listing/listing.module').then( m => m.ListingPageModule)
+  }
 
 ];
 
