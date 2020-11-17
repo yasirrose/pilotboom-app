@@ -82,7 +82,7 @@ export class RestService {
 		return user._value;
 	}
 
-	getCurrentUserID(){
+	getCurrentUserID() {
 		return this.getCurrentUserData().user_id;
 	}
 

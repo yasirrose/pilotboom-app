@@ -147,6 +147,11 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/edit-user/edit-user.module').then(m => m.EditUserPageModule),
 		canActivate: [AuthGuard]
 	},
+	{
+		path: 'chat',
+		loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule),
+		canActivate: [AuthGuard]
+	},
 ];
 
 @NgModule({
