@@ -147,11 +147,19 @@ const routes: Routes = [
 		loadChildren: () => import('./pages/edit-user/edit-user.module').then(m => m.EditUserPageModule),
 		canActivate: [AuthGuard]
 	},
+	// {
+	// 	path: 'chat',
+	// 	loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule),
+	// 	canActivate: [AuthGuard]
+	// },
 	{
 		path: 'chat',
-		loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule),
-		canActivate: [AuthGuard]
+		loadChildren: () => import('./chat/chat.module').then(m => m.ChatPageModule)
 	},
+	{
+		path: 'listing',
+		loadChildren: () => import('./listing/listing.module').then(m => m.ListingPageModule)
+	}
 ];
 
 @NgModule({
