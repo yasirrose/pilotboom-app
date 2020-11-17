@@ -113,6 +113,8 @@ ion-header {
         box-shadow: 0 0 10px rgba(0,0,0,0.2);
         min-height: 50px;
         padding-top: 5px;
+        max-height: 30vh;
+        font-size: 14px;
         textarea {
             border-radius: 0px !important;
             padding: 0px 10px 0px 14px !important;
