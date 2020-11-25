@@ -3,83 +3,49 @@
 		<ion-buttons slot="start">
 			<ion-back-button color="light" text="" mode="md"></ion-back-button>
 		</ion-buttons>
-		<ion-title>Messaging</ion-title>
+		<ion-title>{{contactData.first_name | titlecase}} {{contactData.last_name | titlecase}}</ion-title>
 		<ion-buttons slot="end">
 			<ion-menu-button color="light" text="">
-				<img src="./../../assets/icon/menu-icon.png" alt="" />
+				<img src="./../../assets/icon/menu-icon.png" alt="">
 			</ion-menu-button>
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
-	<div *ngIf="loadView">
-		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-			<ion-refresher-content></ion-refresher-content>
-		</ion-refresher>
-		<div *ngIf="posts.length > 0; else no_result">
-			<ion-tab-button (click)="testing()">
-				<ion-icon name="camera"></ion-icon>
-				<ion-label>Photo</ion-label>
-			</ion-tab-button>
-			<ion-card mode="md" *ngFor="let post of posts; index as i">
-				<ion-card-content>
-					<div class="detail-wrap">
-						<!-- <div class="top-right-btn">
-							<ion-button fill="solid" shape="round" color="danger"
-								(click)="editContactGroup($event, contact.id)">
-								<ion-icon name="pencil-sharp"></ion-icon>
-							</ion-button>
-							<ion-button fill="solid" shape="round" color="danger"
-								(click)="getSubscribers($event, contact.id)">
-								<ion-icon name="eye-sharp"></ion-icon>
-							</ion-button>
-							<ion-button fill="solid" shape="round" color="danger" (click)="delete($event, contact.id)">
-								<ion-icon name="trash-sharp"></ion-icon>
-							</ion-button>
-						</div> -->
-						<div class="left-detail">
-							<ul>
-								<li>
-									<ion-icon name="person-circle-sharp"></ion-icon>
-									<span>Title: {{post.title.rendered}}</span>
-								</li>
-								<li>
-									<ion-icon name="reader-outline"></ion-icon>
-									<span [innerHTML]="'Description: '+ post.content.rendered"></span>
-								</li>
-								<li>
-									<ion-icon name="lock-open-outline"></ion-icon>
-									<span>Status: {{post.ping_status}}</span>
-								</li>
-								<li>
-									<ion-icon name="calendar-outline"></ion-icon>
-									<span>Date: {{post.date}}</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</ion-card-content>
-			</ion-card>
-			<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" *ngIf="hasMore; else no_more">
-				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
-				</ion-infinite-scroll-content>
-			</ion-infinite-scroll>
-			<ng-template #no_more>
-				<ion-card mode="md">
-					<div class="no_more">
-						<ion-card-content>
-							<h3>No more data</h3>
-						</ion-card-content>
-					</div>
-				</ion-card>
-			</ng-template>
+	<div *ngFor="let msg of msgsList">
+		<div class="message {{msg.type == 'send'? 'right': 'left'}}">
+			<ion-avatar slot="start">
+				<img src="assets/img/user-comment-img-01.png">
+			</ion-avatar>
+			<div class="msg-detail">
+				<div class="mesg-time">
+					<p>{{msg.time | date:'h:mm a'}}</p>
+				</div>
+				<div class="msg-info">
+					<p>{{msg.text}}</p>
+					<span *ngIf="msg.status =='pending'">
+						<ion-spinner class="spinner"></ion-spinner>
+					</span>
+					<span *ngIf="msg.status =='success'">
+						<ion-icon class="checkmark" name="checkmark-done"></ion-icon>
+					</span>
+					<span *ngIf="msg.status =='failed'">
+						<ion-icon class="alert" name="alert-circle-outline" (click)="resendMsg(msg.id)"></ion-icon>
+					</span>
+				</div>
+			</div>
 		</div>
-		<ng-template #no_result>
-			<ion-card mode="md">
-				<ion-card-content>
-					<h2>No result found</h2>
-				</ion-card-content>
-			</ion-card>
-		</ng-template>
 	</div>
 </ion-content>
+<ion-footer class="ion-no-lines">
+	<ion-toolbar>
+		<div class="input-wrap">
+			<ion-textarea auto-grow placeholder="Enter message" [(ngModel)]="textMsg" (keyup.enter)="sendMsg()">
+			</ion-textarea>
+			<ion-button (click)="sendMsg()">
+				<ion-icon name="send"></ion-icon>
+			</ion-button>
+		</div>
+	</ion-toolbar>
+</ion-footer>
