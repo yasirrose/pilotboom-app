@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { environment } from 'src/environments/environment';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
 	selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginPage implements OnInit {
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
 		private router: Router,
-		private global: GlobalService
+		private global: GlobalService,
+		private chatApi: ChatService
 	) {
 	}
 
@@ -52,6 +54,7 @@ export class LoginPage implements OnInit {
 			this.global.showLoading("bubbles", "Logging in...");
 			this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
 				res => {
+					this.chatApi.saveToken().subscribe();
 					this.global.closeLoading();
 				},
 				err => {

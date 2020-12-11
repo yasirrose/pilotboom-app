@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { ChatService } from 'src/app/services/chat.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -23,7 +24,8 @@ export class ChatListingPage implements OnInit {
 	constructor(
 		private restApi: RestService,
 		private global: GlobalService,
-		private router: Router
+		private router: Router,
+		private chatApi: ChatService
 	) { }
 
 	ngOnInit() {
@@ -44,7 +46,8 @@ export class ChatListingPage implements OnInit {
 				// 	this.contactsData = [];
 				// 	this.clearSearch();
 				// }
-				this.contactList = this.contactList.concat(res);
+				// this.contactList = this.contactList.concat(res);
+				this.contactList = res;
 
 				// if (event && this.search && this.searchTerm) { //Pagination called and search exists already
 				// 	var filtered = this.global.filterSearch(this.contactList, this.searchTerm, 'first_name', 'last_name');
@@ -72,11 +75,24 @@ export class ChatListingPage implements OnInit {
 		);
 	}
 
-	getChat(event, contact) {
+	getChat(event, id) {
 		let navigationExtras: NavigationExtras = {
-			queryParams: contact
+			queryParams: {
+				contactId: id
+			}
 		}
 		this.router.navigate(["/chat"], navigationExtras);
 	}
+
+	// testFunc() {
+	// 	this.chatApi.myTestFunc().subscribe(
+	// 		res => {
+	// 			console.log('Success Response', res);
+	// 		},
+	// 		err => {
+	// 			console.log('Error Response', err);
+	// 		}
+	// 	)
+	// }
 
 }

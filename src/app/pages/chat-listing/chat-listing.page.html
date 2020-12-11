@@ -14,13 +14,13 @@
 <ion-content class="ion-padding-vertical">
 	<ion-list class="user-box" lines="full">
 		<div *ngFor="let contact of contactList">
-			<ion-item routerLink="/chat" detail="false" (click)="getChat($event, contact)">
+			<ion-item detail="false" (click)="getChat($event, contact.id)">
 				<ion-avatar slot="start">
-					<img src="assets/img/user-comment-img-01.png">
+					<img src="assets/img/upload-img.png">
 				</ion-avatar>
 				<ion-label>
 					<h2>{{contact.first_name | titlecase}} {{contact.last_name | titlecase}}</h2>
-					<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+					<!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p> -->
 				</ion-label>
 			</ion-item>
 		</div>

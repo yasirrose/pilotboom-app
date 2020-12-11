@@ -13,6 +13,8 @@ export class GlobalService {
 	isTablet: any;
 	loading: any;
 	browser: any;
+	device_token: any;
+	is_notif: boolean = false;
 	constructor(
 		private _santizer: DomSanitizer,
 		private loadingCtrl: LoadingController,
@@ -229,5 +231,13 @@ export class GlobalService {
 			]
 		});
 		await alert.present();
+	}
+
+	setDeviceToken(token) {
+		this.device_token = token.value;
+	}
+
+	getDeviceToken() {
+		return this.device_token;
 	}
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "957727683949",
+    "project_id": "pilotboom-c9f96",
+    "storage_bucket": "pilotboom-c9f96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957727683949:android:bd8c43950e98f920a89664",
+        "android_client_info": {
+          "package_name": "app.pilotboom.devs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957727683949-38kp1hrmig9ktemlhu0fd1b22jpl89e7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEp5liDaoCgShdh0GzGv4L7Ctswhr1iQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957727683949-38kp1hrmig9ktemlhu0fd1b22jpl89e7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -19,7 +19,8 @@ export class ChatPage implements OnInit {
 	toUser: UserInfo;
 	textMsg = '';
 	showEmojiPicker = false;
-	contactData: any;
+	contactId: any;
+	contactData: object = { first_name: '', last_name: '' };
 	user_id = this.rest.getCurrentUserID();
 
 	constructor(
@@ -31,8 +32,8 @@ export class ChatPage implements OnInit {
 		private alertCtrl: AlertController,
 	) {
 		this.route.queryParams.subscribe(params => {
-			if (params) {
-				this.contactData = params;
+			if (params && params.contactId) {
+				this.contactId = params.contactId;
 			}
 		});
 	}
@@ -150,8 +151,7 @@ export class ChatPage implements OnInit {
 			id: null,
 			messageTempId: tempId,
 			user_id: this.user_id,
-			phone: this.contactData.phone,
-			contact_id: this.contactData.id,
+			contact_id: this.contactId,
 			time: Date.now(),
 			text: text,
 			status: 'pending',
@@ -168,15 +168,16 @@ export class ChatPage implements OnInit {
 	}
 
 	getContactChat(event?, refresh?) {
-		this.chatService.getChat(this.user_id, this.contactData.id).subscribe(
-			res => {
+		this.chatService.getChat(this.user_id, this.contactId).subscribe(
+			(res: any) => {
 				this.scrollToBottom(0);
-				this.msgsList = this.msgsList.concat(res);
-				this.msgsList = res;
+				// this.msgsList = this.msgsList.concat(res);
+				this.contactData = res.contactData;
+				this.msgsList = res.texts;
 
 				event ? event.target.complete() : '';
 				this.global.closeLoading();
-				
+
 				// this.loadView = true;
 			},
 			err => {

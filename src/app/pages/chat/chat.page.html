@@ -3,7 +3,7 @@
 		<ion-buttons slot="start">
 			<ion-back-button color="light" text="" mode="md"></ion-back-button>
 		</ion-buttons>
-		<ion-title>{{contactData.first_name | titlecase}} {{contactData.last_name | titlecase}}</ion-title>
+		<ion-title>{{contactData.first_name}} {{contactData.last_name}}</ion-title>
 		<ion-buttons slot="end">
 			<ion-menu-button color="light" text="">
 				<img src="./../../assets/icon/menu-icon.png" alt="">
@@ -16,7 +16,7 @@
 	<div *ngFor="let msg of msgsList">
 		<div class="message {{msg.type == 'send'? 'right': 'left'}}">
 			<ion-avatar slot="start">
-				<img src="assets/img/user-comment-img-01.png">
+				<img src="assets/img/upload-img.png">
 			</ion-avatar>
 			<div class="msg-detail">
 				<div class="mesg-time">
@@ -24,14 +24,16 @@
 				</div>
 				<div class="msg-info">
 					<p>{{msg.text}}</p>
-					<span *ngIf="msg.status =='pending'">
-						<ion-spinner class="spinner"></ion-spinner>
-					</span>
-					<span *ngIf="msg.status =='success'">
-						<ion-icon class="checkmark" name="checkmark-done"></ion-icon>
-					</span>
-					<span *ngIf="msg.status =='failed'">
-						<ion-icon class="alert" name="alert-circle-outline" (click)="resendMsg(msg.id)"></ion-icon>
+					<span *ngIf="msg.type == 'send'">
+						<span *ngIf="msg.status =='pending'">
+							<ion-spinner class="spinner"></ion-spinner>
+						</span>
+						<span *ngIf="msg.status =='success'">
+							<ion-icon class="checkmark" name="checkmark-done"></ion-icon>
+						</span>
+						<span *ngIf="msg.status =='failed'">
+							<ion-icon class="alert" name="alert-circle-outline" (click)="resendMsg(msg.id)"></ion-icon>
+						</span>
 					</span>
 				</div>
 			</div>

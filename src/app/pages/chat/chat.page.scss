@@ -23,11 +23,14 @@ ion-footer {
 .message {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 26px;
+    margin-bottom: 15px;
     ion-avatar {
-        flex: 0 0 48px;
-        width: 48px;
-        margin-top: 16px;
+        // flex: 0 0 48px;
+        // width: 48px;
+        // margin-top: 16px;
+        width: 30px;
+        height: 38px;
+        margin-top: 20px;
     }
     .msg-detail {
         padding-left: 12px;

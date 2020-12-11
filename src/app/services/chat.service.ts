@@ -5,6 +5,7 @@ import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
+import { GlobalService } from './global.service';
 // import { Events } from 'ionic-angular';
 
 const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
@@ -14,7 +15,7 @@ export class ChatMessage {
 	messageTempId: string;
 	user_id: string;
 	contact_id: string;
-	phone: string;
+	// phone: string;
 	time: number | string;
 	text: string;
 	type: string;
@@ -37,6 +38,7 @@ export class ChatService {
 		private http: HttpClient,
 		private storage: Storage,
 		private plt: Platform,
+		private global: GlobalService
 		// private events: Events
 	) {
 		this.plt.ready().then(() => {
@@ -116,6 +118,23 @@ export class ChatService {
 
 	resendMsg(id) {
 		return this.http.post(`${environment.apiUrl}/erp/v1/messaging/texts/resend`, { id: id }).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	myTestFunc() {
+		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/messaging/chats`).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
+
+	saveToken() {
+		console.log('in the chat service');
+		return this.http.post(`${environment.apiUrl}/erp/v1/messaging/save_token`, { token: this.global.getDeviceToken() }).pipe(
 			map(data => {
 				return data;
 			})
