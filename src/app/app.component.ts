@@ -35,6 +35,7 @@ export class AppComponent {
 		this.platform.ready().then(() => {
 			this.user.subscribe(user => {
 				if (user) {
+					// this.global.getUserDomain();
 					this.userData = this.api.getCurrentUserData();
 					if (!this.global.is_notif) {
 						this.router.navigate(["/dashboard"]);

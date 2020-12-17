@@ -1,4 +1,5 @@
 <ion-content class="ion-padding">
+    <div class="content">
     <form [formGroup]="userForm" (ngSubmit)="login()">
         <ion-grid class="ion-no-padding">
             <ion-row class="ion-no-padding ion-justify-content-center">
@@ -8,6 +9,24 @@
                             <img src="/assets/img/Pilot-Boom.png" alt="">
                         </div>
                         <div class="ion-no-padding app-form">
+                            <div class="input_area">
+                                <ion-item lines="none">
+                                    <ion-label>
+                                        <ion-icon slot="start" name="link"></ion-icon>
+                                    </ion-label>
+                                    <ion-input type="text" placeholder="Website" formControlName="website"
+                                        name="website"></ion-input>
+                                </ion-item>
+                                <div class="validation-errors">
+                                    <ng-container *ngFor="let validation of validation_messages.website">
+                                        <div class="error-message"
+                                            *ngIf="userForm.get('website').hasError(validation.type) && (userForm.get('website').dirty || userForm.get('website').touched)">
+                                            <ion-icon name="information-circle-outline"></ion-icon>
+                                            {{ validation.message }}
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
                             <div class="input_area">
                                 <ion-item lines="none">
                                     <ion-label>
@@ -59,4 +78,5 @@
             </ion-row>
         </ion-grid>
     </form>
+</div>
 </ion-content>

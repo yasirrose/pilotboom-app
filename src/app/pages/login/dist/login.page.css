@@ -1,0 +1,61 @@
+ion-grid {
+  width: 100%;
+  height: 100%;
+}
+
+ion-row {
+  height: 100%;
+}
+
+ion-button {
+  font-weight: 300;
+}
+
+ion-content {
+  --background: url("/assets/img/app-bg.jpg") top left / 100% auto no-repeat;
+}
+ion-content ion-item {
+  --background: #fff;
+  border: 1px solid #e2e2e2;
+  color: #1c0d2e;
+  border-radius: 50px;
+}
+ion-content ion-item ion-input {
+  --placeholder-opacity: 0.4;
+}
+ion-content ion-item ion-label ion-icon {
+  font-size: 1.4rem !important;
+  color: #909090;
+}
+ion-content ion-button {
+  --box-shadow: none;
+  --border-radius: 50px;
+  height: 48px;
+}
+ion-content .app-wrap .app-logo {
+  max-width: 40vw;
+  margin: 18vh auto 30px auto;
+}
+ion-content .app-wrap .app-logo img {
+  width: 70%;
+}
+ion-content .bottom-col {
+  margin-top: auto;
+}
+ion-content .forgot_password {
+  text-align: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+ion-content .forgot_password a {
+  text-decoration: none;
+}
+ion-content .submit-enter {
+  position: absolute;
+  visibility: hidden;
+  left: -1000px;
+}
+ion-content .passwordIcon {
+  font-size: 1.8rem !important;
+  color: #909090;
+}

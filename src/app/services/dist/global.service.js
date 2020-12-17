@@ -45,16 +45,21 @@ exports.__esModule = true;
 exports.GlobalService = void 0;
 var core_1 = require("@angular/core");
 var environment_1 = require("../../environments/environment");
+var rxjs_1 = require("rxjs");
+var JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
 var GlobalService = /** @class */ (function () {
-    function GlobalService(_santizer, loadingCtrl, alertCtrl, toastCtrl, restApi, network, iab) {
+    function GlobalService(router, storage, _santizer, loadingCtrl, alertCtrl, toastCtrl, network, iab, plt) {
+        this.router = router;
+        this.storage = storage;
         this._santizer = _santizer;
         this.loadingCtrl = loadingCtrl;
         this.alertCtrl = alertCtrl;
         this.toastCtrl = toastCtrl;
-        this.restApi = restApi;
         this.network = network;
         this.iab = iab;
+        this.plt = plt;
         this.is_notif = false;
+        this.user = new rxjs_1.BehaviorSubject(null);
     }
     GlobalService.prototype.showLoading = function (spinner, message) {
         return __awaiter(this, void 0, void 0, function () {
@@ -62,15 +67,18 @@ var GlobalService = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        if (!environment_1.environment.showloader) {
-                            return [2 /*return*/, false];
-                        }
+                        // if (!environment.showloader) {
+                        // 	return false;
+                        // }
                         _a = this;
                         return [4 /*yield*/, this.loadingCtrl.create({
                                 spinner: spinner,
                                 message: message
                             })];
                     case 1:
+                        // if (!environment.showloader) {
+                        // 	return false;
+                        // }
                         _a.loading = _b.sent();
                         return [4 /*yield*/, this.loading.present()];
                     case 2:
@@ -173,6 +181,9 @@ var GlobalService = /** @class */ (function () {
             ],
             'contact_ids': [
                 { type: 'required', message: 'At Least one Contact is required.' }
+            ],
+            'website': [
+                { type: 'required', message: 'Website name is required.' }
             ]
         };
     };
@@ -227,6 +238,7 @@ var GlobalService = /** @class */ (function () {
         });
     };
     GlobalService.prototype.checkErrorStatus = function (error, header, exitApp, login) {
+        var _this = this;
         if (header === void 0) { header = 'Failed'; }
         if (exitApp === void 0) { exitApp = false; }
         if (login === void 0) { login = false; }
@@ -235,7 +247,9 @@ var GlobalService = /** @class */ (function () {
             return false;
         }
         if ((error.status == 403 || error.status == 401) && !login) {
-            this.restApi.logout();
+            this.storage.remove(JWT_KEY).then(function () {
+                _this.router.navigate(["/login"]);
+            });
         }
         else {
             this.showPopup(header, error.error.message, exitApp);
@@ -330,6 +344,19 @@ var GlobalService = /** @class */ (function () {
     };
     GlobalService.prototype.getDeviceToken = function () {
         return this.device_token;
+    };
+    GlobalService.prototype.setUserDomain = function (domain) {
+        localStorage.setItem('capUserDom', domain);
+    };
+    GlobalService.prototype.getUserDomain = function () {
+        return localStorage.getItem('capUserDom');
+    };
+    GlobalService.prototype.getBaseUrl = function () {
+        return environment_1.environment.production ? "https://" + this.getUserDomain() + ".pilotboom.com" : "http://localhost/pilotboom";
+    };
+    GlobalService.prototype.getApiUrl = function () {
+        var base = this.getBaseUrl();
+        return base + "/wp-json";
     };
     GlobalService = __decorate([
         core_1.Injectable({

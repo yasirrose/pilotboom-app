@@ -28,6 +28,7 @@ var AppComponent = /** @class */ (function () {
         this.platform.ready().then(function () {
             _this.user.subscribe(function (user) {
                 if (user) {
+                    // this.global.getUserDomain();
                     _this.userData = _this.api.getCurrentUserData();
                     if (!_this.global.is_notif) {
                         _this.router.navigate(["/dashboard"]);

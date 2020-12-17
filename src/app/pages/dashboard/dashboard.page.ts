@@ -42,6 +42,7 @@ export class DashboardPage implements OnInit {
 	}
 
 	ionViewDidEnter() {
+		// this.api.logout();
 		this.global.showLoading("bubbles", "Loading...");
 		this.getDashboardInfo();
 		const gb = this.global;

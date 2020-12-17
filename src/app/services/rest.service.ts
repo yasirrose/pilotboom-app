@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, from } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
-import { environment } from '../../environments/environment';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
+import { All } from '../enum/all.enum';
+import { GlobalService } from './global.service';
+import { env } from 'process';
+import { environment } from 'src/environments/environment';
 
 const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
 
@@ -16,7 +19,8 @@ export class RestService {
 	constructor(
 		private http: HttpClient,
 		private storage: Storage,
-		private plt: Platform
+		private plt: Platform,
+		private global: GlobalService
 	) {
 		this.plt.ready().then(() => {
 			this.storage.get(JWT_KEY).then(data => {
@@ -24,13 +28,14 @@ export class RestService {
 					this.user.next(data);
 				}
 			})
-		})
+		});
 	}
 
 	signIn(username, password) {
-		return this.http.post(`${environment.apiUrl}/jwt-auth/v1/token`, { username, password }).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/jwt-auth/v1/token`, { username, password }).pipe(
 			switchMap(data => {
 				return from(this.storage.set(JWT_KEY, data));
+				// return from(this.storage.set(JWT_KEY, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL3BpbG90Ym9vbSIsImlhdCI6MTYwMzI5MTMwMywibmJmIjoxNjAzMjkxMzAzLCJleHAiOjE2MDM4OTYxMDMsImRhdGEiOnsidXNlciI6eyJpZCI6IjQifX19.vPf1Tvrqbp9zfieMGE3w6K4LkegemhQFvYzxqdUpqNM'));
 			}),
 			tap(data => {
 				this.user.next(data);
@@ -45,17 +50,40 @@ export class RestService {
 	}
 
 	signUp(username, email, password) {
-		return this.http.post(`${environment.apiUrl}/wp/v2/users/register`, { username, email, password });
+		return this.http.post(`${this.global.getApiUrl()}/wp/v2/users/register`, { username, email, password });
 	}
 
 	resetPassword(usernameOrEmail) {
-		return this.http.post(`${environment.apiUrl}/wp/v2/users/lostpassword`, { user_login: usernameOrEmail });
+		return this.http.post(`${this.global.getApiUrl()}/wp/v2/users/lostpassword`, { user_login: usernameOrEmail });
+	}
+
+	getMasterData(domain, action = 'GetClientsProducts') {
+		if (environment.production) {
+			let postData = {
+				'username': 'gOVhAuoeLdgyh9FQRpb8kdjO58hDemTW',
+				'password': 'XrNvd5ok8ddHT4CXoE6N1e8j8GdQQn0y',
+				'accesskey': 'UXwkMOvKE72UTAvLNKLUJ20geoFuZ3xx',
+				'action': action,
+				'responsetype': 'json'
+			}
+			return this.http.post(`https://pilotboom.com/includes/api.php`, postData).pipe(
+				map(data => {
+					return data;
+				})
+			);
+		} else {
+			return this.http.get<any[]>(`${this.global.getApiUrl()}/wp/v2/users`).pipe(
+				map(data => {
+					return data;
+				})
+			);
+		}
 	}
 
 	getPosts(per_page = 10, page = 1) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/posts?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/wp/v2/posts?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -65,7 +93,7 @@ export class RestService {
 	getUsers() {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/users`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/wp/v2/users`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -88,7 +116,7 @@ export class RestService {
 	getMyself() {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/wp/v2/users`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/wp/v2/users`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -102,7 +130,7 @@ export class RestService {
 	getCrmContacts(type = 'contact', status = 'all', per_page = 20, page = 1, search = '', include_owner = true) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}${include_owner ? '&include=owner' : ''}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/contacts?type=${type}&status=${status}&per_page=${per_page}&page=${page}&search=${search}${include_owner ? '&include=owner' : ''}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -112,7 +140,7 @@ export class RestService {
 	CountCrmContacts(contact = true, company = true) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/count?contact=${contact}&company=${company}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/contacts/count?contact=${contact}&company=${company}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -122,7 +150,7 @@ export class RestService {
 	getContactDetail(id, include_owner = true) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/${id}${include_owner ? '?include=owner' : ''}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/contacts/${id}${include_owner ? '?include=owner' : ''}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -130,7 +158,7 @@ export class RestService {
 	}
 
 	addNewContact(contactData) {
-		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts`, contactData).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/crm/contacts`, contactData).pipe(
 			map(data => {
 				return data;
 			})
@@ -138,7 +166,7 @@ export class RestService {
 	}
 
 	updateContact(contactData, id) {
-		return this.http.put(`${environment.apiUrl}/erp/v1/crm/contacts/${id}`, contactData).pipe(
+		return this.http.put(`${this.global.getApiUrl()}/erp/v1/crm/contacts/${id}`, contactData).pipe(
 			map(data => {
 				return data;
 			})
@@ -148,7 +176,7 @@ export class RestService {
 	deleteContact(id, hard = 0) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/${id}`).pipe(
+		return this.http.delete(`${this.global.getApiUrl()}/erp/v1/crm/contacts/${id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -156,7 +184,7 @@ export class RestService {
 	}
 
 	addNewCompany(companyData) {
-		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/company`, companyData).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/crm/contacts/company`, companyData).pipe(
 			map(data => {
 				return data;
 			})
@@ -164,7 +192,7 @@ export class RestService {
 	}
 
 	updateCompany(companyData, id) {
-		return this.http.put(`${environment.apiUrl}/erp/v1/crm/contacts/company/${id}`, companyData).pipe(
+		return this.http.put(`${this.global.getApiUrl()}/erp/v1/crm/contacts/company/${id}`, companyData).pipe(
 			map(data => {
 				return data;
 			})
@@ -174,7 +202,7 @@ export class RestService {
 	deleteCompany(id, hard = 0) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/company/${id}`).pipe(
+		return this.http.delete(`${this.global.getApiUrl()}/erp/v1/crm/contacts/company/${id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -186,7 +214,7 @@ export class RestService {
 	getCrmContactGroups(page = 1, per_page = 20, search = '') {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups?per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups?per_page=${per_page}&page=${page}&search=${search}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -196,7 +224,7 @@ export class RestService {
 	getContactGroupDetail(contactGrpId) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${contactGrpId}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups/${contactGrpId}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -204,7 +232,7 @@ export class RestService {
 	}
 
 	addNewContactGroup(contactData) {
-		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/groups`, contactData).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups`, contactData).pipe(
 			map(data => {
 				return data;
 			})
@@ -212,7 +240,7 @@ export class RestService {
 	}
 
 	updateContactGroup(contactData, id) {
-		return this.http.put(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${id}`, contactData).pipe(
+		return this.http.put(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups/${id}`, contactData).pipe(
 			map(data => {
 				return data;
 			})
@@ -222,7 +250,7 @@ export class RestService {
 	deleteContactGroup(id, hard = 0) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${id}`).pipe(
+		return this.http.delete(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups/${id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -232,7 +260,7 @@ export class RestService {
 	getContactGrpSubs(contactGrpId, page = 1, per_page = 10) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${contactGrpId}/subscribes?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups/${contactGrpId}/subscribes?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -242,7 +270,7 @@ export class RestService {
 	subscribeContact(group_id, contact_ids) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.post(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${group_id}/subscribes`, { contact_ids: contact_ids }).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups/${group_id}/subscribes`, { contact_ids: contact_ids }).pipe(
 			map(data => {
 				return data;
 			})
@@ -252,7 +280,7 @@ export class RestService {
 	unsubContact(group_id, contact_id) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/contacts/groups/${group_id}/subscribes/${contact_id}`).pipe(
+		return this.http.delete(`${this.global.getApiUrl()}/erp/v1/crm/contacts/groups/${group_id}/subscribes/${contact_id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -263,7 +291,7 @@ export class RestService {
 	getActivities(customer_id = '', per_page = 10, page = 1, type = 'log%7Cnote%7Cemail%7Cschedule%7Ctask') {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities?type=${type}&per_page=${per_page}&page=${page}&customer_id=${customer_id}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/activities?type=${type}&per_page=${per_page}&page=${page}&customer_id=${customer_id}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -271,7 +299,7 @@ export class RestService {
 	}
 
 	addActivity(activityData) {
-		return this.http.post(`${environment.apiUrl}/erp/v1/crm/activities`, activityData).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/crm/activities`, activityData).pipe(
 			map(data => {
 				return data;
 			})
@@ -281,7 +309,7 @@ export class RestService {
 	getActivityDetail(id) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/activities/${id}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/activities/${id}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -289,7 +317,7 @@ export class RestService {
 	}
 
 	updateActivity(id, formData) {
-		return this.http.put(`${environment.apiUrl}/erp/v1/crm/activities/${id}`, formData).pipe(
+		return this.http.put(`${this.global.getApiUrl()}/erp/v1/crm/activities/${id}`, formData).pipe(
 			map(data => {
 				return data;
 			})
@@ -299,7 +327,7 @@ export class RestService {
 	deleteActivity(id) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.delete(`${environment.apiUrl}/erp/v1/crm/activities/${id}`).pipe(
+		return this.http.delete(`${this.global.getApiUrl()}/erp/v1/crm/activities/${id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -311,7 +339,7 @@ export class RestService {
 	getSchedules(tab = 'own', per_page = 40, page = 1) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/crm/schedules?tab=${tab}&per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/crm/schedules?tab=${tab}&per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})

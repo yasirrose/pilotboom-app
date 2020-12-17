@@ -16,5 +16,11 @@
       ]
     }
   },
-  "cordova": {}
+  "cordova": {},
+  "server": {
+    "url": "http://10.110.10.158:8100",
+    "cleartext": true,
+    "originalUrl": "http://10.110.10.158:8100",
+    "originalCleartext": true
+  }
 }

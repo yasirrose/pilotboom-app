@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LoadingController, AlertController, ToastController } from '@ionic/angular';
+import { LoadingController, AlertController, ToastController, Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import { NetworkService } from './network.service';
-import { RestService } from './rest.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
+import { BehaviorSubject } from 'rxjs';
+
+const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,21 +19,25 @@ export class GlobalService {
 	browser: any;
 	device_token: any;
 	is_notif: boolean = false;
+	domain: any;
+	private user = new BehaviorSubject(null);
 	constructor(
+		private router: Router,
+		private storage: Storage,
 		private _santizer: DomSanitizer,
 		private loadingCtrl: LoadingController,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
-		private restApi: RestService,
 		private network: NetworkService,
-		private iab: InAppBrowser
+		private iab: InAppBrowser,
+		private plt: Platform
 	) {
 	}
 
 	async showLoading(spinner, message) {
-		if (!environment.showloader) {
-			return false;
-		}
+		// if (!environment.showloader) {
+		// 	return false;
+		// }
 		this.loading = await this.loadingCtrl.create({
 			spinner,
 			message
@@ -125,6 +133,9 @@ export class GlobalService {
 			'contact_ids': [
 				{ type: 'required', message: 'At Least one Contact is required.' }
 			],
+			'website': [
+				{ type: 'required', message: 'Website name is required.' }
+			],
 		};
 	}
 
@@ -161,7 +172,9 @@ export class GlobalService {
 			return false;
 		}
 		if ((error.status == 403 || error.status == 401) && !login) {
-			this.restApi.logout();
+			this.storage.remove(JWT_KEY).then(() => {
+				this.router.navigate(["/login"]);
+			});
 		} else {
 			this.showPopup(header, error.error.message, exitApp);
 		}
@@ -239,5 +252,22 @@ export class GlobalService {
 
 	getDeviceToken() {
 		return this.device_token;
+	}
+
+	setUserDomain(domain) {
+		localStorage.setItem('capUserDom', domain);
+	}
+
+	getUserDomain() {
+		return localStorage.getItem('capUserDom');
+	}
+
+	getBaseUrl() {
+		return environment.production ? `https://${this.getUserDomain()}.pilotboom.com` : `http://localhost/pilotboom`;
+	}
+
+	getApiUrl() {
+		var base = this.getBaseUrl();
+		return `${base}/wp-json`;
 	}
 }

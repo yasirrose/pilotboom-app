@@ -51,7 +51,7 @@ export class ChatService {
 	}
 
 	testTwilio() {
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/messaging/texts`).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/messaging/texts`).pipe(
 			map(data => {
 				return data;
 			})
@@ -87,12 +87,12 @@ export class ChatService {
 		// return new Promise(resolve => setTimeout(() => resolve(msg), Math.random() * 1000))
 		// 	.then(() => this.mockNewMsg(msg));
 
-		// return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/messaging/texts`).pipe(
+		// return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/messaging/texts`).pipe(
 		// 	map(data => {
 		// 		return data;
 		// 	})
 		// );
-		return this.http.post(`${environment.apiUrl}/erp/v1/messaging/texts`, msg).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/messaging/texts`, msg).pipe(
 			map(data => {
 				return data;
 			})
@@ -109,7 +109,7 @@ export class ChatService {
 	// }
 
 	getChat(user_id, contact_id, per_page = 20, page = 1, search = '',) {
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/messaging/texts?user_id=${user_id}&contact_id=${contact_id}&per_page=${per_page}&page=${page}&search=${search}`).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/messaging/texts?user_id=${user_id}&contact_id=${contact_id}&per_page=${per_page}&page=${page}&search=${search}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -117,7 +117,7 @@ export class ChatService {
 	}
 
 	resendMsg(id) {
-		return this.http.post(`${environment.apiUrl}/erp/v1/messaging/texts/resend`, { id: id }).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/messaging/texts/resend`, { id: id }).pipe(
 			map(data => {
 				return data;
 			})
@@ -125,7 +125,7 @@ export class ChatService {
 	}
 
 	myTestFunc() {
-		return this.http.get<any[]>(`${environment.apiUrl}/erp/v1/messaging/chats`).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/erp/v1/messaging/chats`).pipe(
 			map(data => {
 				return data;
 			})
@@ -133,8 +133,8 @@ export class ChatService {
 	}
 
 	saveToken() {
-		console.log('in the chat service');
-		return this.http.post(`${environment.apiUrl}/erp/v1/messaging/save_token`, { token: this.global.getDeviceToken() }).pipe(
+		// console.log('in the chat service');
+		return this.http.post(`${this.global.getApiUrl()}/erp/v1/messaging/save_token`, { token: this.global.getDeviceToken() }).pipe(
 			map(data => {
 				return data;
 			})

@@ -1,69 +1,81 @@
 $height100: 100%;
 $textColor: #1c0d2e;
 $colorgray: #e2e2e2;
+
 ion-grid {
-	width: 100%;
-	height: $height100;
+    width: 100%;
+    height: $height100;
 }
 
 ion-row {
-	height: $height100;
+    height: $height100;
 }
 
 ion-button {
-	font-weight: 300;
+    font-weight: 300;
 }
 
 ion-content {
-	// --background: #45aaf2;
-	--background: url("/assets/img/app-bg.jpg") top left / 100% auto no-repeat;
-	ion-item {
-		--background: #fff;
-		border: 1px solid $colorgray;
-		color: $textColor;
-		border-radius: 50px;
-		ion-input {
-			--placeholder-opacity: 0.4;
-		}
-		ion-label {
-			ion-icon {
-				font-size: 1.4rem !important;
-				color: #909090;
-			}
-		}
-	}
-	ion-button {
-		--box-shadow: none;
-		--border-radius: 50px;
-		height: 48px;
-	}
-	.app-wrap {
-		.app-logo {
-			max-width: 40vw;
-			margin: 18vh auto 30px auto;
-		}
-	}
-	.bottom-col {
-		margin-top: auto;
-	}
+    // --background: #45aaf2;
+    --background: url("/assets/img/app-bg.jpg") top left / 100% auto no-repeat;
 
-	.forgot_password {
-		text-align: center;
-		justify-content: center;
-		margin-top: 15px;
-		a {
-			text-decoration: none;
-		}
-	}
+    ion-item {
+        --background: #fff;
+        border: 1px solid $colorgray;
+        color: $textColor;
+        border-radius: 50px;
 
-	.submit-enter {
-		position: absolute;
-		visibility: hidden;
-		left: -1000px;
-	}
+        ion-input {
+            --placeholder-opacity: 0.4;
+        }
 
-	.passwordIcon {
-		font-size: 1.8rem !important;
-		color: #909090;
-	}
+        ion-label {
+            ion-icon {
+                font-size: 1.4rem !important;
+                color: #909090;
+            }
+        }
+    }
+
+    ion-button {
+        --box-shadow: none;
+        --border-radius: 50px;
+        height: 48px;
+    }
+
+    .app-wrap {
+        .app-logo {
+            max-width: 40vw;
+            margin: 18vh auto 30px auto;
+
+            img {
+                width: 70%;
+            }
+        }
+    }
+
+    .bottom-col {
+        margin-top: auto;
+    }
+
+    .forgot_password {
+        text-align: center;
+        justify-content: center;
+        margin-top: 15px;
+
+        a {
+            text-decoration: none;
+        }
+    }
+
+    .submit-enter {
+        position: absolute;
+        visibility: hidden;
+        left: -1000px;
+    }
+
+    .passwordIcon {
+        font-size: 1.8rem !important;
+        color: #909090;
+    }
 }

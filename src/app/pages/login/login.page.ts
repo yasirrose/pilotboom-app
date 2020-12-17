@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
@@ -32,6 +33,7 @@ export class LoginPage implements OnInit {
 	ngOnInit() {
 		this.userForm = this.fb.group({
 			username: ['', Validators.required],
+			website: ['', Validators.required],
 			email: '',
 			password: ['', Validators.required]
 		});
@@ -52,18 +54,22 @@ export class LoginPage implements OnInit {
 			return false;
 		} else {
 			this.global.showLoading("bubbles", "Logging in...");
-			this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
+			this.api.getMasterData(this.userForm.value.website).subscribe(
 				res => {
-					this.chatApi.saveToken().subscribe();
-					this.global.closeLoading();
-				},
-				err => {
-					this.processLoginError(err);
+					this.global.setUserDomain(this.userForm.value.website);
+					this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
+						res => {
+							this.chatApi.saveToken().subscribe();
+							this.global.closeLoading();
+						},
+						err => {
+							this.processLoginError(err);
+						}
+					);
 				}
-			);
+			)
 		}
 	}
-
 
 	signUp() {
 		this.api.signUp(this.userForm.value.username, this.userForm.value.email, this.userForm.value.password).subscribe(
@@ -130,7 +136,7 @@ export class LoginPage implements OnInit {
 	}
 
 	forgotPassword() {
-		this.global.InAppBrowser(`${environment.baseUrl}/wp-login.php?action=lostpassword`);
+		this.global.InAppBrowser(`${this.global.getBaseUrl()}/wp-login.php?action=lostpassword`);
 	}
 
 	processLoginError(err) {

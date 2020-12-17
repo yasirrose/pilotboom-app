@@ -5,6 +5,7 @@ import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
+import { GlobalService } from './global.service';
 
 const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
 
@@ -13,7 +14,12 @@ const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fw
 })
 export class AutoblogService {
 	private user = new BehaviorSubject(null);
-	constructor(private http: HttpClient, private storage: Storage, private plt: Platform) {
+	constructor(
+		private http: HttpClient,
+		private storage: Storage,
+		private plt: Platform,
+		private global: GlobalService
+	) {
 		this.plt.ready().then(() => {
 			this.storage.get(JWT_KEY).then(data => {
 				if (data) {
@@ -26,7 +32,7 @@ export class AutoblogService {
 	getAutoBlog(per_page = 10, page = 1) {
 		let headers = new HttpHeaders();
 		headers = headers.set('Authorization', 'Bearer ' + JWT_KEY);
-		return this.http.get<any[]>(`${environment.apiUrl}/autoblog/v1/blogs?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/autoblog/v1/blogs?per_page=${per_page}&page=${page}`, { headers: headers }).pipe(
 			map(data => {
 				return data;
 			})
@@ -34,7 +40,7 @@ export class AutoblogService {
 	}
 
 	getAutoBlogDetail(id) {
-		return this.http.get<any[]>(`${environment.apiUrl}/autoblog/v1/blogs/${id}`).pipe(
+		return this.http.get<any[]>(`${this.global.getApiUrl()}/autoblog/v1/blogs/${id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -42,7 +48,7 @@ export class AutoblogService {
 	}
 
 	delete(id, hard = 0) {
-		return this.http.delete(`${environment.apiUrl}/autoblog/v1/blogs/${id}`).pipe(
+		return this.http.delete(`${this.global.getApiUrl()}/autoblog/v1/blogs/${id}`).pipe(
 			map(data => {
 				return data;
 			})
@@ -50,7 +56,7 @@ export class AutoblogService {
 	}
 
 	addAutoBlog(formData) {
-		return this.http.post(`${environment.apiUrl}/autoblog/v1/blogs`, formData).pipe(
+		return this.http.post(`${this.global.getApiUrl()}/autoblog/v1/blogs`, formData).pipe(
 			map(data => {
 				return data;
 			})
@@ -58,7 +64,7 @@ export class AutoblogService {
 	}
 
 	updateAutoBlog(formData, id) {
-		return this.http.put(`${environment.apiUrl}/autoblog/v1/blogs/${id}`, formData).pipe(
+		return this.http.put(`${this.global.getApiUrl()}/autoblog/v1/blogs/${id}`, formData).pipe(
 			map(data => {
 				return data;
 			})
