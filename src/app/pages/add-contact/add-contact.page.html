@@ -99,6 +99,134 @@
 					</ng-container>
 				</div>
 			</div>
+			<div class="input_area">
+				<ion-item lines="none" class="cus-checkbox">
+					<ion-checkbox (click)="toggleAdvance= !toggleAdvance"></ion-checkbox>
+					<ion-label>Show Advanced Fields</ion-label>
+				</ion-item>
+			</div>
+			<div class="other-info" [ngClass]="{'expanded' : toggleAdvance }">
+				<h4>Others Info</h4>
+				<div class="input_area">
+					<ion-item lines="none" class="time-input">
+						<ion-label>Date of Birth</ion-label>
+						<ion-input type="date" placeholder="Date of Birth" formControlName="date_of_birth"
+							name="date_of_birth"></ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="number" placeholder="Age (years)" formControlName="contact_age"
+							name="contact_age"></ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="tel" placeholder="Mobile" formControlName="mobile" name="mobile"></ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Website" formControlName="website" name="website">
+						</ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Fax Number" formControlName="fax" name="fax"></ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Address 1" formControlName="street_1" name="street_1">
+						</ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Address 2" formControlName="street_2" name="street_2">
+						</ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="City" formControlName="city" name="city"></ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-select placeholder="Country" (ionChange)="getStates()" formControlName="country"
+							name="country">
+							<ion-select-option *ngFor="let country of countries | keyvalue : returnZero"
+								value="{{country.key}}">{{country.value}}
+							</ion-select-option>
+						</ion-select>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-select placeholder="State" formControlName="state" name="state">
+							<ion-select-option *ngFor="let state of states | keyvalue : returnZero"
+								value="{{state.key}}">{{state.value}}
+							</ion-select-option>
+						</ion-select>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Postal Code" formControlName="postal_code"
+							name="postal_code"></ion-input>
+					</ion-item>
+				</div>
+
+				<h4>Additional Info</h4>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-select placeholder="Source" formControlName="source" name="source">
+							<ion-select-option *ngFor="let source of sources | keyvalue : returnZero"
+								value="{{source.key}}">{{source.value}}
+							</ion-select-option>
+						</ion-select>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Others" formControlName="other" name="other"></ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-textarea placeholder="Notes" formControlName="notes" name="notes">
+						</ion-textarea>
+					</ion-item>
+				</div>
+
+				<h4>Social Info</h4>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Facebook" formControlName="facebook" name="facebook">
+						</ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Twitter" formControlName="twitter" name="twitter">
+						</ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Google Plus" formControlName="googleplus" name="googleplus">
+						</ion-input>
+					</ion-item>
+				</div>
+				<div class="input_area">
+					<ion-item lines="none">
+						<ion-input type="text" placeholder="Linkedin" formControlName="linkedin" name="linkedin">
+						</ion-input>
+					</ion-item>
+				</div>
+			</div>
 			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
 				[disabled]="!addContactForm.valid">Add Contact</ion-button>
 		</div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { AutoblogService } from 'src/app/services/autoblog.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AutoblogService } from 'src/app/services/autoblog.service';
 export class AddAutoblogPage implements OnInit {
 	addAutoBlogForm: FormGroup;
 	toggleAdvance = false;
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 	allUsers: any;
 
 	constructor(
@@ -21,7 +21,8 @@ export class AddAutoblogPage implements OnInit {
 		private fb: FormBuilder,
 		private router: Router,
 		private global: GlobalService,
-		private autoBlogApi: AutoblogService
+		private autoBlogApi: AutoblogService,
+		private globalData: GlobalData
 	) {
 		this.global.showLoading("bubbles", "Please wait...");
 		this.getAllUsers();

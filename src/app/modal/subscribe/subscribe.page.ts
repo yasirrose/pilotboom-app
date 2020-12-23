@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, NavController, ModalController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class SubscribePage implements OnInit {
 	allContacts: any;
 	contact_ids: [];
 	subscribeForm: FormGroup
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	constructor(
 		private api: RestService,
@@ -30,6 +30,7 @@ export class SubscribePage implements OnInit {
 		private global: GlobalService,
 		private modalCtrl: ModalController,
 		private navParams: NavParams,
+		private globalData: GlobalData
 	) { }
 
 	ngOnInit() {

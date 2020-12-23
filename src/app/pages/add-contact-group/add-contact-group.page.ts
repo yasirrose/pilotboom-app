@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 
 @Component({
 	selector: 'app-add-contact-group',
@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
 export class AddContactGroupPage implements OnInit {
 	addContactGrpForm: FormGroup;
 	toggleAdvance = false;
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	constructor(
 		private api: RestService,
@@ -22,7 +22,8 @@ export class AddContactGroupPage implements OnInit {
 		private toastCtrl: ToastController,
 		private router: Router,
 		private navCtrl: NavController,
-		private global: GlobalService
+		private global: GlobalService,
+		private globalData: GlobalData
 	) {
 	}
 

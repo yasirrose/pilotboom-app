@@ -174,7 +174,7 @@ function () {
     this.router = router;
     this.global = global;
     this.chatApi = chatApi;
-    this.validation_messages = this.global.getValidationMessages();
+    this.validation_messages = this.globalData.validationMessages;
     this.passwordType = 'password';
     this.passwordIcon = 'eye';
   }

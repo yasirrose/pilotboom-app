@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AlertController, ToastController, NavController, NavParams } from '@ionic/angular';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -23,7 +23,7 @@ export class EditActivityPage implements OnInit {
 	type = '';
 	activityData: any;
 	allUsers: any;
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	scheduleExpandNotify = false;
 	constructor(
@@ -34,7 +34,8 @@ export class EditActivityPage implements OnInit {
 		private route: ActivatedRoute,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
-		private navCtrl: NavController
+		private navCtrl: NavController,
+		private globalData: GlobalData
 	) {
 		this.route.queryParams.subscribe(params => {
 			this.global.showLoading("bubbles", "Please wait...");

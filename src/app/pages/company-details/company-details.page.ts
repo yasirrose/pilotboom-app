@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -10,10 +10,11 @@ import { RestService } from 'src/app/services/rest.service';
 	styleUrls: ['./company-details.page.scss'],
 })
 export class CompanyDetailsPage implements OnInit {
-	contactData = [];
+	contactData: any;
 	constructor(
 		private api: RestService,
 		private global: GlobalService,
+		private globlData: GlobalData,
 		private router: Router,
 		private route: ActivatedRoute,
 		private alertCtrl: AlertController,
@@ -49,4 +50,19 @@ export class CompanyDetailsPage implements OnInit {
 		this.router.navigate(["/contact-activities"], navigationExtras);
 	}
 
+	getCountry() {
+		let country = this.contactData.country;
+		return country ? this.globlData.countries[country] : '';
+	}
+
+	getState() {
+		let country = this.contactData.country;
+		let state = this.contactData.state;
+		return country && state ? this.globlData.states[country][state] : '';
+	}
+
+	getSource() {
+		let source = this.contactData.source;
+		return source ? this.globlData.contactSource[source] : '';
+	}
 }

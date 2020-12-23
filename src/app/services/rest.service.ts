@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
-import { All } from '../enum/all.enum';
 import { GlobalService } from './global.service';
 import { env } from 'process';
 import { environment } from 'src/environments/environment';

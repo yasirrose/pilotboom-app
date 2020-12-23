@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { FcmService } from './services/fcm.service';
 import { Plugins, PushNotification, PushNotificationToken, PushNotificationActionPerformed, Capacitor, } from "@capacitor/core";
 import { listenerCount } from 'process';
-import { GlobalService } from './services/global.service';
+import { GlobalData, GlobalService } from './services/global.service';
 const { PushNotifications } = Plugins;
 @Component({
 	selector: 'app-root',

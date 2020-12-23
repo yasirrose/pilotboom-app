@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class AddUserPage implements OnInit {
 	addUserForm: FormGroup;
 	// toggleAdvance = false;
 	// allUsers = [];
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	constructor(
 		private userApi: UserService,
@@ -23,7 +23,8 @@ export class AddUserPage implements OnInit {
 		private toastCtrl: ToastController,
 		private router: Router,
 		private navCtrl: NavController,
-		private global: GlobalService
+		private global: GlobalService,
+		private globalData: GlobalData
 	) {
 	}
 

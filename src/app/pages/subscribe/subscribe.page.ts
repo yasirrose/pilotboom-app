@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 
 @Component({
 	selector: 'app-subscribe',
@@ -15,7 +15,7 @@ export class SubscribePage implements OnInit {
 	allContacts: any;
 	contact_ids: [];
 	subscribeForm: FormGroup
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	constructor(
 		private api: RestService,
@@ -26,6 +26,7 @@ export class SubscribePage implements OnInit {
 		private route: ActivatedRoute,
 		private navCtrl: NavController,
 		private global: GlobalService,
+		private globalData: GlobalData
 	) {
 		this.route.queryParams.subscribe(params => {
 			if (params && params.contactGrpId) {

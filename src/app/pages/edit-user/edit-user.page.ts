@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class EditUserPage implements OnInit {
 	id: any;
 	editUserForm: FormGroup;
 	userData: any;
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	constructor(
 		private userApi: UserService,
@@ -24,7 +24,8 @@ export class EditUserPage implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private navCtrl: NavController,
-		private global: GlobalService
+		private global: GlobalService,
+		private globalData: GlobalData
 	) {
 		this.route.queryParams.subscribe(params => {
 			this.global.showLoading("bubbles", "Please wait...");

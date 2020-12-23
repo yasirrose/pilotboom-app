@@ -46,7 +46,7 @@ exports.LoginPage = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var LoginPage = /** @class */ (function () {
-    function LoginPage(platform, api, fb, alertCtrl, toastCtrl, router, global, chatApi) {
+    function LoginPage(platform, api, fb, alertCtrl, toastCtrl, router, global, chatApi, globalData) {
         this.platform = platform;
         this.api = api;
         this.fb = fb;
@@ -55,7 +55,8 @@ var LoginPage = /** @class */ (function () {
         this.router = router;
         this.global = global;
         this.chatApi = chatApi;
-        this.validation_messages = this.global.getValidationMessages();
+        this.globalData = globalData;
+        this.validation_messages = this.globalData.validationMessages;
         this.passwordType = 'password';
         this.passwordIcon = 'eye';
     }

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 
 @Component({
 	selector: 'app-add-contact',
@@ -14,8 +14,11 @@ export class AddContactPage implements OnInit {
 	addContactForm: FormGroup;
 	toggleAdvance = false;
 	allUsers = [];
-	validation_messages = this.global.getValidationMessages();
-
+	validation_messages = this.globalData.validationMessages;
+	countries: object;
+	states: object;
+	sources = this.globalData.contactSource;
+	
 	constructor(
 		private api: RestService,
 		private fb: FormBuilder,
@@ -23,7 +26,8 @@ export class AddContactPage implements OnInit {
 		private toastCtrl: ToastController,
 		private router: Router,
 		private navCtrl: NavController,
-		private global: GlobalService
+		private global: GlobalService,
+		private globalData: GlobalData
 	) {
 		this.global.showLoading("bubbles", "Please wait...");
 		this.getAllUsers();
@@ -57,7 +61,18 @@ export class AddContactPage implements OnInit {
 			postal_code: '',
 			country: '',
 			currency: '',
+			date_of_birth: '',
+			contact_age: '',
+			source: '',
+			facebook: '',
+			twitter: '',
+			googleplus: '',
+			linkedin: '',
 		});
+	}
+
+	ionViewDidEnter() {
+		this.countries = this.globalData.countries;
 	}
 
 	getAllUsers() {
@@ -80,8 +95,26 @@ export class AddContactPage implements OnInit {
 				this.router.navigate(["/contacts"]);
 			},
 			err => {
-				this.global.checkErrorStatus(err);
+				this.processError(err);
 			}
 		);
+	}
+
+	getStates() {
+		console.log('Here');
+		let country = this.addContactForm.value.country;
+		this.states = this.globalData.states[country];
+	}
+
+	returnZero() {
+		// to disable the default sorting behaviour of keyvalue
+		return 0;
+	}
+
+	processError(err) {
+		if (err.status == 500) {
+			err.error.message = 'Please enter valid information.'
+		}
+		this.global.checkErrorStatus(err);
 	}
 }

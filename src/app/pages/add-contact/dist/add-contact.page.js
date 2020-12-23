@@ -10,7 +10,7 @@ exports.AddContactPage = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var AddContactPage = /** @class */ (function () {
-    function AddContactPage(api, fb, alertCtrl, toastCtrl, router, navCtrl, global) {
+    function AddContactPage(api, fb, alertCtrl, toastCtrl, router, navCtrl, global, globalData) {
         this.api = api;
         this.fb = fb;
         this.alertCtrl = alertCtrl;
@@ -18,9 +18,11 @@ var AddContactPage = /** @class */ (function () {
         this.router = router;
         this.navCtrl = navCtrl;
         this.global = global;
+        this.globalData = globalData;
         this.toggleAdvance = false;
         this.allUsers = [];
-        this.validation_messages = this.global.getValidationMessages();
+        this.validation_messages = this.globalData.validationMessages;
+        this.sources = this.globalData.contactSource;
         this.global.showLoading("bubbles", "Please wait...");
         this.getAllUsers();
     }
@@ -51,8 +53,18 @@ var AddContactPage = /** @class */ (function () {
             state: '',
             postal_code: '',
             country: '',
-            currency: ''
+            currency: '',
+            date_of_birth: '',
+            contact_age: '',
+            source: '',
+            facebook: '',
+            twitter: '',
+            googleplus: '',
+            linkedin: ''
         });
+    };
+    AddContactPage.prototype.ionViewDidEnter = function () {
+        this.countries = this.globalData.countries;
     };
     AddContactPage.prototype.getAllUsers = function () {
         var _this = this;
@@ -70,8 +82,23 @@ var AddContactPage = /** @class */ (function () {
             _this.global.closeLoading();
             _this.router.navigate(["/contacts"]);
         }, function (err) {
-            _this.global.checkErrorStatus(err);
+            _this.processError(err);
         });
+    };
+    AddContactPage.prototype.getStates = function () {
+        console.log('Here');
+        var country = this.addContactForm.value.country;
+        this.states = this.globalData.states[country];
+    };
+    AddContactPage.prototype.returnZero = function () {
+        // to disable the default sorting behaviour of keyvalue
+        return 0;
+    };
+    AddContactPage.prototype.processError = function (err) {
+        if (err.status == 500) {
+            err.error.message = 'Please enter valid information.';
+        }
+        this.global.checkErrorStatus(err);
     };
     AddContactPage = __decorate([
         core_1.Component({

@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { environment } from 'src/environments/environment';
 import { ChatService } from 'src/app/services/chat.service';
 
@@ -15,7 +15,7 @@ import { ChatService } from 'src/app/services/chat.service';
 })
 export class LoginPage implements OnInit {
 	userForm: FormGroup;
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 	subscription: any;
 
 	constructor(
@@ -26,7 +26,8 @@ export class LoginPage implements OnInit {
 		private toastCtrl: ToastController,
 		private router: Router,
 		private global: GlobalService,
-		private chatApi: ChatService
+		private chatApi: ChatService,
+		private globalData: GlobalData
 	) {
 	}
 

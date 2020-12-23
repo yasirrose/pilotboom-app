@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class EditContactGroupPage implements OnInit {
 	editContactGrpForm: FormGroup;
 	toggleAdvance = false;
 	id: any;
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
 
 	constructor(
 		private api: RestService,
@@ -21,6 +21,7 @@ export class EditContactGroupPage implements OnInit {
 		private fb: FormBuilder,
 		private router: Router,
 		private route: ActivatedRoute,
+		private globalData: GlobalData
 	) {
 		this.route.queryParams.subscribe(params => {
 			this.global.showLoading("bubbles", "Please wait...");

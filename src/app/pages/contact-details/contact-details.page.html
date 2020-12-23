@@ -43,6 +43,21 @@
 					</label>
 					<span>: &nbsp;&nbsp; {{contactData.last_name}}</span>
 				</div>
+
+				<div class="info">
+					<label for="#">
+						<ion-icon name="person-circle-sharp"></ion-icon>Date of Birth
+					</label>
+					<span>: &nbsp;&nbsp; {{contactData.date_of_birth}}</span>
+				</div>
+
+				<div class="info">
+					<label for="#">
+						<ion-icon name="person-circle-sharp"></ion-icon>Age
+					</label>
+					<span>: &nbsp;&nbsp; {{contactData.contact_age}}</span>
+				</div>
+
 				<div class="info">
 					<label for="#">
 						<ion-icon name="call-sharp"></ion-icon>Phone
@@ -84,19 +99,25 @@
 					<label for="#">
 						<ion-icon name="business-outline"></ion-icon>State
 					</label>
-					<span>: &nbsp;&nbsp; {{contactData.state}}</span>
+					<span>: &nbsp;&nbsp; {{getState()}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="navigate-circle-outline"></ion-icon>Country
 					</label>
-					<span>: &nbsp;&nbsp; {{contactData.country}}</span>
+					<span>: &nbsp;&nbsp; {{getCountry()}}</span>
 				</div>
 				<div class="info">
 					<label for="#">
 						<ion-icon name="mail-outline"></ion-icon>Postal Code
 					</label>
 					<span>: &nbsp;&nbsp; {{contactData.postal_code}}</span>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="mail-outline"></ion-icon>Source
+					</label>
+					<span>: &nbsp;&nbsp; {{getSource()}}</span>
 				</div>
 				<div class="info">
 					<label for="#">

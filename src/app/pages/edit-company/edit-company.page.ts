@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController, ToastController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -14,11 +14,16 @@ export class EditCompanyPage implements OnInit {
 	editCompanyForm: FormGroup;
 	id: any;
 	allUsers = [];
-	validation_messages = this.global.getValidationMessages();
+	validation_messages = this.globalData.validationMessages;
+	countries: object;
+	states: object;
+	sources = this.globalData.contactSource;
+	loadView = false;
 
 	constructor(
 		private api: RestService,
 		private global: GlobalService,
+		private globalData: GlobalData,
 		private fb: FormBuilder,
 		private alertCtrl: AlertController,
 		private toastCtrl: ToastController,
@@ -62,8 +67,19 @@ export class EditCompanyPage implements OnInit {
 			postal_code: '',
 			country: '',
 			currency: '',
-			user_id: ''
+			user_id: '',
+			date_of_birth: '',
+			contact_age: '',
+			source: '',
+			facebook: '',
+			twitter: '',
+			googleplus: '',
+			linkedin: '',
 		});
+	}
+
+	ionViewDidEnter() {
+		this.countries = this.globalData.countries;
 	}
 
 	getContactDetail() {
@@ -71,7 +87,9 @@ export class EditCompanyPage implements OnInit {
 			response => {
 				let res: any = response;
 				res.owner = res.owner['ID'].toString();
+				this.loadView = true;
 				this.editCompanyForm.patchValue(res);
+				this.getStates();
 			},
 			err => {
 				this.global.checkErrorStatus(err);
@@ -99,8 +117,25 @@ export class EditCompanyPage implements OnInit {
 				this.router.navigate(["/companies"]);
 			},
 			err => {
-				this.global.checkErrorStatus(err);
+				this.processError(err);
 			}
 		);
+	}
+
+	getStates() {
+		let country = this.editCompanyForm.value.country;
+		this.states = this.globalData.states[country];
+	}
+
+	returnZero() {
+		// to disable the default sorting behaviour of keyvalue
+		return 0;
+	}
+
+	processError(err) {
+		if (err.status == 500) {
+			err.error.message = 'Please enter valid information.'
+		}
+		this.global.checkErrorStatus(err);
 	}
 }

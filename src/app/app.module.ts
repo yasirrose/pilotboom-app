@@ -11,6 +11,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { Network } from '@ionic-native/network/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { GlobalData } from './services/global.service';
 
 @NgModule({
 	declarations: [AppComponent],
@@ -28,7 +29,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 		Network,
 		InAppBrowser,
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+		GlobalData
 	],
 	bootstrap: [AppComponent]
 })
