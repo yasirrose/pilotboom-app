@@ -55,6 +55,9 @@ var CompanyDetailsPage = /** @class */ (function () {
         var source = this.contactData.source;
         return source ? this.globlData.contactSource[source] : '';
     };
+    CompanyDetailsPage.prototype.openLink = function (link) {
+        this.global.InAppBrowser(link);
+    };
     CompanyDetailsPage = __decorate([
         core_1.Component({
             selector: 'app-company-details',

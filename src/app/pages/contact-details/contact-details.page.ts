@@ -70,4 +70,8 @@ export class ContactDetailsPage implements OnInit {
 		let source = this.contactData.source;
 		return source ? this.globlData.contactSource[source] : '';
 	}
+
+	openLink(link) {
+		this.global.InAppBrowser(link);
+	}
 }

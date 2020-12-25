@@ -117,6 +117,37 @@
 					</label>
 					<span>: &nbsp;&nbsp; {{contactData.life_stage | titlecase }}</span>
 				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="logo-facebook"></ion-icon>
+					</label>
+					<span *ngIf="contactData.facebook">
+						<a (click)="openLink(contactData.facebook)">Facebbok</a>
+					</span>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="logo-twitter"></ion-icon>
+					</label>
+					<span *ngIf="contactData.twitter">
+						<a (click)="openLink(contactData.twitter)">Twitter</a>
+					</span>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="logo-google"></ion-icon>
+					</label>
+					<span *ngIf="contactData.googleplus">
+						<a (click)="openLink(contactData.googleplus)">Google+</a>
+					</span>
+				</div>
+				<div class="info">
+					<label for="#">
+						<ion-icon name="logo-linkedin"></ion-icon>
+					</label>
+					<span *ngIf="contactData.linkedin">
+						<a (click)="openLink(contactData.linkedin)">LinkedIn</a></span>
+				</div>
 			</div>
 			<div class="basic-info">
 				<div class="owner-info">
