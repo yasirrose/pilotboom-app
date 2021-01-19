@@ -5,7 +5,6 @@ import { Platform } from '@ionic/angular';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
 import { GlobalService } from './global.service';
-import { env } from 'process';
 import { environment } from 'src/environments/environment';
 
 const JWT_KEY = '#|TS9!T&v5%12?Iu(q|]O^K|<Pmxw#RK{) JXn*b,,}fIrnV,5u:)UIqMAql<fwV';
@@ -58,14 +57,11 @@ export class RestService {
 
 	getMasterData(domain, action = 'GetClientsProducts') {
 		if (environment.production) {
-			let postData = {
-				'username': 'gOVhAuoeLdgyh9FQRpb8kdjO58hDemTW',
-				'password': 'XrNvd5ok8ddHT4CXoE6N1e8j8GdQQn0y',
-				'accesskey': 'UXwkMOvKE72UTAvLNKLUJ20geoFuZ3xx',
-				'action': action,
-				'responsetype': 'json'
-			}
-			return this.http.post(`https://pilotboom.com/includes/api.php`, postData).pipe(
+			let username: string = 'gOVhAuoeLdgyh9FQRpb8kdjO58hDemTW';
+			let password: string = 'XrNvd5ok8ddHT4CXoE6N1e8j8GdQQn0y';
+			let accesskey: string = 'UXwkMOvKE72UTAvLNKLUJ20geoFuZ3xx';
+			let responsetype: string = 'json';
+			return this.http.get<any[]>(`https://pilotboom.com/includes/api.php?username=${username}&password=${password}&accesskey=${accesskey}&action=${action}&responsetype=${responsetype}&domain=${domain}`,).pipe(
 				map(data => {
 					return data;
 				})

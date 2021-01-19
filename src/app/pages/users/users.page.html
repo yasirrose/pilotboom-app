@@ -13,14 +13,26 @@
 </ion-header>
 <ion-content class="ion-padding">
 	<div *ngIf="loadView">
-		<div class="ion-flex inline-filters">
-			<ion-button fill="solid" shape="round" color="danger" routerLink="/add-user">
-				<ion-icon name="add-outline"></ion-icon> Add New User
-			</ion-button>
-		</div>
 		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
 			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
+
+		<div class="ion-flex inline-filters">
+			<ion-button fill="solid" shape="round" color="danger" routerLink="/add-user">
+				<ion-icon name="add-outline"></ion-icon> Add User
+			</ion-button>
+			<ion-button color="light" fill="solid" shape="round" (click)="enableSearch($event)">
+				<ion-icon name="search"></ion-icon>
+			</ion-button>
+		</div>
+		<div class="ion-flex inline-filters" [hidden]="!search">
+			<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterItems($event)" animated autofocus="true">
+			</ion-searchbar>
+			<div class="spinner-container" *ngIf="searching">
+				<ion-spinner></ion-spinner>
+			</div>
+		</div>
+
 		<div *ngIf="users.length > 0; else no_result">
 			<ion-card mode="md" *ngFor="let user of users; index as i">
 				<ion-card-content>
@@ -48,7 +60,7 @@
 									<ion-icon name="mail-outline"></ion-icon> {{ user.data.user_email }}
 								</li>
 								<li>
-									<ion-icon name="reader-outline"></ion-icon> {{ user.roles[0] | titlecase }}
+									<ion-icon name="reader-outline"></ion-icon> {{ getRoleText(user.roles) }}
 								</li>
 							</ul>
 						</div>

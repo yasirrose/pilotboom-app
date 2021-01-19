@@ -73,4 +73,12 @@ export class UserService {
 			})
 		);
 	}
+
+	updateUserRoles(data, id) {
+		return this.http.put(`${this.global.getApiUrl()}/wp/v2/usersmeta/${id}`, data).pipe(
+			map(data => {
+				return data;
+			})
+		);
+	}
 }

@@ -22,6 +22,7 @@ var AddUserPage = /** @class */ (function () {
         // toggleAdvance = false;
         // allUsers = [];
         this.validation_messages = this.globalData.validationMessages;
+        this.erpRoles = this.globalData.erpRoles;
     }
     AddUserPage.prototype.ngOnInit = function () {
         this.addUserForm = this.fb.group({
@@ -39,6 +40,7 @@ var AddUserPage = /** @class */ (function () {
             url: '',
             description: '',
             roles: ['subscriber'],
+            erp_roles: [],
             password: [
                 '',
                 forms_1.Validators.compose([
@@ -51,13 +53,22 @@ var AddUserPage = /** @class */ (function () {
     AddUserPage.prototype.addUser = function () {
         var _this = this;
         this.global.showLoading("bubbles", "Please wait...");
-        this.userApi.addUser(this.addUserForm.value).subscribe(function (res) {
+        var formData = this.addUserForm.value;
+        this.userApi.addUser(formData).subscribe(function (res) {
+            if (formData.erp_roles && formData.erp_roles.length > 0) {
+                var created_user = res;
+                _this.userApi.updateUserRoles({ roles: formData.erp_roles }, created_user.id).subscribe(function (res) {
+                });
+            }
             _this.global.closeLoading();
             _this.global.presentToast('User added successfully.');
             _this.router.navigate(["/users"]);
         }, function (err) {
             _this.global.checkErrorStatus(err);
         });
+    };
+    AddUserPage.prototype.returnZero = function () {
+        return 0;
     };
     AddUserPage = __decorate([
         core_1.Component({

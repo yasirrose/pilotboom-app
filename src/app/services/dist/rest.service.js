@@ -53,14 +53,11 @@ var RestService = /** @class */ (function () {
     RestService.prototype.getMasterData = function (domain, action) {
         if (action === void 0) { action = 'GetClientsProducts'; }
         if (environment_1.environment.production) {
-            var postData = {
-                'username': 'gOVhAuoeLdgyh9FQRpb8kdjO58hDemTW',
-                'password': 'XrNvd5ok8ddHT4CXoE6N1e8j8GdQQn0y',
-                'accesskey': 'UXwkMOvKE72UTAvLNKLUJ20geoFuZ3xx',
-                'action': action,
-                'responsetype': 'json'
-            };
-            return this.http.post("https://pilotboom.com/includes/api.php", postData).pipe(operators_1.map(function (data) {
+            var username = 'gOVhAuoeLdgyh9FQRpb8kdjO58hDemTW';
+            var password = 'XrNvd5ok8ddHT4CXoE6N1e8j8GdQQn0y';
+            var accesskey = 'UXwkMOvKE72UTAvLNKLUJ20geoFuZ3xx';
+            var responsetype = 'json';
+            return this.http.get("https://pilotboom.com/includes/api.php?username=" + username + "&password=" + password + "&accesskey=" + accesskey + "&action=" + action + "&responsetype=" + responsetype + "&domain=" + domain).pipe(operators_1.map(function (data) {
                 return data;
             }));
         }

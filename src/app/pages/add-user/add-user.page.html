@@ -3,7 +3,7 @@
 		<ion-buttons slot="start">
 			<ion-back-button color="light" text="" mode="md"></ion-back-button>
 		</ion-buttons>
-		<ion-title>Add New User</ion-title>
+		<ion-title>Add User</ion-title>
 		<ion-buttons slot="end">
 			<ion-menu-button color="light" text="">
 				<img src="./../../assets/icon/menu-icon.png" alt="" />
@@ -92,6 +92,15 @@
 						<ion-select-option value="author">Author</ion-select-option>
 						<ion-select-option value="editor">Editor</ion-select-option>
 						<ion-select-option value="administrator">Administrator</ion-select-option>
+					</ion-select>
+				</ion-item>
+			</div>
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-select placeholder="ERP Roles" formControlName="erp_roles" name="erp_roles[]" multiple="true">
+						<ion-select-option *ngFor="let role of erpRoles | keyvalue : returnZero"
+							value="{{role.key}}">{{role.value}}
+						</ion-select-option>
 					</ion-select>
 				</ion-item>
 			</div>

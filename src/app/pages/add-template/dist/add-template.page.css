@@ -1,0 +1,19 @@
+.app-form ion-item {
+  --background: #fff;
+  border: 1px solid #e2e2e2;
+  color: #1c0d2e;
+  border-radius: 50px;
+}
+.app-form ion-item ion-input {
+  --placeholder-opacity: 0.4;
+}
+.app-form ion-item ion-select {
+  max-width: 100%;
+  flex: 100%;
+  --padding-start: 0;
+}
+.app-form ion-button {
+  --box-shadow: none;
+  --border-radius: 50px;
+  height: 48px;
+}

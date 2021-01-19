@@ -5,7 +5,7 @@
 exports.__esModule = true;
 exports.environment = void 0;
 exports.environment = {
-    production: false
+    production: true
 };
 /*
  * For easier debugging in development mode, you can import the following file

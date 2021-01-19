@@ -1,0 +1,29 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Add Template</ion-title>
+		<ion-buttons slot="end">
+			<ion-menu-button color="light" text="">
+				<img src="./../../assets/icon/menu-icon.png" alt="" />
+			</ion-menu-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<form [formGroup]="addTempForm" (ngSubmit)="addAutoBlog()">
+		<div class="ion-no-padding app-form">
+			<div class="input_area">
+				<ion-item lines="none">
+					<ion-textarea placeholder="Description" formControlName="template" name="template">
+					</ion-textarea>
+				</ion-item>
+			</div>
+			<ion-button type="submit" size="large" shape="round" expand="block" color="danger"
+				[disabled]="!addTempForm.valid">Add
+			</ion-button>
+		</div>
+	</form>
+</ion-content>

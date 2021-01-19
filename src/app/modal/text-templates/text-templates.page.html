@@ -1,0 +1,75 @@
+<ion-header>
+	<ion-toolbar mode="ios">
+		<ion-buttons slot="start">
+			<ion-back-button color="light" text="" mode="md"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Templates</ion-title>
+		<ion-buttons slot="end" (click)="closeModal()">
+			Close
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+	<div>
+		<div class="ion-flex inline-filters" *ngIf="!showAddForm">
+			<ion-button fill="solid" shape="round" color="danger" (click)="showAddForm = !showAddForm">
+				Add
+			</ion-button>
+		</div>
+		<div *ngIf="showAddForm">
+			<form [formGroup]="addTempForm" (ngSubmit)="addTemplate()">
+				<div class="ion-no-padding app-form">
+					<ion-item lines="none">
+						<ion-textarea placeholder="Description" formControlName="template" name="template">
+						</ion-textarea>
+					</ion-item>
+					<div class="ion-flex inline-filters form_buttons">
+						<ion-button type="submit" size="large" shape="round" color="danger"
+							[disabled]="!addTempForm.valid">
+							Add
+						</ion-button>
+						<ion-button size="large" shape="round" color="danger" (click)="hideTempForm()">
+							Cancel
+						</ion-button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<h6>Default Templates</h6>
+		<ion-card mode="md" *ngFor="let temp of defaultTemplates; index as i" (click)="selectTemplate(temp)">
+			<ion-card-content>
+				<div class="detail-wrap">
+					<div class="left-detail">
+						{{ formatWildcards(temp) }}
+					</div>
+				</div>
+			</ion-card-content>
+		</ion-card>
+
+		<div *ngIf="additionalTemplates.length > 0">
+			<h6>Addtional Templates</h6>
+			<ion-card mode="md" *ngFor="let temp of additionalTemplates; index as i">
+				<ion-card-content>
+					<div class="top-right-btn">
+						<ion-button fill="solid" shape="round" color="danger" (click)="deleteTemplate($event, i)">
+							<ion-icon name="trash-sharp"></ion-icon>
+						</ion-button>
+					</div>
+					<div class="detail-wrap" (click)="selectTemplate(temp)">
+						<div class="left-detail">
+							{{ formatWildcards(temp) }}
+						</div>
+					</div>
+				</ion-card-content>
+			</ion-card>
+		</div>
+		<ng-template #no_result>
+			<ion-card mode="md">
+				<ion-card-content>
+					<h2>No result found</h2>
+				</ion-card-content>
+			</ion-card>
+		</ng-template>
+	</div>
+</ion-content>

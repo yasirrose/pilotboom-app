@@ -63,7 +63,13 @@ var LoginPage = /** @class */ (function () {
     LoginPage.prototype.ngOnInit = function () {
         this.userForm = this.fb.group({
             username: ['', forms_1.Validators.required],
-            website: ['', forms_1.Validators.required],
+            website: [
+                '',
+                forms_1.Validators.compose([
+                    forms_1.Validators.required,
+                    forms_1.Validators.pattern('(^|^[^:]+:\/\/|[^\.]+\.)pilotboom\.com')
+                ])
+            ],
             email: '',
             password: ['', forms_1.Validators.required]
         });
@@ -85,13 +91,25 @@ var LoginPage = /** @class */ (function () {
         else {
             this.global.showLoading("bubbles", "Logging in...");
             this.api.getMasterData(this.userForm.value.website).subscribe(function (res) {
-                _this.global.setUserDomain(_this.userForm.value.website);
-                _this.api.signIn(_this.userForm.value.username, _this.userForm.value.password).subscribe(function (res) {
-                    _this.chatApi.saveToken().subscribe();
-                    _this.global.closeLoading();
-                }, function (err) {
-                    _this.processLoginError(err);
-                });
+                var response = res;
+                if (response.totalresults == "1" || _this.userForm.value.website == 'demo.pilotboom.com') {
+                    _this.global.setUserDomain(_this.userForm.value.website);
+                    _this.api.signIn(_this.userForm.value.username, _this.userForm.value.password).subscribe(function (res) {
+                        _this.chatApi.saveToken().subscribe();
+                        _this.global.closeLoading();
+                    }, function (err) {
+                        _this.processLoginError(err);
+                    });
+                }
+                else {
+                    var err = {
+                        status: 404,
+                        error: {
+                            message: 'Please enter a valid website.'
+                        }
+                    };
+                    _this.processLoginError(err, 'Website Not Found');
+                }
             });
         }
     };
@@ -180,13 +198,14 @@ var LoginPage = /** @class */ (function () {
     LoginPage.prototype.forgotPassword = function () {
         this.global.InAppBrowser(this.global.getBaseUrl() + "/wp-login.php?action=lostpassword");
     };
-    LoginPage.prototype.processLoginError = function (err) {
+    LoginPage.prototype.processLoginError = function (err, header) {
+        if (header === void 0) { header = 'Login Failed'; }
         if (err.status == 403) {
             if (err.error.code.indexOf('incorrect_password') > -1) {
                 err.error.message = 'The password you entered is incorrect. Please try again.';
             }
         }
-        this.global.checkErrorStatus(err, 'Login Failed', false, true);
+        this.global.checkErrorStatus(err, header, false, true);
     };
     LoginPage = __decorate([
         core_1.Component({

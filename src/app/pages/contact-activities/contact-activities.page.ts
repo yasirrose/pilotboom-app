@@ -143,6 +143,6 @@ export class ContactActivitiesPage implements OnInit {
 		setTimeout(() => {
 			this.activities = filtered;
 			this.searching = false;
-		}, 500);
+		}, 300);
 	}
 }

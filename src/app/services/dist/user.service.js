@@ -60,6 +60,11 @@ var UserService = /** @class */ (function () {
             return data;
         }));
     };
+    UserService.prototype.updateUserRoles = function (data, id) {
+        return this.http.put(this.global.getApiUrl() + "/wp/v2/usersmeta/" + id, data).pipe(operators_1.map(function (data) {
+            return data;
+        }));
+    };
     UserService = __decorate([
         core_1.Injectable({
             providedIn: 'root'

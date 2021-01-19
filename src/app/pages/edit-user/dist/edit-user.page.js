@@ -22,6 +22,7 @@ var EditUserPage = /** @class */ (function () {
         this.global = global;
         this.globalData = globalData;
         this.validation_messages = this.globalData.validationMessages;
+        this.erpRoles = this.globalData.erpRoles;
         this.route.queryParams.subscribe(function (params) {
             _this.global.showLoading("bubbles", "Please wait...");
             if (params && params.userId) {
@@ -46,6 +47,7 @@ var EditUserPage = /** @class */ (function () {
             url: '',
             description: '',
             roles: ['subscriber'],
+            erp_roles: [],
             password: [
                 '',
                 forms_1.Validators.minLength(5)
@@ -64,6 +66,7 @@ var EditUserPage = /** @class */ (function () {
             res.last_name = res.data.metadata.last_name[0];
             res.description = res.data.metadata.description[0];
             res.url = res.data.user_url;
+            res.erp_roles = res.data.erp_roles;
             _this.editUserForm.patchValue(res);
             _this.global.closeLoading();
         }, function (err) {
@@ -76,13 +79,22 @@ var EditUserPage = /** @class */ (function () {
             this.editUserForm.value.password = this.userData.data.user_pass;
         }
         this.global.showLoading("bubbles", "Please wait...");
+        var formData = this.editUserForm.value;
         this.userApi.updateUser(this.editUserForm.value, this.id).subscribe(function (res) {
+            if (formData.erp_roles && formData.erp_roles.length > 0) {
+                var created_user = res;
+                _this.userApi.updateUserRoles({ roles: formData.erp_roles }, created_user.id).subscribe(function (res) {
+                });
+            }
             _this.global.closeLoading();
             _this.global.presentToast('User updated successfully.');
             _this.router.navigate(["/users"]);
         }, function (err) {
             _this.global.checkErrorStatus(err);
         });
+    };
+    EditUserPage.prototype.returnZero = function () {
+        return 0;
     };
     EditUserPage = __decorate([
         core_1.Component({

@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonContent } from '@ionic/angular';
+import { AlertController, IonContent, ModalController } from '@ionic/angular';
 import { ChatMessage, ChatService, UserInfo } from 'src/app/services/chat.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
+import { TextTemplatesPage } from 'src/app/modal/text-templates/text-templates.page';
 
 @Component({
 	selector: 'app-chat',
@@ -30,6 +31,7 @@ export class ChatPage implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private alertCtrl: AlertController,
+		private modalCtrl: ModalController,
 	) {
 		this.route.queryParams.subscribe(params => {
 			if (params && params.contactId) {
@@ -218,5 +220,24 @@ export class ChatPage implements OnInit {
 			]
 		});
 		await alert.present();
+	}
+
+	async openTemplates(evt) {
+		const modal = await this.modalCtrl.create({
+			component: TextTemplatesPage,
+			componentProps: {
+				contact: this.contactData
+			},
+			backdropDismiss: true,
+			cssClass: 'modalClass',
+		});
+		modal.onDidDismiss().then(data => {
+			console.log('Modal is closed');
+			if (data) {
+				this.textMsg = data.data;
+			}
+
+		})
+		return await modal.present();
 	}
 }

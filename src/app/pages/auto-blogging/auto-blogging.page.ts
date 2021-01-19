@@ -11,11 +11,15 @@ import { GlobalService } from 'src/app/services/global.service';
 	providers: [NavParams]
 })
 export class AutoBloggingPage implements OnInit {
+	postsData = [];
 	posts = [];
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	search = false;
+	searchTerm = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
@@ -45,17 +49,28 @@ export class AutoBloggingPage implements OnInit {
 		this.content.scrollToTop();
 	}
 
+	clearSearch() {
+		this.search = false;
+		this.searchTerm = '';
+		this.searching = false;
+	}
+
 	loadAutoBlogging(event?, refresh?) {
 		this.autoBlogApi.getAutoBlog(this.per_page, this.page).subscribe(
 			res => {
 				this.hasMore = res.length < this.per_page ? false : true;
-				if (event) {
-					this.posts = refresh ? [] : this.posts;
-					event.target.complete();
-				} else {
-					this.posts = [];
+				if (!event || refresh) {
+					this.postsData = [];
+					this.clearSearch();
 				}
-				this.posts = this.posts.concat(res);
+				this.postsData = this.postsData.concat(res);
+
+				if (event && this.search && this.searchTerm) { //Pagination called and search exists already
+					this.posts = this.filterSearch(this.postsData, this.searchTerm);
+				} else {
+					this.posts = this.postsData;
+				}
+				event ? event.target.complete() : '';
 				this.global.closeLoading();
 				this.loadView = true;
 			},
@@ -123,5 +138,27 @@ export class AutoBloggingPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.loadAutoBlogging(event, true);
+	}
+
+	enableSearch(evt) {
+		this.search = !this.search;
+		if (!this.search) {
+			this.searchTerm = '';
+		}
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		var filtered = this.filterSearch(this.postsData, this.searchTerm);
+		setTimeout(() => {
+			this.posts = filtered;
+			this.searching = false;
+		}, 300);
+	}
+
+	filterSearch(objArray, value) {
+		return objArray.filter(obj => {
+			return obj.title.rendered.toLowerCase().indexOf(value.toLowerCase()) > -1;
+		});
 	}
 }

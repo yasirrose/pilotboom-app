@@ -1,0 +1,27 @@
+$textColor: #1c0d2e;
+$colorgray: #e2e2e2;
+
+.app-form {
+    ion-item {
+        --background: #fff;
+        border: 1px solid $colorgray;
+        color: $textColor;
+        border-radius: 50px;
+
+        ion-input {
+            --placeholder-opacity: 0.4;
+        }
+
+        ion-select {
+            max-width: 100%;
+            flex: 100%;
+            --padding-start: 0;
+        }
+    }
+
+    ion-button {
+        --box-shadow: none;
+        --border-radius: 50px;
+        height: 48px;
+    }
+}

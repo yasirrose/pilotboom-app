@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
@@ -34,7 +33,13 @@ export class LoginPage implements OnInit {
 	ngOnInit() {
 		this.userForm = this.fb.group({
 			username: ['', Validators.required],
-			website: ['', Validators.required],
+			website: [
+				'',
+				Validators.compose([
+					Validators.required,
+					Validators.pattern('(^|^[^:]+:\/\/|[^\.]+\.)pilotboom\.com')
+				])
+			],
 			email: '',
 			password: ['', Validators.required]
 		});
@@ -57,16 +62,27 @@ export class LoginPage implements OnInit {
 			this.global.showLoading("bubbles", "Logging in...");
 			this.api.getMasterData(this.userForm.value.website).subscribe(
 				res => {
-					this.global.setUserDomain(this.userForm.value.website);
-					this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
-						res => {
-							this.chatApi.saveToken().subscribe();
-							this.global.closeLoading();
-						},
-						err => {
-							this.processLoginError(err);
-						}
-					);
+					let response: any = res;
+					if (response.totalresults == "1" || this.userForm.value.website == 'demo.pilotboom.com') {
+						this.global.setUserDomain(this.userForm.value.website);
+						this.api.signIn(this.userForm.value.username, this.userForm.value.password).subscribe(
+							res => {
+								this.chatApi.saveToken().subscribe();
+								this.global.closeLoading();
+							},
+							err => {
+								this.processLoginError(err);
+							}
+						);
+					} else {
+						let err = {
+							status: 404,
+							error: {
+								message: 'Please enter a valid website.'
+							}
+						};
+						this.processLoginError(err, 'Website Not Found');
+					}
 				}
 			)
 		}
@@ -140,12 +156,12 @@ export class LoginPage implements OnInit {
 		this.global.InAppBrowser(`${this.global.getBaseUrl()}/wp-login.php?action=lostpassword`);
 	}
 
-	processLoginError(err) {
+	processLoginError(err, header = 'Login Failed') {
 		if (err.status == 403) {
 			if (err.error.code.indexOf('incorrect_password') > -1) {
 				err.error.message = 'The password you entered is incorrect. Please try again.'
 			}
 		}
-		this.global.checkErrorStatus(err, 'Login Failed', false, true);
+		this.global.checkErrorStatus(err, header, false, true);
 	}
 }

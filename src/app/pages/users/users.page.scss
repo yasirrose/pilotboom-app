@@ -1,9 +1,11 @@
 ion-content {
     --background: #eff6fe;
+
     .inline-filters {
         display: flex;
         align-items: center;
-        margin-bottom: 24px;
+
+        // margin-bottom: 24px;
         ion-button {
             --border-radius: 50px;
             box-shadow: none;
@@ -12,9 +14,11 @@ ion-content {
             --ion-color-primary: #1c0d2e;
             font-weight: 300;
             font-size: 14px;
+
             &:first-child {
                 flex: auto;
             }
+
             &:last-child {
                 width: 44px;
                 height: 44px;
@@ -28,6 +32,7 @@ ion-content {
             }
         }
     }
+
     ion-card {
         border-radius: 0 6px 6px 0px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -35,13 +40,16 @@ ion-content {
         margin-bottom: 24px;
         margin-left: 0;
         margin-right: 0;
+
         ion-card-content {
             .detail-wrap {
                 position: relative;
+
                 .top-right-btn {
                     position: absolute;
                     right: 0;
                     top: 0;
+
                     ion-button {
                         margin: 0 3px;
                         --padding-top: 0;
@@ -54,27 +62,33 @@ ion-content {
                         --box-shadow: none;
                     }
                 }
+
                 .left-detail {
                     ul {
                         margin: 0;
                         padding: 0;
                         list-style-type: none;
+
                         li {
                             display: flex;
                             margin-bottom: 8px;
                             align-items: center;
+
                             span {
                                 color: #4f4f4f;
                             }
+
                             ion-icon {
                                 color: #2471d3;
                                 font-size: 16px;
                                 margin-right: 7px;
                                 flex: 0 0 20px;
                             }
+
                             &:first-child {
                                 max-width: 212px;
                             }
+
                             &:last-child {
                                 margin-bottom: 0;
                             }
@@ -82,10 +96,12 @@ ion-content {
                     }
                 }
             }
+
             .action-group {
                 display: flex;
                 align-items: center;
                 margin-top: 16px;
+
                 ion-select {
                     border: 1px solid #c8c8c8;
                     border-radius: 50px;
@@ -93,6 +109,7 @@ ion-content {
                     padding-right: 6px;
                     height: 40px;
                 }
+
                 ion-button {
                     --box-shadow: none;
                     height: 40px;

@@ -105,6 +105,16 @@
 
 			<div class="input_area">
 				<ion-item lines="none">
+					<ion-select placeholder="ERP Roles" formControlName="erp_roles" name="erp_roles[]" multiple="true">
+						<ion-select-option *ngFor="let role of erpRoles | keyvalue : returnZero"
+							value="{{role.key}}">{{role.value}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
+			</div>
+
+			<div class="input_area">
+				<ion-item lines="none">
 					<ion-input type="text" placeholder="New Password" formControlName="password" name="password">
 					</ion-input>
 				</ion-item>

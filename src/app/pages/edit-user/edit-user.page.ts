@@ -15,6 +15,7 @@ export class EditUserPage implements OnInit {
 	editUserForm: FormGroup;
 	userData: any;
 	validation_messages = this.globalData.validationMessages;
+	erpRoles = this.globalData.erpRoles;
 
 	constructor(
 		private userApi: UserService,
@@ -52,6 +53,7 @@ export class EditUserPage implements OnInit {
 			url: '',
 			description: '',
 			roles: ['subscriber'],
+			erp_roles: [],
 			password: [
 				'',
 				Validators.minLength(5)
@@ -73,6 +75,7 @@ export class EditUserPage implements OnInit {
 				res.description = res.data.metadata.description[0];
 
 				res.url = res.data.user_url;
+				res.erp_roles = res.data.erp_roles;
 				this.editUserForm.patchValue(res);
 				this.global.closeLoading();
 			},
@@ -87,8 +90,16 @@ export class EditUserPage implements OnInit {
 			this.editUserForm.value.password = this.userData.data.user_pass;
 		}
 		this.global.showLoading("bubbles", "Please wait...");
+		const formData = this.editUserForm.value;
 		this.userApi.updateUser(this.editUserForm.value, this.id).subscribe(
 			res => {
+				if (formData.erp_roles && formData.erp_roles.length > 0) {
+					let created_user: any = res;
+					this.userApi.updateUserRoles({ roles: formData.erp_roles }, created_user.id).subscribe(
+						res => {
+						}
+					)
+				}
 				this.global.closeLoading();
 				this.global.presentToast('User updated successfully.');
 				this.router.navigate(["/users"]);
@@ -97,5 +108,9 @@ export class EditUserPage implements OnInit {
 				this.global.checkErrorStatus(err);
 			}
 		);
+	}
+
+	returnZero() {
+		return 0;
 	}
 }

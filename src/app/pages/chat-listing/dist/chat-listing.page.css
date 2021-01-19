@@ -1,0 +1,76 @@
+ion-content {
+  --background: url("../../../assets/img/app-bg-2.jpg") no-repeat 0 / cover;
+}
+ion-content .inline-filters {
+  display: flex;
+  align-items: center;
+}
+ion-content ion-card {
+  border-radius: 0 6px 6px 0px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-left: 3px solid #aacaf3;
+  margin-bottom: 24px;
+  margin-left: 0;
+  margin-right: 0;
+}
+ion-content ion-card ion-card-content .detail-wrap {
+  position: relative;
+}
+ion-content ion-card ion-card-content .detail-wrap .top-right-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+ion-content ion-card ion-card-content .detail-wrap .top-right-btn ion-button {
+  margin: 0 3px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  --box-shadow: none;
+}
+ion-content ion-card ion-card-content .detail-wrap .left-detail ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+ion-content ion-card ion-card-content .detail-wrap .left-detail ul li {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: center;
+}
+ion-content ion-card ion-card-content .detail-wrap .left-detail ul li span {
+  color: #4f4f4f;
+}
+ion-content ion-card ion-card-content .detail-wrap .left-detail ul li ion-icon {
+  color: #2471d3;
+  font-size: 16px;
+  margin-right: 7px;
+  flex: 0 0 20px;
+}
+ion-content ion-card ion-card-content .detail-wrap .left-detail ul li:first-child {
+  max-width: 212px;
+}
+ion-content ion-card ion-card-content .detail-wrap .left-detail ul li:last-child {
+  margin-bottom: 0;
+}
+ion-content ion-card ion-card-content .action-group {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+ion-content ion-card ion-card-content .action-group ion-select {
+  border: 1px solid #c8c8c8;
+  border-radius: 50px;
+  flex: auto;
+  padding-right: 6px;
+  height: 40px;
+}
+ion-content ion-card ion-card-content .action-group ion-button {
+  --box-shadow: none;
+  height: 40px;
+  margin: 0 0 0 10px;
+}

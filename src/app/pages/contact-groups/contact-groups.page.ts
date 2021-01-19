@@ -178,6 +178,6 @@ export class ContactGroupsPage implements OnInit {
 		setTimeout(() => {
 			this.contactGroups = filtered;
 			this.searching = false;
-		}, 500);
+		}, 300);
 	}
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AlertController, IonContent, NavController, NavParams } from '@ionic/angular';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalData, GlobalService } from 'src/app/services/global.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,17 +10,22 @@ import { UserService } from 'src/app/services/user.service';
 	styleUrls: ['./users.page.scss'],
 })
 export class UsersPage implements OnInit {
+	usersData = [];
 	users = [];
 	loadView = false;
 	page = 1;
 	per_page = 10;
 	hasMore = true;
+	search = false;
+	searchTerm = '';
+	searching = false;
 	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
 		private router: Router,
 		private userApi: UserService,
 		private global: GlobalService,
+		private globalData: GlobalData,
 		private alertCtrl: AlertController
 	) {
 	}
@@ -45,14 +50,19 @@ export class UsersPage implements OnInit {
 		this.userApi.getUsersWithMeta(this.per_page, this.page).subscribe(
 			res => {
 				this.hasMore = res.length < this.per_page ? false : true;
-				if (event) {
-					this.users = refresh ? [] : this.users;
-					event.target.complete();
+				if (!event || refresh) {
+					this.usersData = [];
+					this.clearSearch();
+				}
+				this.usersData = this.usersData.concat(res);
+
+				if (event && this.search && this.searchTerm) { //Pagination called and search exists already
+					this.users = this.filterSearch(this.usersData, this.searchTerm);
 				} else {
-					this.users = [];
+					this.users = this.usersData;
 				}
 
-				this.users = this.users.concat(res);
+				event ? event.target.complete() : '';
 				this.global.closeLoading();
 				this.loadView = true;
 			},
@@ -114,5 +124,49 @@ export class UsersPage implements OnInit {
 	doRefresh(event) {
 		this.resetData();
 		this.loadUsers(event, true);
+	}
+
+	getRoleText(roles) {
+		var text: string = '';
+		for (let i = 0; i < roles.length; i++) {
+			var elem = roles[i];
+			if (elem in this.globalData.erpRolesAll) {
+				elem = this.globalData.erpRolesAll[elem];
+			}
+			text = `${text}${i ? ', ' : ''}${this.global.toTitleCase(elem)}`;
+		}
+		return text;
+	}
+
+	enableSearch(evt) {
+		this.search = !this.search;
+		if (!this.search) {
+			this.searchTerm = '';
+		}
+	}
+
+	clearSearch() {
+		this.search = false;
+		this.searchTerm = '';
+		this.searching = false;
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		var filtered = this.filterSearch(this.usersData, this.searchTerm);
+		setTimeout(() => {
+			this.users = filtered;
+			this.searching = false;
+		}, 300);
+	}
+
+	filterSearch(objArray, value) {
+		return objArray.filter(obj => {
+			return (
+				obj.data.display_name.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+				obj.data.user_login.toLowerCase().indexOf(value.toLowerCase()) > -1 ||
+				obj.data.user_nicename.toLowerCase().indexOf(value.toLowerCase()) > -1
+			);
+		});
 	}
 }

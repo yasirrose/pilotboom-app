@@ -1,0 +1,89 @@
+ion-content {
+    // --background: #eff6fe;
+
+    .inline-filters {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        max-width: 64px;
+        width: 100%;
+
+        ion-button {
+            --border-radius: 50px;
+            box-shadow: none;
+            height: 28px;
+            --box-shadow: none;
+            --ion-color-primary: #1c0d2e;
+            font-weight: 300;
+            font-size: 14px;
+            --padding-start: 15px;
+            --padding-end: 15px;
+        }
+    }
+
+    ion-card {
+        border-radius: 0 6px 6px 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-left: 3px solid #aacaf3;
+        // margin-bottom: 24px;
+        margin-left: 0;
+        margin-right: 0;
+
+        ion-card-content {
+            padding-inline-start: 10px;
+            padding-inline-end: 20px;
+
+            .top-right-btn {
+                position: absolute;
+                right: 0;
+                top: 0;
+
+                ion-button {
+                    margin: -5px 3px 0 3px;
+                    --padding-top: 0;
+                    --padding-bottom: 0;
+                    --padding-start: 0;
+                    --padding-end: 0;
+                    width: 18px;
+                    height: 18px;
+                    font-size: 12px;
+                    --box-shadow: none;
+
+                    ion-icon {
+                        font-size: 12px
+                    }
+                }
+            }
+
+            .detail-wrap {
+                .left-detail {
+                    text-align: justify;
+                }
+            }
+        }
+    }
+
+    .app-form {
+        ion-item {
+            --background: #fff;
+            border: 1px solid #e2e2e2;
+            color: #1c0d2e;
+            border-radius: 50px;
+
+            ion-input {
+                --placeholder-opacity: 0.4;
+            }
+
+            ion-select {
+                max-width: 100%;
+                flex: 100%;
+                --padding-start: 0;
+            }
+
+        }
+
+        .form_buttons {
+            max-width: 151px;
+        }
+    }
+}

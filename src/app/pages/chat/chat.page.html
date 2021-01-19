@@ -43,6 +43,9 @@
 <ion-footer class="ion-no-lines">
 	<ion-toolbar>
 		<div class="input-wrap">
+			<ion-button class="template_btn" (click)="openTemplates($event)">
+				<ion-icon name="list-outline"></ion-icon>
+			</ion-button>
 			<ion-textarea auto-grow placeholder="Enter message" [(ngModel)]="textMsg" (keyup.enter)="sendMsg()">
 			</ion-textarea>
 			<ion-button (click)="sendMsg()">

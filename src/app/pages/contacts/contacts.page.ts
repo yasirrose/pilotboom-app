@@ -203,6 +203,6 @@ export class ContactsPage implements OnInit {
 		setTimeout(() => {
 			this.setData(filtered);
 			this.searching = false;
-		}, 500);
+		}, 300);
 	}
 }

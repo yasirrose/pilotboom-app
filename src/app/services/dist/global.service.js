@@ -209,6 +209,16 @@ var GlobalService = /** @class */ (function () {
             }
         });
     };
+    GlobalService.prototype.filterArrayByValue = function (arr, value) {
+        return arr.filter(function (elem, index) {
+            return elem != value;
+        });
+    };
+    GlobalService.prototype.filterArrayByIndex = function (arr, value) {
+        return arr.filter(function (elem, index) {
+            return index != value;
+        });
+    };
     GlobalService.prototype.filterSearch = function (objArray, value, key1, key2) {
         return objArray.filter(function (obj) {
             if (key2) {
@@ -295,11 +305,14 @@ var GlobalService = /** @class */ (function () {
         return localStorage.getItem('capUserDom');
     };
     GlobalService.prototype.getBaseUrl = function () {
-        return environment_1.environment.production ? "https://" + this.getUserDomain() + ".pilotboom.com" : "http://localhost/pilotboom";
+        return environment_1.environment.production ? "https://" + this.getUserDomain() : "http://localhost/pilotboom";
     };
     GlobalService.prototype.getApiUrl = function () {
         var base = this.getBaseUrl();
         return base + "/wp-json";
+    };
+    GlobalService.prototype.toTitleCase = function (str) {
+        return str && str.charAt(0).toUpperCase() + str.slice(1);
     };
     GlobalService = __decorate([
         core_1.Injectable({
@@ -363,7 +376,8 @@ var GlobalData = /** @class */ (function () {
                 { type: 'required', message: 'At Least one Contact is required.' }
             ],
             'website': [
-                { type: 'required', message: 'Website name is required.' }
+                { type: 'required', message: 'Website name is required.' },
+                { type: 'pattern', message: 'Please enter a valid website.' }
             ]
         };
         this.contactSource = {
@@ -386,6 +400,25 @@ var GlobalData = /** @class */ (function () {
             "trade_show": "Trade Show",
             "web_download": "Web Download",
             "web_research": "Web Research"
+        };
+        this.erpRoles = {
+            erp_crm_manager: 'CRM Manager',
+            erp_crm_agent: 'CRM Agent'
+        };
+        this.erpRolesAll = {
+            erp_crm_manager: 'CRM Manager',
+            erp_crm_agent: 'CRM Agent',
+            erp_hr_manager: 'HR Manager',
+            erp_ac_manager: 'Accounting Manager'
+        };
+        this.textTemplates = {
+            "default": [
+                'Hi {user_name}, How are you doing today.',
+                'There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain',
+                'Hello {user_name}, This message is to remind you about your pending payments.',
+                'There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain',
+            ],
+            additional: []
         };
         this.countries = {
             "AX": "Åland Islands",

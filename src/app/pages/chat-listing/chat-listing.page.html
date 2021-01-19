@@ -5,24 +5,52 @@
 		</ion-buttons>
 		<ion-title>Messages</ion-title>
 		<ion-buttons slot="end">
+			<ion-button color="light" (click)="enableSearch($event)">
+				<ion-icon name="search"></ion-icon>
+			</ion-button>
 			<ion-menu-button color="light" text="">
 				<img src="./../../assets/icon/menu-icon.png" alt="">
 			</ion-menu-button>
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding-vertical">
-	<ion-list class="user-box" lines="full">
-		<div *ngFor="let contact of contactList">
-			<ion-item detail="false" (click)="getChat($event, contact.id)">
-				<ion-avatar slot="start">
-					<img src="assets/img/upload-img.png">
-				</ion-avatar>
-				<ion-label>
-					<h2>{{contact.first_name | titlecase}} {{contact.last_name | titlecase}}</h2>
-					<!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p> -->
-				</ion-label>
-			</ion-item>
+<ion-content class="ion-padding">
+	<div *ngIf="loadView">
+		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
+		<div *ngIf="contactList.length > 0; else no_result">
+			<div class="ion-flex inline-filters" [hidden]="!search">
+				<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterItems($event)" animated>
+				</ion-searchbar>
+				<div class="spinner-container" *ngIf="searching">
+					<ion-spinner></ion-spinner>
+				</div>
+			</div>
+			<ion-list class="user-box" lines="full">
+				<div *ngFor="let contact of contactList">
+					<ion-item detail="false" (click)="getChat($event, contact.id)">
+						<ion-avatar slot="start">
+							<img src="assets/img/upload-img.png">
+						</ion-avatar>
+						<ion-label>
+							<h2>{{contact.first_name | titlecase}} {{contact.last_name | titlecase}}</h2>
+							<!-- <p>Message text here</p> -->
+						</ion-label>
+					</ion-item>
+				</div>
+			</ion-list>
+			<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" *ngIf="hasMore">
+				<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading...">
+				</ion-infinite-scroll-content>
+			</ion-infinite-scroll>
 		</div>
-	</ion-list>
+		<ng-template #no_result>
+			<ion-card mode="md">
+				<ion-card-content>
+					<h2>No result found</h2>
+				</ion-card-content>
+			</ion-card>
+		</ng-template>
+	</div>
 </ion-content>

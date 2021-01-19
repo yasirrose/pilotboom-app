@@ -132,6 +132,18 @@ export class GlobalService {
 		});
 	}
 
+	filterArrayByValue(arr, value) {
+		return arr.filter((elem, index) => {
+			return elem != value;
+		});
+	}
+
+	filterArrayByIndex(arr, value) {
+		return arr.filter((elem, index) => {
+			return index != value;
+		});
+	}
+
 	filterSearch(objArray, value, key1, key2?) {
 		return objArray.filter(obj => {
 			if (key2) {
@@ -205,12 +217,16 @@ export class GlobalService {
 	}
 
 	getBaseUrl() {
-		return environment.production ? `https://${this.getUserDomain()}.pilotboom.com` : `http://localhost/pilotboom`;
+		return environment.production ? `https://${this.getUserDomain()}` : `http://localhost/pilotboom`;
 	}
 
 	getApiUrl() {
 		var base = this.getBaseUrl();
 		return `${base}/wp-json`;
+	}
+
+	toTitleCase(str) {
+		return str && str.charAt(0).toUpperCase() + str.slice(1);
 	}
 }
 
@@ -267,7 +283,8 @@ export class GlobalData {
 			{ type: 'required', message: 'At Least one Contact is required.' }
 		],
 		'website': [
-			{ type: 'required', message: 'Website name is required.' }
+			{ type: 'required', message: 'Website name is required.' },
+			{ type: 'pattern', message: 'Please enter a valid website.' }
 		],
 	};
 
@@ -292,6 +309,30 @@ export class GlobalData {
 		"web_download": "Web Download",
 		"web_research": "Web Research",
 	};
+
+	erpRoles = {
+		erp_crm_manager: 'CRM Manager',
+		erp_crm_agent: 'CRM Agent',
+	}
+
+	erpRolesAll = {
+		erp_crm_manager: 'CRM Manager',
+		erp_crm_agent: 'CRM Agent',
+		erp_hr_manager: 'HR Manager',
+		erp_ac_manager: 'Accounting Manager',
+	}
+
+	textTemplates = {
+		default: [
+			'Hi {user_name}, How are you doing today.',
+			'There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain',
+			'Hello {user_name}, This message is to remind you about your pending payments.',
+			'There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain',
+		],
+		additional: [
+			
+		]
+	}
 
 	countries = {
 		"AX": "Åland Islands",

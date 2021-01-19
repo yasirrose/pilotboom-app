@@ -156,6 +156,14 @@ const routes: Routes = [
 		path: 'chat',
 		loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule),
 		canActivate: [AuthGuard]
+	},
+	{
+		path: 'text-templates',
+		loadChildren: () => import('./modal/text-templates/text-templates.module').then(m => m.TextTemplatesPageModule)
+	},
+	{
+		path: 'add-template',
+		loadChildren: () => import('./pages/add-template/add-template.module').then(m => m.AddTemplatePageModule)
 	}
 ];
 

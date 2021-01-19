@@ -3,27 +3,39 @@ ion-content {
 }
 
 .input-wrap {
-    padding: 10px 5px 15px 5px;
+    padding: 5px 5px 10px 5px;
+
     ion-button {
         --border-radius: 50px;
         --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        width: 50px;
-        height: 50px;
-        margin: 0 0 0 12px;
-    }
-}
-ion-footer {
-    ion-toolbar {
-        --border-width: 0;
-        ion-textarea {
-            color: black;
+        width: 35px;
+        height: 35px;
+        margin: 0 0 7px 3px;
+        font-size: 9px;
+
+        &.template_btn {
+            margin: 0 3px 7px 0;
+            font-size: 10px;
         }
     }
 }
+
+ion-footer {
+    ion-toolbar {
+        --border-width: 0;
+
+        ion-textarea {
+            color: black;
+            min-height: 45px;
+        }
+    }
+}
+
 .message {
     display: flex;
     align-items: flex-start;
     margin-bottom: 15px;
+
     ion-avatar {
         // flex: 0 0 48px;
         // width: 48px;
@@ -32,8 +44,10 @@ ion-footer {
         height: 38px;
         margin-top: 20px;
     }
+
     .msg-detail {
         padding-left: 12px;
+
         .msg-info {
             background-color: #e4e4e4;
             font-size: 14px;
@@ -41,34 +55,43 @@ ion-footer {
             border-radius: 0 18px 18px 18px;
             color: #464646;
             position: relative;
+
             p {
                 margin: 0;
             }
         }
+
         .mesg-time {
             color: #b2b2b2;
             font-size: 12px;
             margin-bottom: 2px;
+
             p {
                 margin: 0;
             }
         }
     }
+
     &.right {
         flex-direction: row-reverse;
+
         .msg-detail {
             padding-right: 12px;
             padding-left: 0;
+
             .mesg-time {
                 text-align: right;
             }
+
             .msg-info {
                 border-radius: 18px 0px 18px 18px;
                 background-color: var(--ion-color-primary);
                 color: #ffffff;
                 display: flex;
+
                 span {
                     width: 10px;
+
                     ion-spinner,
                     ion-icon {
                         font-size: 3px;
@@ -78,11 +101,19 @@ ion-footer {
                         bottom: 5px;
                         right: 5px;
                     }
+
                     .alert {
                         color: orangered;
                     }
                 }
             }
         }
+    }
+}
+
+ion-modal {
+    .modalClass {
+        width: 70% !important;
+        height: 70% !important;
     }
 }

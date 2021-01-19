@@ -15,6 +15,7 @@ export class AddUserPage implements OnInit {
 	// toggleAdvance = false;
 	// allUsers = [];
 	validation_messages = this.globalData.validationMessages;
+	erpRoles = this.globalData.erpRoles;
 
 	constructor(
 		private userApi: UserService,
@@ -44,6 +45,7 @@ export class AddUserPage implements OnInit {
 			url: '',
 			description: '',
 			roles: ['subscriber'],
+			erp_roles: [],
 			password: [
 				'',
 				Validators.compose([
@@ -56,8 +58,16 @@ export class AddUserPage implements OnInit {
 
 	addUser() {
 		this.global.showLoading("bubbles", "Please wait...");
-		this.userApi.addUser(this.addUserForm.value).subscribe(
+		const formData = this.addUserForm.value;
+		this.userApi.addUser(formData).subscribe(
 			res => {
+				if (formData.erp_roles && formData.erp_roles.length > 0) {
+					let created_user: any = res;
+					this.userApi.updateUserRoles({ roles: formData.erp_roles }, created_user.id).subscribe(
+						res => {
+						}
+					)
+				}
 				this.global.closeLoading();
 				this.global.presentToast('User added successfully.');
 				this.router.navigate(["/users"]);
@@ -66,6 +76,10 @@ export class AddUserPage implements OnInit {
 				this.global.checkErrorStatus(err);
 			}
 		);
+	}
+
+	returnZero() {
+		return 0;
 	}
 }
 

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { IonContent } from '@ionic/angular';
 import { ChatService } from 'src/app/services/chat.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -11,6 +12,7 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class ChatListingPage implements OnInit {
 
+	contactListData: any = [];
 	contactList: any = [];
 
 	loadView = false;
@@ -20,6 +22,7 @@ export class ChatListingPage implements OnInit {
 	search = false;
 	searchTerm = '';
 	searching = false;
+	@ViewChild(IonContent) content: IonContent;
 
 	constructor(
 		private restApi: RestService,
@@ -32,6 +35,7 @@ export class ChatListingPage implements OnInit {
 	}
 
 	ionViewDidEnter() {
+		this.resetData();
 		this.global.showLoading("bubbles", "Loading...");
 		this.getContacts();
 	}
@@ -39,34 +43,22 @@ export class ChatListingPage implements OnInit {
 	getContacts(event?, refresh?) {
 		this.restApi.getCrmContacts('', 'all', this.per_page, this.page).subscribe(
 			res => {
-				// console.log(res);
-				// let all_length = res.length;
-				// this.hasMore = res.length < this.per_page ? false : true;
-				// if (!event || refresh) {
-				// 	this.contactsData = [];
-				// 	this.clearSearch();
-				// }
-				// this.contactList = this.contactList.concat(res);
-				this.contactList = res;
+				this.hasMore = res.length < this.per_page ? false : true;
+				if (!event || refresh) {
+					this.contactListData = [];
+					this.clearSearch();
+				}
+				this.contactListData = this.contactListData.concat(res);
 
-				// if (event && this.search && this.searchTerm) { //Pagination called and search exists already
-				// 	var filtered = this.global.filterSearch(this.contactList, this.searchTerm, 'first_name', 'last_name');
-				// 	this.setData(filtered);
-				// } else {
-				// 	this.setData(this.contactList);
-				// }
+				if (event && this.search && this.searchTerm) { //Pagination called and search exists already
+					this.contactList = this.global.filterSearch(this.contactListData, this.searchTerm, 'first_name', 'last_name');
+				} else {
+					this.contactList = this.contactListData;
+				}
 
-				// event ? event.target.complete() : '';
-				// this.loadView = true;
+				event ? event.target.complete() : '';
+				this.loadView = true;
 				this.global.closeLoading();
-
-				// //Getting Trashed Contacts
-				// this.api.getCrmContacts('contact', 'trash', this.per_page, this.page).subscribe(trashed => {
-				// 	this.hasMore = all_length < this.per_page && trashed.length < this.per_page ? false : true;
-				// 	event ? event.target.complete() : '';
-				// 	this.trash = this.trash.concat(trashed);
-				// 	this.global.closeLoading();
-				// });
 			},
 			err => {
 				event ? event.target.complete() : '';
@@ -84,15 +76,43 @@ export class ChatListingPage implements OnInit {
 		this.router.navigate(["/chat"], navigationExtras);
 	}
 
-	// testFunc() {
-	// 	this.chatApi.myTestFunc().subscribe(
-	// 		res => {
-	// 			console.log('Success Response', res);
-	// 		},
-	// 		err => {
-	// 			console.log('Error Response', err);
-	// 		}
-	// 	)
-	// }
+	enableSearch(evt) {
+		this.search = !this.search;
+		if (!this.search) {
+			this.searchTerm = '';
+		}
+	}
+
+	clearSearch() {
+		this.search = false;
+		this.searchTerm = '';
+		this.searching = false;
+	}
+
+	filterItems(evt) {
+		this.searching = true;
+		var filtered = this.global.filterSearch(this.contactListData, this.searchTerm, 'first_name', 'last_name');
+		setTimeout(() => {
+			this.contactList = filtered;
+			this.searching = false;
+		}, 300);
+	}
+
+	doRefresh(event) {
+		this.resetData();
+		this.getContacts(event, true);
+	}
+
+	resetData() {
+		this.hasMore = true;
+		this.page = 1;
+		this.per_page = 20;
+		this.content.scrollToTop();
+	}
+
+	loadMore(event) {
+		this.page++;
+		this.getContacts(event);
+	}
 
 }
