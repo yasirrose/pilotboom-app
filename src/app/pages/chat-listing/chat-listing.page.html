@@ -19,14 +19,14 @@
 		<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
 			<ion-refresher-content></ion-refresher-content>
 		</ion-refresher>
-		<div *ngIf="contactList.length > 0; else no_result">
-			<div class="ion-flex inline-filters" [hidden]="!search">
-				<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterItems($event)" animated>
-				</ion-searchbar>
-				<div class="spinner-container" *ngIf="searching">
-					<ion-spinner></ion-spinner>
-				</div>
+		<div class="ion-flex inline-filters" [hidden]="!search">
+			<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="filterItems($event)" animated>
+			</ion-searchbar>
+			<div class="spinner-container" *ngIf="searching">
+				<ion-spinner></ion-spinner>
 			</div>
+		</div>
+		<div *ngIf="contactList.length > 0; else no_result">
 			<ion-list class="user-box" lines="full">
 				<div *ngFor="let contact of contactList">
 					<ion-item detail="false" (click)="getChat($event, contact.id)">
